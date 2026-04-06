@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Das verlorene Playbook – das/dass</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --lime: #c8f000;
+      --lime-dark: #a0c500;
+      --ink: #0d0d0d;
+      --ink-2: #111418;
+      --ink-3: #1a1e22;
+      --border: #222;
+      --mid: #555;
+      --light: #f5f5f0;
+      --muted: #8a9090;
+      --good: #4af09a;
+      --good-bg: rgba(74,240,154,.08);
+      --bad: #f06060;
+      --bad-bg: rgba(240,96,96,.08);
+      --info-bg: rgba(200,240,0,.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background-color: var(--ink);
+      color: var(--light);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 28px 72px;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 0 32px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+    }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .nav-back:hover { color: var(--lime); }
+    .nav-back svg { transition: transform 0.15s ease; }
+    .nav-back:hover svg { transform: translateX(-3px); }
+
+    .nav-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 2px;
+    }
+
+    /* START SCREEN */
+    #startScreen {
+      margin-bottom: 0;
+    }
+
+    .start-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 18px;
+    }
+    .start-eyebrow::before {
+      content: "";
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--lime);
+    }
+
+    .start-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 24px;
+    }
+    .start-title .outline {
+      -webkit-text-stroke: 2px var(--light);
+      color: transparent;
+    }
+    .start-title .accent { color: var(--lime); }
+
+    .start-desc {
+      max-width: 560px;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+    .start-desc strong { color: var(--light); font-weight: 600; }
+
+    .start-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .info-card {
+      background: var(--ink-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 24px;
+    }
+
+    .info-card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .info-card p, .info-card li {
+      font-size: 0.96rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+    .info-card ul { padding-left: 1.1rem; }
+    .info-card li { margin-bottom: 4px; }
+    .info-card strong { color: var(--light); font-weight: 600; }
+
+    .tip-box {
+      background: var(--info-bg);
+      border: 1px solid rgba(200,240,0,.15);
+      border-radius: 4px;
+      padding: 14px 18px;
+      font-size: 0.93rem;
+      color: #b0c060;
+      margin-top: 14px;
+      line-height: 1.55;
+    }
+    .tip-box em { font-style: italic; }
+
+    /* BUTTONS */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      padding: 13px 22px;
+      transition: transform 0.12s ease, opacity 0.12s ease, background 0.12s ease;
+    }
+    button:hover { transform: translateY(-2px); }
+    button:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+    .btn-primary {
+      background: var(--lime);
+      color: var(--ink);
+    }
+    .btn-primary:hover { background: var(--lime-dark); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--muted); color: var(--light); }
+
+    /* HUD */
+    .hud {
+      display: none;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding: 16px 20px;
+      background: var(--ink-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .progress-wrap {
+      flex: 1;
+      background: #1e1e1e;
+      border-radius: 2px;
+      height: 6px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--lime);
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 2px;
+    }
+
+    .hud-pill {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* MISSIONS */
+    .mission { display: none; }
+    .mission.active { display: block; }
+
+    .mission-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 10px;
+    }
+    .mission-eyebrow::before {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--lime);
+    }
+
+    .mission-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      text-transform: uppercase;
+      color: var(--light);
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: 0.01em;
+    }
+
+    .mission-sub {
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .mission-sub strong { color: var(--lime); font-weight: 600; }
+
+    .mission-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 28px;
+    }
+
+    /* TASK CARD */
+    .task-card {
+      background: var(--ink-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+
+    .task-card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .sentence-list {
+      font-size: 1.02rem;
+      line-height: 2;
+      color: var(--light);
+      padding: 16px;
+      background: #0d0d0d;
+      border-radius: 2px;
+      border-left: 3px solid var(--lime);
+      margin-bottom: 18px;
+    }
+    .sentence-list strong { color: var(--lime); }
+
+    .error-text {
+      font-size: 1.02rem;
+      line-height: 2;
+      color: var(--light);
+      padding: 16px;
+      background: #0d0d0d;
+      border-radius: 2px;
+      border-left: 3px solid var(--bad);
+      margin-bottom: 18px;
+    }
+    .error-text strong { color: var(--bad); }
+
+    .mini-list {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: var(--light);
+      padding: 14px 16px;
+      background: #0d0d0d;
+      border-radius: 2px;
+      margin-bottom: 18px;
+    }
+
+    /* FORM ELEMENTS */
+    .choice-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 14px 16px;
+      background: #0d0d0d;
+      border-radius: 2px;
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+      font-size: 0.97rem;
+      color: var(--light);
+      line-height: 1.5;
+    }
+    .choice-row label, .choice-row span { color: var(--light); }
+    .choice-row strong { color: var(--lime); font-weight: 600; }
+
+    select, textarea, input[type="text"] {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 2px;
+      color: var(--light);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.95rem;
+      padding: 10px 14px;
+      transition: border-color 0.15s ease;
+    }
+    select:focus, textarea:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: var(--lime);
+    }
+
+    select { min-width: 120px; }
+    .wide-select { width: 100%; }
+
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      resize: vertical;
+      margin-top: 8px;
+    }
+    input[type="text"] { width: 100%; margin-top: 8px; }
+
+    label {
+      font-size: 0.93rem;
+      color: var(--muted);
+      display: block;
+      margin-top: 16px;
+    }
+    label strong { color: var(--light); font-weight: 600; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    /* HELP / TIP */
+    .help {
+      background: var(--info-bg);
+      border: 1px solid rgba(200,240,0,.12);
+      border-radius: 2px;
+      padding: 14px 16px;
+      font-size: 0.92rem;
+      color: #b0c060;
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+    .help strong { color: var(--lime); font-weight: 600; }
+    .help em { font-style: italic; }
+
+    /* FEEDBACK */
+    .feedback {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 2px;
+      font-size: 0.93rem;
+      font-weight: 600;
+      display: none;
+      line-height: 1.5;
+    }
+    .feedback.show { display: block; }
+    .feedback.good {
+      background: var(--good-bg);
+      border: 1px solid rgba(74,240,154,.2);
+      color: var(--good);
+    }
+    .feedback.bad {
+      background: var(--bad-bg);
+      border: 1px solid rgba(240,96,96,.2);
+      color: var(--bad);
+    }
+
+    /* MISSION NAV */
+    .mission-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .mission-nav-right { display: flex; gap: 10px; }
+
+    /* RESULT */
+    .result {
+      display: none;
+      text-align: center;
+      padding: 60px 28px;
+      background: var(--ink-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .result-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 16px;
+    }
+    .result-eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 24px;
+      height: 2px;
+      background: var(--lime);
+    }
+
+    .result-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      text-transform: uppercase;
+      line-height: 0.92;
+      color: var(--light);
+      margin-bottom: 28px;
+    }
+    .result-title .accent { color: var(--lime); }
+
+    .result-badge {
+      display: inline-block;
+      background: rgba(74,240,154,.1);
+      color: var(--good);
+      border: 1px solid rgba(74,240,154,.25);
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .result p {
+      max-width: 600px;
+      margin: 0 auto 32px;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+    .result p strong { color: var(--light); font-weight: 600; }
+    .result p em { color: var(--lime); font-style: italic; }
+
+    .footer-note {
+      margin-top: 32px;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #333;
+    }
+
+    .hidden { display: none !important; }
+
+    /* RESPONSIVE */
+    @media (max-width: 680px) {
+      .wrap { padding: 0 18px 48px; }
+      .start-grid, .grid-2 { grid-template-columns: 1fr; }
+      .hud { flex-direction: column; align-items: stretch; }
+      .mission-nav { flex-direction: column; }
+      .mission-nav-right { width: 100%; justify-content: flex-end; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <a class="nav-back" href="../index.html">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10 3L5 8l5 5"/>
+      </svg>
+      Trainingsgelände
+    </a>
+    <div class="nav-badge">Deutsch · Klasse 7</div>
+  </nav>
+
+  <!-- START SCREEN -->
+  <section id="startScreen">
+    <div class="start-eyebrow">Mission · das / dass</div>
+    <h1 class="start-title">
+      Das verlorene<br>
+      <span class="outline">Play</span><span class="accent">book.</span>
+    </h1>
+    <p class="start-desc">
+      Vor dem großen Spiel ist das geheime Playbook verschwunden. Nur wenn du die Missionen zu
+      <strong>das</strong> und <strong>dass</strong> richtig löst, kann dein Team die Spielzüge zurückbekommen.
+    </p>
+
+    <div class="start-grid">
+      <div class="info-card">
+        <h3>Deine Mission</h3>
+        <p>
+          Arbeite dich durch <strong>5 Missionen</strong>. Du entdeckst zuerst die Regel, wendest sie dann an,
+          korrigierst Fehler und erklärst am Ende selbst den Unterschied.
+        </p>
+        <p style="margin-top:10px;">
+          Jede Mission muss richtig gelöst werden, bevor die nächste freigeschaltet wird.
+        </p>
+        <div class="btn-row" style="margin-top: 22px;">
+          <button class="btn-primary" id="startBtn">Spiel starten</button>
+          <button class="btn-secondary" id="howBtn">Regel-Tipp</button>
+        </div>
+        <div class="tip-box hidden" id="introTip">
+          <strong>Tipp:</strong> <em>das</em> kannst du oft durch <em>dieses</em> oder <em>welches</em> ersetzen.
+          <em>dass</em> verbindet meistens Satzteile und lässt sich nicht so ersetzen.
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>So funktioniert es</h3>
+        <ul>
+          <li>Bearbeite die Missionen in der richtigen Reihenfolge.</li>
+          <li>Freitext-Aufgaben geben dir Rückmeldung, blockieren dich aber nicht.</li>
+          <li>Bei Auswahlaufgaben brauchst du die richtige Lösung, um weiterzukommen.</li>
+          <li>Am Ende erhältst du dein Playbook zurück.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- HUD -->
+  <div class="hud" id="hud">
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="hud-pill" id="levelPill">Mission 1 von 5</div>
+    <div class="hud-pill" id="scorePill">0 / 5 geschafft</div>
+  </div>
+
+  <!-- MISSION 1 -->
+  <section class="mission" id="mission1">
+    <div class="mission-eyebrow">Mission 1 von 5</div>
+    <h2 class="mission-title">Entdecken</h2>
+    <p class="mission-sub">Markiere innerlich: Wann steht <strong>das</strong>, wann <strong>dass</strong>?</p>
+    <div class="mission-divider"></div>
+
+    <div class="task-card">
+      <h3>Aufgabe 1 – Finde den Unterschied</h3>
+      <div class="sentence-list">
+        1. Ich sehe <strong>das</strong> Spiel.<br>
+        2. Ich glaube, <strong>dass</strong> wir gewinnen.<br>
+        3. <strong>Das</strong> Training macht Spaß.<br>
+        4. Er sagt, <strong>dass</strong> er heute kommt.<br>
+        5. Das Spiel, <strong>das</strong> wir verloren hatten, war eng.<br>
+        6. Ich freue mich über das Team, <strong>das</strong> nie aufgibt.
+      </div>
+      <div class="help">
+        <strong>Dein Auftrag:</strong> Lies die Sätze genau. Achte darauf, dass <em>das</em> nicht nur am Satzanfang stehen kann.
+        Wähle dann die beste Beobachtung aus.
+      </div>
+      <div class="choice-row">
+        <span><strong>Welche Beobachtung passt am besten?</strong></span>
+        <select id="m1q1" class="wide-select">
+          <option value="">Bitte auswählen</option>
+          <option value="a">„das" steht immer am Satzanfang, „dass" immer nach einem Komma.</option>
+          <option value="b">„das" kann Artikel, Pronomen oder Relativpronomen sein; „dass" leitet meist einen Nebensatz ein.</option>
+          <option value="c">„dass" benutzt man immer dann, wenn vorher ein Nomen steht.</option>
+        </select>
+      </div>
+      <label for="m1free"><strong>Schreibe deine Vermutung in 1–2 Sätzen auf:</strong></label>
+      <textarea id="m1free" placeholder="Zum Beispiel: Ich vermute, dass ..."></textarea>
+      <div class="feedback" id="m1freeFeedback"></div>
+      <div class="feedback" id="m1fb"></div>
+    </div>
+
+    <div class="mission-nav">
+      <button class="btn-secondary" disabled>Zurück</button>
+      <div class="mission-nav-right">
+        <button class="btn-secondary" onclick="checkFreeText('m1free','m1freeFeedback')">Freitext prüfen</button>
+        <button class="btn-primary" onclick="checkMission1()">Mission prüfen</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION 2 -->
+  <section class="mission" id="mission2">
+    <div class="mission-eyebrow">Mission 2 von 5</div>
+    <h2 class="mission-title">Die Regel</h2>
+    <p class="mission-sub">Nutze die Ersatzprobe mit <strong>dieses</strong> oder <strong>welches</strong>.</p>
+    <div class="mission-divider"></div>
+
+    <div class="task-card">
+      <h3>Aufgabe 2 – Finde die richtige Regel</h3>
+      <div class="mini-list">
+        <strong>Beispiel:</strong><br>
+        Das Spiel → Dieses Spiel ✔<br>
+        Ich glaube, dass wir gewinnen. → Ich glaube, dieses wir gewinnen. ✖
+      </div>
+      <div class="choice-row">
+        <span><strong>Wann schreibt man „das"?</strong></span>
+        <select id="m2q1" class="wide-select">
+          <option value="">Auswählen</option>
+          <option value="a">Wenn man es oft durch „dieses" oder „welches" ersetzen kann.</option>
+          <option value="b">Immer nach „ich glaube".</option>
+          <option value="c">Nur in sehr kurzen Sätzen.</option>
+        </select>
+      </div>
+      <div class="choice-row">
+        <span><strong>Wann schreibt man „dass"?</strong></span>
+        <select id="m2q2" class="wide-select">
+          <option value="">Auswählen</option>
+          <option value="a">Wenn das Wort einen Nebensatz einleitet und die Ersatzprobe nicht funktioniert.</option>
+          <option value="b">Wenn ein Nomen direkt danach kommt.</option>
+          <option value="c">Nur bei Fragen.</option>
+        </select>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label for="m2rule1"><strong>Formuliere die Regel für „das":</strong></label>
+          <textarea id="m2rule1" placeholder="Wann schreibt man das?"></textarea>
+        </div>
+        <div>
+          <label for="m2rule2"><strong>Formuliere die Regel für „dass":</strong></label>
+          <textarea id="m2rule2" placeholder="Wann schreibt man dass?"></textarea>
+        </div>
+      </div>
+      <div class="feedback" id="m2ruleFeedback"></div>
+      <div class="feedback" id="m2fb"></div>
+    </div>
+
+    <div class="mission-nav">
+      <button class="btn-secondary" onclick="goMission(1)">Zurück</button>
+      <div class="mission-nav-right">
+        <button class="btn-secondary" onclick="checkRuleTexts()">Freitext prüfen</button>
+        <button class="btn-primary" onclick="checkMission2()">Mission prüfen</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION 3 -->
+  <section class="mission" id="mission3">
+    <div class="mission-eyebrow">Mission 3 von 5</div>
+    <h2 class="mission-title">Anwenden</h2>
+    <p class="mission-sub">Setze <strong>das</strong> oder <strong>dass</strong> richtig ein.</p>
+    <div class="mission-divider"></div>
+
+    <div class="task-card">
+      <h3>Aufgabe 3 – Setze richtig ein</h3>
+
+      <div class="choice-row">1. Ich hoffe,
+        <select class="ans3" data-answer="dass"><option value="">---</option><option>das</option><option>dass</option></select>
+        wir heute gewinnen.
+      </div>
+      <div class="choice-row">2.
+        <select class="ans3" data-answer="das"><option value="">---</option><option>Das</option><option>dass</option></select>
+        Spiel war spannend.
+      </div>
+      <div class="choice-row">3. Er weiß,
+        <select class="ans3" data-answer="dass"><option value="">---</option><option>das</option><option>dass</option></select>
+        er sich verbessern muss.
+      </div>
+      <div class="choice-row">4.
+        <select class="ans3" data-answer="das"><option value="">---</option><option>Das</option><option>dass</option></select>
+        Team trainiert hart.
+      </div>
+      <div class="choice-row">5. Ich finde,
+        <select class="ans3" data-answer="dass"><option value="">---</option><option>das</option><option>dass</option></select>
+        Football Spaß macht.
+      </div>
+      <div class="choice-row">6.
+        <select class="ans3" data-answer="das"><option value="">---</option><option>Das</option><option>dass</option></select>
+        ist mein Ball.
+      </div>
+      <div class="choice-row">7. Sie sagt,
+        <select class="ans3" data-answer="dass"><option value="">---</option><option>das</option><option>dass</option></select>
+        sie morgen spielt.
+      </div>
+      <div class="feedback" id="m3fb"></div>
+    </div>
+
+    <div class="mission-nav">
+      <button class="btn-secondary" onclick="goMission(2)">Zurück</button>
+      <button class="btn-primary" onclick="checkMission3()">Mission prüfen</button>
+    </div>
+  </section>
+
+  <!-- MISSION 4 -->
+  <section class="mission" id="mission4">
+    <div class="mission-eyebrow">Mission 4 von 5</div>
+    <h2 class="mission-title">Fehleralarm</h2>
+    <p class="mission-sub">Finde die falschen Schreibungen und korrigiere sie.</p>
+    <div class="mission-divider"></div>
+
+    <div class="task-card">
+      <h3>Aufgabe 4 – Fehler im Text</h3>
+      <div class="error-text">
+        Das Training war sehr anstrengend. Ich glaube <strong>das</strong> wir besser werden.
+        Der Trainer sagt <strong>das</strong> wir mehr üben müssen.
+        Das Spiel, <strong>das</strong> wir am Wochenende spielten, war wichtig.
+        Ich hoffe <strong>das</strong> wir gewinnen, weil das Team stark ist.
+      </div>
+      <div class="help">
+        <strong>Auftrag:</strong> Wie oft muss <em>das</em> in diesem Text zu <em>dass</em> verbessert werden?
+        Achtung: Nicht jedes <em>das</em> nach einem Komma ist falsch.
+      </div>
+      <div class="choice-row">
+        <span><strong>Anzahl der Fehler:</strong></span>
+        <select id="m4q1">
+          <option value="">Auswählen</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+      <label for="m4free"><strong>Schreibe den verbesserten Text oder erkläre kurz, was falsch war:</strong></label>
+      <textarea id="m4free" placeholder="Zum Beispiel: Drei Mal muss 'das' zu 'dass' verbessert werden, weil ..."></textarea>
+      <div class="feedback" id="m4freeFeedback"></div>
+      <div class="feedback" id="m4fb"></div>
+    </div>
+
+    <div class="mission-nav">
+      <button class="btn-secondary" onclick="goMission(3)">Zurück</button>
+      <div class="mission-nav-right">
+        <button class="btn-secondary" onclick="checkFreeText('m4free','m4freeFeedback')">Freitext prüfen</button>
+        <button class="btn-primary" onclick="checkMission4()">Mission prüfen</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION 5 -->
+  <section class="mission" id="mission5">
+    <div class="mission-eyebrow">Mission 5 von 5</div>
+    <h2 class="mission-title">Werde zum Coach</h2>
+    <p class="mission-sub">Jetzt erklärst du selbst den Unterschied und notierst einen Merksatz fürs Heft.</p>
+    <div class="mission-divider"></div>
+
+    <div class="task-card">
+      <h3>Aufgabe 5 – Zeig, dass du es kannst</h3>
+
+      <div class="choice-row">
+        <span><strong>Welche Aussage ist richtig?</strong></span>
+        <select id="m5q1" class="wide-select">
+          <option value="">Auswählen</option>
+          <option value="a">„dass" kann man oft durch „dieses" ersetzen.</option>
+          <option value="b">„das" kann Artikel, Pronomen oder Relativpronomen sein; „dass" leitet meist einen Nebensatz ein.</option>
+          <option value="c">Nach einem Komma schreibt man immer „dass".</option>
+        </select>
+      </div>
+
+      <div class="choice-row">
+        <span><strong>In welchem Satz ist „das" nach dem Komma richtig?</strong></span>
+        <select id="m5q2" class="wide-select">
+          <option value="">Auswählen</option>
+          <option value="a">Ich hoffe, das wir heute gewinnen.</option>
+          <option value="b">Der Trainer sagt, das wir schneller laufen müssen.</option>
+          <option value="c">Das Spiel, das wir verloren hatten, war eng.</option>
+        </select>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <label for="m5s1"><strong>Schreibe einen Satz mit „das":</strong></label>
+          <input type="text" id="m5s1" placeholder="Das Trikot liegt auf dem Boden.">
+        </div>
+        <div>
+          <label for="m5s2"><strong>Schreibe einen Satz mit „dass":</strong></label>
+          <input type="text" id="m5s2" placeholder="Ich glaube, dass wir gewinnen.">
+        </div>
+      </div>
+
+      <label for="m5free"><strong>Erkläre den Unterschied in eigenen Worten:</strong></label>
+      <textarea id="m5free" placeholder="Ich schreibe das, wenn ... / Ich schreibe dass, wenn ..."></textarea>
+
+      <div class="help" style="margin-top: 16px;">
+        <strong>Abschluss fürs Heft:</strong> Schreibe am Ende einen <strong>Merksatz</strong> in dein Heft:<br><br>
+        <em>„das kann oft durch dieses oder welches ersetzt werden. dass leitet meistens einen Nebensatz ein."</em><br><br>
+        <em>Beispiel: „Das Spiel, das wir verloren hatten, war eng. Ich glaube, dass wir im Rückspiel besser spielen."</em>
+      </div>
+
+      <div class="feedback" id="m5freeFeedback"></div>
+      <div class="feedback" id="m5fb"></div>
+    </div>
+
+    <div class="mission-nav">
+      <button class="btn-secondary" onclick="goMission(4)">Zurück</button>
+      <div class="mission-nav-right">
+        <button class="btn-secondary" onclick="checkMission5Text()">Freitext prüfen</button>
+        <button class="btn-primary" onclick="checkMission5()">Playbook sichern</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <div class="result" id="resultScreen">
+    <div class="result-eyebrow">Abgeschlossen</div>
+    <h2 class="result-title">Das Playbook<br>ist <span class="accent">zurück!</span></h2>
+    <div class="result-badge">5 von 5 Missionen gemeistert</div>
+    <p>
+      Starke Leistung! Du kannst jetzt sicherer zwischen <strong>das</strong> und <strong>dass</strong>
+      unterscheiden. Nutze die Ersatzprobe weiter: Funktioniert <em>dieses</em> oder <em>welches</em>,
+      ist oft <strong>das</strong> richtig. Leitet das Wort einen Nebensatz ein, braucht man meist <strong>dass</strong>.
+    </p>
+    <div class="btn-row" style="justify-content: center; gap: 14px;">
+      <button class="btn-primary" onclick="restartGame()">Nochmal spielen</button>
+      <a href="../index.html" style="text-decoration:none;">
+        <button class="btn-secondary">Zurück zur Startseite</button>
+      </a>
+    </div>
+    <div class="footer-note">Materialstil: Football-Klassenzimmer · Thema: Deutsch Klasse 7</div>
+  </div>
+
+</div>
+
+<script>
+  let currentMission = 0;
+  const unlocked = [true, false, false, false, false];
+  const solved = [false, false, false, false, false];
+
+  const startBtn = document.getElementById("startBtn");
+  const howBtn = document.getElementById("howBtn");
+  const introTip = document.getElementById("introTip");
+  const startScreen = document.getElementById("startScreen");
+  const hud = document.getElementById("hud");
+  const resultScreen = document.getElementById("resultScreen");
+
+  startBtn.addEventListener("click", () => {
+    startScreen.classList.add("hidden");
+    hud.style.display = "flex";
+    goMission(1);
+  });
+
+  howBtn.addEventListener("click", () => {
+    introTip.classList.toggle("hidden");
+  });
+
+  function setFeedback(id, type, text) {
+    const el = document.getElementById(id);
+    el.className = "feedback show " + type;
+    el.textContent = text;
+  }
+
+  function checkFreeText(textId, feedbackId) {
+    const text = document.getElementById(textId).value.trim();
+    if (text.length < 8) {
+      setFeedback(feedbackId, "bad", "Schreibe noch etwas mehr. Ein paar Wörter reichen hier noch nicht.");
+      return false;
+    }
+    if (text.length < 20) {
+      setFeedback(feedbackId, "good", "Guter Anfang. Deine Begründung ist knapp, aber nachvollziehbar.");
+      return true;
+    }
+    setFeedback(feedbackId, "good", "Gut begründet. Deine Antwort zeigt, dass du über die Regel nachgedacht hast.");
+    return true;
+  }
+
+  function checkRuleTexts() {
+    const t1 = document.getElementById("m2rule1").value.trim();
+    const t2 = document.getElementById("m2rule2").value.trim();
+    if (t1.length < 8 || t2.length < 8) {
+      setFeedback("m2ruleFeedback", "bad", "Schreibe zu beiden Regeln noch etwas auf.");
+      return false;
+    }
+    setFeedback("m2ruleFeedback", "good", "Gut. Du hast beide Regeln in eigenen Worten formuliert.");
+    return true;
+  }
+
+  function checkMission5Text() {
+    const s1 = document.getElementById("m5s1").value.trim();
+    const s2 = document.getElementById("m5s2").value.trim();
+    const free = document.getElementById("m5free").value.trim();
+    if (s1.length < 6 || s2.length < 6 || free.length < 10) {
+      setFeedback("m5freeFeedback", "bad", "Bitte ergänze beide Beispielsätze und deine Erklärung.");
+      return false;
+    }
+    setFeedback("m5freeFeedback", "good", "Sehr gut. Du hast eigene Beispiele und eine Erklärung formuliert.");
+    return true;
+  }
+
+  function showOnlyMission(num) {
+    document.querySelectorAll(".mission").forEach(m => m.classList.remove("active"));
+    const mission = document.getElementById("mission" + num);
+    if (mission) mission.classList.add("active");
+    currentMission = num - 1;
+    updateHud();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function goMission(num) {
+    if (!unlocked[num - 1]) return;
+    resultScreen.style.display = "none";
+    showOnlyMission(num);
+  }
+
+  function updateHud() {
+    const solvedCount = solved.filter(Boolean).length;
+    document.getElementById("progressBar").style.width = (solvedCount / 5 * 100) + "%";
+    document.getElementById("levelPill").textContent = "Mission " + (currentMission + 1) + " von 5";
+    document.getElementById("scorePill").textContent = solvedCount + " / 5 geschafft";
+  }
+
+  function unlockNext(index) {
+    solved[index] = true;
+    if (index + 1 < unlocked.length) unlocked[index + 1] = true;
+    updateHud();
+  }
+
+  function checkMission1() {
+    checkFreeText("m1free", "m1freeFeedback");
+    if (document.getElementById("m1q1").value === "b") {
+      unlockNext(0);
+      setFeedback("m1fb", "good", "Stark! Du hast die Beobachtung richtig erkannt. Mission 2 ist freigeschaltet.");
+      setTimeout(() => goMission(2), 700);
+    } else {
+      setFeedback("m1fb", "bad", "Noch nicht richtig. Überlege: Bei welchem Wort geht es eher um einen Nebensatz?");
+    }
+  }
+
+  function checkMission2() {
+    checkRuleTexts();
+    if (document.getElementById("m2q1").value === "a" && document.getElementById("m2q2").value === "a") {
+      unlockNext(1);
+      setFeedback("m2fb", "good", "Genau! Die Regel sitzt. Mission 3 ist freigeschaltet.");
+      setTimeout(() => goMission(3), 700);
+    } else {
+      setFeedback("m2fb", "bad", "Prüfe die Ersatzprobe noch einmal genau.");
+    }
+  }
+
+  function checkMission3() {
+    let ok = true;
+    document.querySelectorAll(".ans3").forEach(item => {
+      if (item.value.toLowerCase() !== item.dataset.answer.toLowerCase()) ok = false;
+    });
+    if (ok) {
+      unlockNext(2);
+      setFeedback("m3fb", "good", "Perfekt! Alle Einsetzungen stimmen. Mission 4 ist freigeschaltet.");
+      setTimeout(() => goMission(4), 700);
+    } else {
+      setFeedback("m3fb", "bad", "Da stimmt noch etwas nicht. Nutze die Ersatzprobe und prüfe jeden Satz einzeln.");
+    }
+  }
+
+  function checkMission4() {
+    checkFreeText("m4free", "m4freeFeedback");
+    if (document.getElementById("m4q1").value === "3") {
+      unlockNext(3);
+      setFeedback("m4fb", "good", "Richtig! Drei Mal muss 'das' zu 'dass' verbessert werden. Mission 5 ist freigeschaltet.");
+      setTimeout(() => goMission(5), 700);
+    } else {
+      setFeedback("m4fb", "bad", "Zähle die fehlerhaften Stellen noch einmal sorgfältig nach.");
+    }
+  }
+
+  function checkMission5() {
+    const a1 = document.getElementById("m5q1").value;
+    const a2 = document.getElementById("m5q2").value;
+    const textOk = checkMission5Text();
+    if (a1 === "b" && a2 === "c" && textOk) {
+      unlockNext(4);
+      document.querySelectorAll(".mission").forEach(m => m.classList.remove("active"));
+      updateHud();
+      resultScreen.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (a1 !== "b" || a2 !== "c") {
+      setFeedback("m5fb", "bad", "Prüfe die Aussagen noch einmal genau. Nicht jedes 'das' nach einem Komma ist falsch.");
+    } else {
+      setFeedback("m5fb", "bad", "Ergänze bitte noch deine Beispiele und die Erklärung.");
+    }
+  }
+
+  function restartGame() {
+    document.querySelectorAll("select").forEach(el => el.selectedIndex = 0);
+    document.querySelectorAll("textarea, input[type='text']").forEach(el => el.value = "");
+    document.querySelectorAll(".feedback").forEach(el => { el.className = "feedback"; el.textContent = ""; });
+    for (let i = 0; i < unlocked.length; i++) { unlocked[i] = i === 0; solved[i] = false; }
+    resultScreen.style.display = "none";
+    startScreen.classList.remove("hidden");
+    hud.style.display = "none";
+    document.querySelectorAll(".mission").forEach(m => m.classList.remove("active"));
+    introTip.classList.add("hidden");
+    currentMission = 0;
+    updateHud();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+</script>
+</body>
+</html>
