@@ -1,0 +1,18 @@
+[
+  {
+    "fach": "Deutsch",
+    "titel": "das / dass",
+    "beschreibung": "Lerne den Unterschied zwischen 'das' und 'dass' mit interaktiven Missionen.",
+    "datei": "deutsch/das-dass.html",
+    "themen": ["das / dass", "Rechtschreibung", "Grammatik"],
+    "status": "verfügbar"
+  },
+  {
+    "fach": "Informatik",
+    "titel": "Escape Game",
+    "beschreibung": "Escape Games, Logikaufgaben und digitale Lernangebote – in Kürze live.",
+    "datei": "",
+    "themen": ["Escape Game", "Logik", "Algorithmen"],
+    "status": "bald"
+  }
+]
