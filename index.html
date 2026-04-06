@@ -497,43 +497,11 @@
 
     <div class="section-header">
       <span class="section-label">Fächer</span>
-      <span class="section-count">02 Module</span>
+      <span class="section-count" id="moduleCount">–</span>
     </div>
 
-    <div class="cards">
-      <a class="card" href="deutsch/das-dass.html">
-        <div class="card-num">01</div>
-        <div class="card-tag">Verfügbar</div>
-        <h2>Deutsch</h2>
-        <p>Rechtschreibung, Grammatik und Sprachgefühl – trainiere mit interaktiven Übungen.</p>
-        <div class="topics">
-          <span class="topic">das / dass</span>
-          <span class="topic">Rechtschreibung</span>
-          <span class="topic">Grammatik</span>
-        </div>
-        <div class="card-arrow">
-          <svg width="14" height="14" viewBox="0 0 14 14">
-            <path d="M2 7h10M8 3l4 4-4 4"/>
-          </svg>
-        </div>
-      </a>
-
-      <div class="card coming-soon">
-        <div class="card-num">02</div>
-        <div class="card-tag">Bald verfügbar</div>
-        <h2>Informatik</h2>
-        <p>Escape Games, Logikaufgaben und digitale Lernangebote – in Kürze live.</p>
-        <div class="topics">
-          <span class="topic">Escape Game</span>
-          <span class="topic">Logik</span>
-          <span class="topic">Algorithmen</span>
-        </div>
-        <div class="card-arrow">
-          <svg width="14" height="14" viewBox="0 0 14 14">
-            <path d="M2 7h10M8 3l4 4-4 4"/>
-          </svg>
-        </div>
-      </div>
+    <div class="cards" id="cardsGrid">
+      <div style="color:#444;font-size:0.9rem;padding:20px 0;">Inhalte werden geladen…</div>
     </div>
 
     <div class="marquee-wrap">
@@ -560,6 +528,62 @@
   </div>
 
   <script>
+    // ── Karten aus inhalte.json laden ──────────────────────────────
+    const arrowSVG = `<div class="card-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7h10M8 3l4 4-4 4"/></svg></div>`;
+
+    fetch('inhalte.json')
+      .then(r => r.json())
+      .then(items => {
+        const grid = document.getElementById('cardsGrid');
+        const count = document.getElementById('moduleCount');
+        const verfügbar = items.filter(i => i.status === 'verfügbar').length;
+        count.textContent = String(items.length).padStart(2,'0') + ' Module · ' + verfügbar + ' verfügbar';
+
+        // Stat-Zähler aktualisieren
+        const statNums = document.querySelectorAll('.stat-num');
+        if (statNums[0]) {
+          const fächer = [...new Set(items.map(i => i.fach))].length;
+          statNums[0].textContent = fächer;
+        }
+
+        grid.innerHTML = items.map((item, idx) => {
+          const num = String(idx + 1).padStart(2, '0');
+          const istVerfügbar = item.status === 'verfügbar';
+          const themen = (item.themen || []).map(t => `<span class="topic">${t}</span>`).join('');
+          const tagText = istVerfügbar ? 'Verfügbar' : 'Bald verfügbar';
+
+          if (istVerfügbar) {
+            return `
+              <a class="card" href="${item.datei}">
+                <div class="card-num">${num}</div>
+                <div class="card-tag">${tagText}</div>
+                <h2>${item.fach}</h2>
+                <p>${item.beschreibung}</p>
+                <div class="topics">${themen}</div>
+                ${arrowSVG}
+              </a>`;
+          } else {
+            return `
+              <div class="card coming-soon">
+                <div class="card-num">${num}</div>
+                <div class="card-tag">${tagText}</div>
+                <h2>${item.fach}</h2>
+                <p>${item.beschreibung}</p>
+                <div class="topics">${themen}</div>
+                ${arrowSVG}
+              </div>`;
+          }
+        }).join('');
+
+        // Cursor-Hover auf neu erstellte Karten anwenden
+        initCardHover();
+      })
+      .catch(() => {
+        document.getElementById('cardsGrid').innerHTML =
+          '<div style="color:#555;padding:20px 0;">Inhalte konnten nicht geladen werden.</div>';
+      });
+
+    // ── Custom Cursor ──────────────────────────────────────────────
     const cursor = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
     let mx = 0, my = 0, rx = 0, ry = 0;
@@ -579,18 +603,20 @@
     }
     animateRing();
 
-    document.querySelectorAll('.card:not(.coming-soon)').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        ring.style.width = '56px';
-        ring.style.height = '56px';
-        ring.style.opacity = '0.8';
+    function initCardHover() {
+      document.querySelectorAll('.card:not(.coming-soon)').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          ring.style.width = '56px';
+          ring.style.height = '56px';
+          ring.style.opacity = '0.8';
+        });
+        el.addEventListener('mouseleave', () => {
+          ring.style.width = '36px';
+          ring.style.height = '36px';
+          ring.style.opacity = '0.5';
+        });
       });
-      el.addEventListener('mouseleave', () => {
-        ring.style.width = '36px';
-        ring.style.height = '36px';
-        ring.style.opacity = '0.5';
-      });
-    });
+    }
   </script>
 </body>
 </html>
