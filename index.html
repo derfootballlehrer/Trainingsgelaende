@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Der Football Lehrer</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(#cfe7ff 30%, #7fb05f 30%);
+    text-align: center;
+}
+
+.header {
+    padding: 40px 20px 20px;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    color: #1c3d7a;
+}
+
+.header p {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    padding: 30px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.card {
+    background: #f5efe4;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.footer {
+    margin-top: 40px;
+    padding: 20px;
+    font-size: 0.9rem;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <h1>🏈 Der Football Lehrer</h1>
+    <p>Interaktive Lernmaterialien</p>
+</div>
+
+<div class="grid" id="materialGrid"></div>
+
+<div class="footer">
+    © der_football_lehrer
+</div>
+
+<script>
+const materialien = [
+    {
+        fach: "Deutsch",
+        titel: "das / dass",
+        link: "deutsch/das-dass.html"
+    },
+
+    // 👉 HIER ERWEITERST DU SPÄTER NUR DIESE LISTE
+
+    {
+        fach: "Deutsch",
+        titel: "s / ss / ß",
+        link: "deutsch/s-ss-ß.html"
+    }
+
+];
+
+const grid = document.getElementById("materialGrid");
+
+materialien.forEach(mat => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.onclick = () => location.href = mat.link;
+
+    card.innerHTML = `
+        <h2>${mat.fach}</h2>
+        <p>${mat.titel}</p>
+    `;
+
+    grid.appendChild(card);
+});
+</script>
+
+</body>
+</html>
