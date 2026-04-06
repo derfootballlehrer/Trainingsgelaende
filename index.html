@@ -3,54 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Der Football Lehrer</title>
+<title>Trainingsgelände</title>
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(#cfe7ff 30%, #7fb05f 30%);
-    text-align: center;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #1c3d7a;
+    
+    /* Spielfeld-Look */
+    background:
+        linear-gradient(to bottom, #cfe7ff 30%, #7fb05f 30%),
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 80px,
+            rgba(255,255,255,0.6) 80px,
+            rgba(255,255,255,0.6) 85px
+        );
 }
 
+/* HEADER */
 .header {
-    padding: 40px 20px 20px;
+    padding: 50px 20px 20px;
 }
 
 .header h1 {
-    font-size: 2.5rem;
-    color: #1c3d7a;
+    font-size: 2.8rem;
+    margin-bottom: 10px;
 }
 
 .header p {
     font-size: 1.2rem;
-    color: #333;
+    max-width: 700px;
+    margin: auto;
 }
 
+/* GRID */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 25px;
-    padding: 30px;
+    padding: 40px;
     max-width: 1000px;
     margin: auto;
 }
 
+/* CARD */
 .card {
     background: #f5efe4;
     border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    padding: 30px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.25);
     cursor: pointer;
     transition: 0.2s;
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px) scale(1.02);
 }
 
+.card h2 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #333;
+}
+
+/* FOOTER */
 .footer {
-    margin-top: 40px;
+    margin-top: 30px;
     padding: 20px;
     font-size: 0.9rem;
 }
@@ -61,49 +84,30 @@ body {
 <body>
 
 <div class="header">
-    <h1>🏈 Der Football Lehrer</h1>
-    <p>Interaktive Lernmaterialien</p>
+    <h1>🏈 Trainingsgelände</h1>
+    <p>
+        Willkommen auf dem interaktiven Trainingsgelände für deine schulischen Leistungen.  
+        Hier findest du Lernmaterial zu den Fächern Deutsch und Informatik.
+    </p>
 </div>
 
-<div class="grid" id="materialGrid"></div>
+<div class="grid">
+
+    <div class="card" onclick="location.href='deutsch/das-dass.html'">
+        <h2>📘 Deutsch</h2>
+        <p>das / dass – interaktive Übung</p>
+    </div>
+
+    <div class="card" onclick="alert('Kommt bald!')">
+        <h2>💻 Informatik</h2>
+        <p>Algorithmen, Escape Games & mehr</p>
+    </div>
+
+</div>
 
 <div class="footer">
-    © der_football_lehrer
+    © Trainingsgelände – der_football_lehrer
 </div>
-
-<script>
-const materialien = [
-    {
-        fach: "Deutsch",
-        titel: "das / dass",
-        link: "deutsch/das-dass.html"
-    },
-
-    // 👉 HIER ERWEITERST DU SPÄTER NUR DIESE LISTE
-
-    {
-        fach: "Deutsch",
-        titel: "s / ss / ß",
-        link: "deutsch/s-ss-ß.html"
-    }
-
-];
-
-const grid = document.getElementById("materialGrid");
-
-materialien.forEach(mat => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.onclick = () => location.href = mat.link;
-
-    card.innerHTML = `
-        <h2>${mat.fach}</h2>
-        <p>${mat.titel}</p>
-    `;
-
-    grid.appendChild(card);
-});
-</script>
 
 </body>
 </html>
