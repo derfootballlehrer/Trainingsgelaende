@@ -4,225 +4,593 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trainingsgelände</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --blue-dark:#173a7a;
-      --blue:#2457b8;
-      --sky:#cfe6ff;
-      --sky-2:#a8d0ff;
-      --field:#6da64d;
-      --field-dark:#57883e;
-      --line:rgba(255,255,255,0.72);
-      --card:#f7f2e9;
-      --text:#1f2937;
-      --muted:#516072;
-      --shadow:0 18px 45px rgba(0,0,0,.16);
-      --radius:26px;
+    :root {
+      --lime: #c8f000;
+      --lime-dark: #a0c500;
+      --ink: #0d0d0d;
+      --ink-2: #1a1a1a;
+      --ink-3: #2a2a2a;
+      --mid: #444;
+      --light: #f5f5f0;
+      --card-1: #111418;
+      --card-2: #0f1a0d;
+      --accent-blue: #4af0c8;
     }
 
-    *{
-      box-sizing:border-box;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background-color: var(--ink);
+      color: var(--light);
+      overflow-x: hidden;
+      cursor: none;
     }
 
-    body{
-      margin:0;
-      font-family:"Segoe UI", Arial, sans-serif;
-      color:var(--text);
-      min-height:100vh;
-      background:
-        linear-gradient(to bottom, transparent 0 100%),
-        repeating-linear-gradient(
-          to bottom,
-          transparent 0 78px,
-          var(--line) 78px 83px
-        ),
-        linear-gradient(to bottom, var(--sky) 0%, var(--sky-2) 32%, var(--field) 32%, var(--field-dark) 100%);
-      overflow-x:hidden;
+    /* CUSTOM CURSOR */
+    .cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--lime);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.12s ease;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--lime);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.22s ease, width 0.22s ease, height 0.22s ease, opacity 0.2s ease;
+      opacity: 0.5;
+    }
+    a, .card { cursor: none; }
+    body:hover .cursor { opacity: 1; }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
     }
 
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background:
-        radial-gradient(circle at 12% 10%, rgba(255,255,255,.95) 0 3.2%, transparent 3.4%),
-        radial-gradient(circle at 18% 11%, rgba(255,255,255,.95) 0 2.1%, transparent 2.3%),
-        radial-gradient(circle at 24% 10%, rgba(255,255,255,.95) 0 2.7%, transparent 2.9%),
-        radial-gradient(circle at 80% 11%, rgba(255,255,255,.92) 0 3%, transparent 3.2%),
-        radial-gradient(circle at 86% 10%, rgba(255,255,255,.92) 0 2%, transparent 2.2%);
-      opacity:.9;
+    /* DIAGONAL ACCENT */
+    .diagonal {
+      position: fixed;
+      top: -10%;
+      right: -5%;
+      width: 420px;
+      height: 900px;
+      background: var(--lime);
+      opacity: 0.04;
+      transform: rotate(18deg);
+      pointer-events: none;
+      z-index: 0;
     }
 
-    .wrapper{
-      width:min(1120px, 94vw);
-      margin:0 auto;
-      padding:36px 0 42px;
-      position:relative;
-      z-index:1;
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px 64px;
     }
 
-    .hero{
-      background:rgba(255,255,255,.78);
-      backdrop-filter:blur(6px);
-      border-radius:32px;
-      box-shadow:var(--shadow);
-      padding:34px 32px 30px;
-      margin-bottom:34px;
-      border:1px solid rgba(255,255,255,.7);
-      text-align:center;
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 0 0;
+      margin-bottom: 80px;
     }
 
-    .badge{
-      display:inline-block;
-      background:var(--blue);
-      color:#fff;
-      font-weight:700;
-      padding:9px 16px;
-      border-radius:999px;
-      margin-bottom:16px;
-      letter-spacing:.2px;
-      font-size:.95rem;
+    .logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      letter-spacing: 0.08em;
+      color: var(--lime);
+      text-transform: uppercase;
     }
 
-    h1{
-      margin:0;
-      color:var(--blue-dark);
-      font-size:clamp(2.3rem, 5vw, 4.2rem);
-      line-height:1.02;
+    .nav-tag {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid);
+      border: 1px solid var(--mid);
+      padding: 6px 14px;
+      border-radius: 2px;
     }
 
-    .subtitle{
-      max-width:820px;
-      margin:18px auto 0;
-      font-size:1.16rem;
-      line-height:1.7;
-      color:#243448;
+    /* HERO */
+    .hero {
+      margin-bottom: 96px;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(290px, 1fr));
-      gap:28px;
-      margin-top:10px;
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 24px;
     }
 
-    .card{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:28px 24px 24px;
-      box-shadow:var(--shadow);
-      cursor:pointer;
-      transition:transform .18s ease, box-shadow .18s ease;
-      border:1px solid rgba(255,255,255,.75);
-      position:relative;
-      overflow:hidden;
+    .hero-eyebrow::before {
+      content: "";
+      display: block;
+      width: 28px;
+      height: 2px;
+      background: var(--lime);
     }
 
-    .card::before{
-      content:"";
-      position:absolute;
-      left:0;
-      top:0;
-      width:100%;
-      height:8px;
-      background:linear-gradient(90deg, var(--blue-dark), var(--blue));
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(5rem, 12vw, 10.5rem);
+      line-height: 0.88;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--light);
     }
 
-    .card:hover{
-      transform:translateY(-6px) scale(1.01);
-      box-shadow:0 22px 48px rgba(0,0,0,.2);
+    h1 .outline {
+      -webkit-text-stroke: 2px var(--light);
+      color: transparent;
     }
 
-    .icon{
-      font-size:2.1rem;
-      margin-bottom:10px;
-      display:block;
+    h1 .accent {
+      color: var(--lime);
     }
 
-    .card h2{
-      margin:0 0 10px;
-      font-size:1.7rem;
-      color:var(--blue-dark);
+    .hero-sub {
+      margin-top: 32px;
+      display: flex;
+      align-items: flex-end;
+      gap: 40px;
     }
 
-    .card p{
-      margin:0 0 18px;
-      color:var(--muted);
-      line-height:1.6;
-      font-size:1.02rem;
+    .hero-desc {
+      max-width: 440px;
+      font-size: 1.08rem;
+      line-height: 1.65;
+      color: #8a9090;
+      font-weight: 400;
     }
 
-    .tag{
-      display:inline-block;
-      padding:9px 14px;
-      background:#e7eefb;
-      color:var(--blue-dark);
-      border-radius:999px;
-      font-weight:700;
-      font-size:.93rem;
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      flex-shrink: 0;
     }
 
-    .footer{
-      margin-top:32px;
-      text-align:center;
-      color:#243448;
-      font-size:.96rem;
-      background:rgba(255,255,255,.72);
-      padding:16px 18px;
-      border-radius:18px;
-      box-shadow:var(--shadow);
+    .stat {
+      text-align: center;
     }
 
-    @media (max-width: 700px){
-      .hero{
-        padding:26px 18px 24px;
-      }
+    .stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 2.6rem;
+      color: var(--light);
+      line-height: 1;
+    }
 
-      .subtitle{
-        font-size:1.03rem;
-      }
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-top: 4px;
+    }
 
-      .card{
-        text-align:center;
-      }
+    /* DIVIDER */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #2a2a2a 20%, #2a2a2a 80%, transparent);
+      margin-bottom: 64px;
+    }
+
+    /* SECTION HEADER */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .section-count {
+      font-size: 0.8rem;
+      color: var(--mid);
+    }
+
+    /* CARDS */
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      position: relative;
+      background: var(--ink-2);
+      border: 1px solid #222;
+      border-radius: 4px;
+      padding: 36px 32px 32px;
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      text-decoration: none;
+      display: block;
+    }
+
+    .card:hover {
+      border-color: var(--lime);
+      transform: translateY(-4px);
+    }
+
+    .card.coming-soon {
+      opacity: 0.55;
+    }
+    .card.coming-soon:hover {
+      border-color: #333;
+      transform: none;
+      cursor: not-allowed;
+    }
+
+    /* big number background */
+    .card-num {
+      position: absolute;
+      top: -10px;
+      right: 18px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 7rem;
+      color: #1e1e1e;
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--lime);
+      border: 1px solid var(--lime);
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+
+    .card.coming-soon .card-tag {
+      color: var(--mid);
+      border-color: var(--mid);
+    }
+
+    .card h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      color: var(--light);
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+
+    .card p {
+      font-size: 0.97rem;
+      color: #8a9090;
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .card-arrow {
+      position: absolute;
+      bottom: 28px;
+      right: 28px;
+      width: 40px;
+      height: 40px;
+      border: 1.5px solid #333;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .card:hover .card-arrow {
+      background: var(--lime);
+      border-color: var(--lime);
+    }
+
+    .card-arrow svg {
+      fill: none;
+      stroke: var(--light);
+      stroke-width: 2;
+      transition: stroke 0.18s ease;
+    }
+
+    .card:hover .card-arrow svg {
+      stroke: var(--ink);
+    }
+
+    /* TOPICS */
+    .topics {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .topic {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #555;
+      background: #1a1a1a;
+      padding: 5px 10px;
+      border-radius: 2px;
+      border: 1px solid #252525;
+    }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      margin: 64px 0;
+      overflow: hidden;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+      padding: 14px 0;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      animation: marquee 18s linear infinite;
+      width: max-content;
+    }
+
+    .marquee-item {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mid);
+      padding: 0 36px;
+      white-space: nowrap;
+    }
+
+    .marquee-item .dot {
+      color: var(--lime);
+      margin-right: 36px;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid #222;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--light);
+    }
+
+    .footer-tagline {
+      font-size: 0.83rem;
+      color: var(--mid);
+      letter-spacing: 0.05em;
+    }
+
+    /* LOAD ANIMATIONS */
+    .hero-eyebrow, h1, .hero-sub, .divider, .section-header, .cards, .marquee-wrap {
+      animation: fadeUp 0.6s ease both;
+    }
+    h1 { animation-delay: 0.08s; }
+    .hero-sub { animation-delay: 0.16s; }
+    .divider { animation-delay: 0.24s; }
+    .section-header { animation-delay: 0.28s; }
+    .cards { animation-delay: 0.34s; }
+    .marquee-wrap { animation-delay: 0.42s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      .wrapper { padding: 0 20px 48px; }
+      nav { margin-bottom: 48px; }
+      .hero { margin-bottom: 56px; }
+      .hero-sub { flex-direction: column; align-items: flex-start; gap: 28px; }
+      .cards { grid-template-columns: 1fr; }
+      h1 { font-size: clamp(4rem, 18vw, 6rem); }
+      .hero-stats { gap: 28px; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
 </head>
 <body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="diagonal"></div>
+
   <div class="wrapper">
+    <nav>
+      <div class="logo">Trainingsgelände</div>
+      <div class="nav-tag">Lernplattform</div>
+    </nav>
+
     <section class="hero">
-      <div class="badge">🏈 Interaktive Lernplattform</div>
-      <h1>Trainingsgelände</h1>
-      <p class="subtitle">
-        Willkommen auf dem interaktiven Trainingsgelände für deine schulischen Leistungen.
-        Hier findest du Lernmaterial zu den Fächern Deutsch und Informatik.
-      </p>
-    </section>
-
-    <section class="grid">
-      <div class="card" onclick="location.href='deutsch/das-dass.html'">
-        <span class="icon">📘</span>
-        <h2>Deutsch</h2>
-        <p>
-          Trainiere Rechtschreibung, Grammatik und Sprachgefühl mit interaktiven Übungen.
+      <div class="hero-eyebrow">Interaktives Lernen</div>
+      <h1>
+        Lerne<span class="accent">.</span><br>
+        <span class="outline">Trainiere.</span><br>
+        <span class="accent">Bessere<br>Noten.</span>
+      </h1>
+      <div class="hero-sub">
+        <p class="hero-desc">
+          Dein persönliches Trainingsgelände für Deutsch und Informatik – mit interaktiven Übungen, direktem Feedback und echten Fortschritten.
         </p>
-        <span class="tag">das / dass</span>
-      </div>
-
-      <div class="card" onclick="alert('Hier erscheint bald neues Material für Informatik.')">
-        <span class="icon">💻</span>
-        <h2>Informatik</h2>
-        <p>
-          Hier findest du bald Escape Games, Logikaufgaben und weitere digitale Lernangebote.
-        </p>
-        <span class="tag">bald verfügbar</span>
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-num">2</div>
+            <div class="stat-label">Fächer</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">∞</div>
+            <div class="stat-label">Übungen</div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <div class="footer">
-      Schritt für Schritt trainieren. Sicherer werden. Fortschritte sehen.
+    <div class="divider"></div>
+
+    <div class="section-header">
+      <span class="section-label">Fächer</span>
+      <span class="section-count">02 Module</span>
     </div>
+
+    <div class="cards">
+      <a class="card" href="deutsch/das-dass.html">
+        <div class="card-num">01</div>
+        <div class="card-tag">Verfügbar</div>
+        <h2>Deutsch</h2>
+        <p>Rechtschreibung, Grammatik und Sprachgefühl – trainiere mit interaktiven Übungen.</p>
+        <div class="topics">
+          <span class="topic">das / dass</span>
+          <span class="topic">Rechtschreibung</span>
+          <span class="topic">Grammatik</span>
+        </div>
+        <div class="card-arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14">
+            <path d="M2 7h10M8 3l4 4-4 4"/>
+          </svg>
+        </div>
+      </a>
+
+      <div class="card coming-soon">
+        <div class="card-num">02</div>
+        <div class="card-tag">Bald verfügbar</div>
+        <h2>Informatik</h2>
+        <p>Escape Games, Logikaufgaben und digitale Lernangebote – in Kürze live.</p>
+        <div class="topics">
+          <span class="topic">Escape Game</span>
+          <span class="topic">Logik</span>
+          <span class="topic">Algorithmen</span>
+        </div>
+        <div class="card-arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14">
+            <path d="M2 7h10M8 3l4 4-4 4"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <span class="marquee-item"><span class="dot">●</span> Schritt für Schritt</span>
+        <span class="marquee-item"><span class="dot">●</span> Sicherer werden</span>
+        <span class="marquee-item"><span class="dot">●</span> Fortschritte sehen</span>
+        <span class="marquee-item"><span class="dot">●</span> Interaktiv lernen</span>
+        <span class="marquee-item"><span class="dot">●</span> Deutsch &amp; Informatik</span>
+        <span class="marquee-item"><span class="dot">●</span> Trainingsgelände</span>
+        <span class="marquee-item"><span class="dot">●</span> Schritt für Schritt</span>
+        <span class="marquee-item"><span class="dot">●</span> Sicherer werden</span>
+        <span class="marquee-item"><span class="dot">●</span> Fortschritte sehen</span>
+        <span class="marquee-item"><span class="dot">●</span> Interaktiv lernen</span>
+        <span class="marquee-item"><span class="dot">●</span> Deutsch &amp; Informatik</span>
+        <span class="marquee-item"><span class="dot">●</span> Trainingsgelände</span>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-logo">Trainingsgelände</div>
+      <div class="footer-tagline">Schritt für Schritt. Sicherer werden. Fortschritte sehen.</div>
+    </footer>
   </div>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.14;
+      ry += (my - ry) * 0.14;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('.card:not(.coming-soon)').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width = '56px';
+        ring.style.height = '56px';
+        ring.style.opacity = '0.8';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width = '36px';
+        ring.style.height = '36px';
+        ring.style.opacity = '0.5';
+      });
+    });
+  </script>
 </body>
 </html>
