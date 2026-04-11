@@ -1,6 +1,6 @@
 [
   {
-    "fach": "Deutsch",
+    "fach": "Deutsch 1: dass/das",
     "titel": "das / dass",
     "beschreibung": "Lerne den Unterschied zwischen 'das' und 'dass' mit interaktiven Missionen.",
     "datei": "deutsch/das-dass.html",
@@ -8,7 +8,7 @@
     "status": "verfügbar"
   },
   {
-    "fach": "Deutsch",
+    "fach": "Deutsch 2: s,ss,ß",
     "titel": "s, ss oder ß",
     "beschreibung": "Trainiere die richtige Schreibung von s, ss und ß anhand von Football-Texten.",
     "datei": "deutsch/s-ss-sz.html",
