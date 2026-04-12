@@ -16,6 +16,14 @@
     "status": "verfügbar"
   },
   {
+    "fach": "Deutsch 3: Zeitformen",
+    "titel": "Zeitformen",
+    "beschreibung": "Präsens, Präteritum, Perfekt, Plusquamperfekt, Futur I und II – alle Zeitformen interaktiv geübt.",
+    "datei": "deutsch/zeitformen.html",
+    "themen": ["Präsens", "Präteritum", "Perfekt", "Futur"],
+    "status": "verfügbar"
+  },
+  {
     "fach": "Informatik",
     "titel": "Escape Game",
     "beschreibung": "Escape Games, Logikaufgaben und digitale Lernangebote – in Kürze live.",
