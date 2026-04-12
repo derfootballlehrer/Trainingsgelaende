@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PLAYBOOK: Zeitformen</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lime: #c8f000;
+    --lime-dark: #a0c500;
+    --ink: #0d0d0d;
+    --ink-2: #111418;
+    --border: #222;
+    --mid: #555;
+    --light: #f5f5f0;
+    --muted: #8a9090;
+    --field-green: #0d0d0d;
+    --grass: #3a6b4a;
+    --gold: #c8f000;
+    --gold-dark: #a0c500;
+    --white: #f5f5f0;
+    --light-bg: #111418;
+    --panel: #161a1e;
+    --success: #4af09a;
+    --error: #f06060;
+    --warning: #f0c040;
+    --praesens: #4a9ef0;
+    --praeteritum: #b07af0;
+    --perfekt: #f07070;
+    --plusquam: #40d0b0;
+    --futur1: #f0a050;
+    --futur2: #d0c040;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background-color: var(--ink);
+    min-height: 100vh;
+    padding: 0 0 72px;
+    color: var(--light);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  .page-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* NAV */
+  .site-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+  .nav-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .nav-back:hover { color: var(--lime); }
+  .nav-back:hover svg { transform: translateX(-3px); }
+  .nav-back svg { transition: transform 0.15s ease; }
+  .nav-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mid);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 2px;
+  }
+
+  /* HEADER */
+  .playbook-header {
+    max-width: 900px; margin: 0 auto 36px; position: relative;
+  }
+  .playbook-header::before {
+    content: ""; display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--lime);
+    margin-bottom: 16px;
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--lime);
+    margin-bottom: 16px;
+  }
+  .playbook-header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 900;
+    color: var(--light);
+    letter-spacing: -0.01em;
+    line-height: 0.9;
+    text-transform: uppercase;
+    text-shadow: none;
+    margin-bottom: 12px;
+  }
+  .playbook-header .subtitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  .playbook-header .jersey-number {
+    display: inline-block;
+    background: transparent;
+    color: var(--lime);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    border: 1px solid rgba(200,240,0,.3);
+    padding: 5px 12px;
+    border-radius: 2px;
+    margin-top: 12px;
+  }
+
+  /* TIMELINE BAR */
+  .timeline-bar {
+    max-width: 900px; margin: 0 auto 28px;
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 8px;
+  }
+  .tl-item {
+    background: var(--ink-2); border-radius: 2px; padding: 10px 12px;
+    text-align: center; border-top: 3px solid transparent; cursor: pointer;
+    transition: background 0.2s; border: 1px solid var(--border);
+  }
+  .tl-item:hover { background: #1a1e22; }
+  .tl-item.praesens { border-color: var(--praesens); }
+  .tl-item.praeteritum { border-color: var(--praeteritum); }
+  .tl-item.perfekt { border-color: var(--perfekt); }
+  .tl-item.plusquam { border-color: var(--plusquam); }
+  .tl-item.futur1 { border-color: var(--futur1); }
+  .tl-item.futur2 { border-color: var(--futur2); }
+  .tl-name { font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .tl-item.praesens .tl-name { color: var(--praesens); }
+  .tl-item.praeteritum .tl-name { color: var(--praeteritum); }
+  .tl-item.perfekt .tl-name { color: var(--perfekt); }
+  .tl-item.plusquam .tl-name { color: var(--plusquam); }
+  .tl-item.futur1 .tl-name { color: var(--futur1); }
+  .tl-item.futur2 .tl-name { color: var(--futur2); }
+  .tl-example { font-size: 0.75rem; color: rgba(255,255,255,0.6); font-style: italic; margin-top: 3px; }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    max-width: 900px; margin: 0 auto 28px; background: var(--ink-2);
+    border: 1px solid var(--border); border-radius: 4px; padding: 14px 20px; display: flex; align-items: center; gap: 14px;
+  }
+  .progress-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime); white-space: nowrap; }
+  .progress-track { flex: 1; height: 6px; background: #1e1e1e; border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--lime); border-radius: 2px; transition: width 0.6s ease; width: 0%; }
+  .progress-score { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; color: var(--lime); letter-spacing: 0.08em; white-space: nowrap; min-width: 90px; text-align: right; }
+
+  /* NAV DOTS */
+  .nav-dots { max-width: 900px; margin: 0 auto 30px; display: flex; justify-content: center; gap: 10px; }
+  .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background 0.2s, transform 0.2s; }
+  .nav-dot.active { background: var(--lime); transform: scale(1.4); }
+
+  /* CHAPTER CARD */
+  .chapter-card { max-width: 900px; margin: 0 auto 28px; background: var(--ink-2); border-radius: 4px; overflow: hidden; border: 1px solid var(--border); color: var(--light); }
+  .chapter-header { background: #0d0d0d; padding: 16px 24px; display: flex; align-items: center; gap: 16px; border-bottom: 3px solid var(--lime); }
+  .chapter-number { font-family: 'Barlow Condensed', sans-serif; font-size: 2.8rem; font-weight: 900; color: var(--lime); line-height: 1; min-width: 50px; text-align: center; }
+  .chapter-title-block h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 900; color: var(--light); letter-spacing: 0.04em; line-height: 1.1; text-transform: uppercase; }
+  .chapter-title-block .chapter-tag { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .chapter-time { margin-left: auto; background: var(--lime); color: var(--ink); font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 14px; border-radius: 2px; white-space: nowrap; }
+  .chapter-body { padding: 24px; }
+
+  /* COLOR BANDS per Zeitform */
+  .chapter-card.praesens .chapter-header { border-color: var(--praesens); }
+  .chapter-card.praesens .chapter-number { color: var(--praesens); }
+  .chapter-card.praesens .chapter-time { background: var(--praesens); color: var(--ink); }
+  .chapter-card.praeteritum .chapter-header { border-color: var(--praeteritum); }
+  .chapter-card.praeteritum .chapter-number { color: var(--praeteritum); }
+  .chapter-card.praeteritum .chapter-time { background: var(--praeteritum); color: var(--ink); }
+  .chapter-card.perfekt .chapter-header { border-color: var(--perfekt); }
+  .chapter-card.perfekt .chapter-number { color: var(--perfekt); }
+  .chapter-card.perfekt .chapter-time { background: var(--perfekt); color: var(--ink); }
+  .chapter-card.plusquam .chapter-header { border-color: var(--plusquam); }
+  .chapter-card.plusquam .chapter-number { color: var(--plusquam); }
+  .chapter-card.plusquam .chapter-time { background: var(--plusquam); color: var(--ink); }
+  .chapter-card.futur1 .chapter-header { border-color: var(--futur1); }
+  .chapter-card.futur1 .chapter-number { color: var(--futur1); }
+  .chapter-card.futur1 .chapter-time { background: var(--futur1); color: var(--ink); }
+  .chapter-card.futur2 .chapter-header { border-color: var(--futur2); }
+  .chapter-card.futur2 .chapter-number { color: var(--futur2); }
+  .chapter-card.futur2 .chapter-time { background: var(--futur2); color: var(--ink); }
+
+  /* RULE BOX */
+  .rule-box { background: rgba(200,240,0,.05); color: var(--light); border-radius: 2px; padding: 18px 22px; margin-bottom: 22px; border-left: 3px solid var(--lime); }
+  .rule-box::before { content: 'REGEL'; font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; color: var(--lime); display: block; margin-bottom: 8px; }
+  .rule-box p { font-size: 0.95rem; line-height: 1.65; color: var(--muted); }
+  .rule-box strong { color: var(--lime); font-weight: 600; }
+  .rule-box em { color: var(--light); font-style: italic; }
+
+  .rule-box.praesens { border-color: var(--praesens); }
+  .rule-box.praesens::before { color: var(--praesens); }
+  .rule-box.praeteritum { border-color: var(--praeteritum); }
+  .rule-box.praeteritum::before { color: var(--praeteritum); }
+  .rule-box.perfekt { border-color: var(--perfekt); }
+  .rule-box.perfekt::before { color: var(--perfekt); }
+  .rule-box.plusquam { border-color: var(--plusquam); }
+  .rule-box.plusquam::before { color: var(--plusquam); }
+  .rule-box.futur1 { border-color: var(--futur1); }
+  .rule-box.futur1::before { color: var(--futur1); }
+  .rule-box.futur2 { border-color: var(--futur2); }
+  .rule-box.futur2::before { color: var(--futur2); }
+
+  /* TIP BOX */
+  .tip-box { background: rgba(240,192,64,.06); border-left: 3px solid var(--warning); border-radius: 2px; padding: 14px 18px; margin-bottom: 20px; font-size: 0.92rem; color: #c0a040; }
+  .tip-box::before { content: 'TIPP'; font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; color: var(--warning); display: block; margin-bottom: 6px; }
+  .tip-box strong { color: var(--light); font-weight: 600; }
+  .tip-box em { font-style: italic; }
+
+  /* TASK BLOCK */
+  .task-block { background: #0d0d0d; border-radius: 2px; padding: 20px 22px; margin-bottom: 20px; border-top: 2px solid var(--border); border: 1px solid var(--border); }
+  .task-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--lime); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .task-label .points-badge { background: rgba(200,240,0,.12); color: var(--lime); border: 1px solid rgba(200,240,0,.2); font-size: 0.65rem; padding: 2px 8px; border-radius: 2px; letter-spacing: 0.1em; }
+  .task-block h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--light); margin-bottom: 12px; line-height: 1.3; }
+  .task-block p { font-size: 0.92rem; color: var(--muted); line-height: 1.65; margin-bottom: 10px; }
+  .inline-hint { font-size: 0.82rem; color: var(--mid); font-style: italic; margin-bottom: 10px; }
+  .task-block h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; color: #1a2a1a; margin-bottom: 12px; line-height: 1.3; }
+  .task-block p { font-size: 0.92rem; color: #3a3a3a; line-height: 1.65; margin-bottom: 10px; }
+  .inline-hint { font-size: 0.82rem; color: #666; font-style: italic; margin-bottom: 10px; }
+
+  /* KONJUGATION TABLE */
+  .konj-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 10px 0 16px; }
+  .konj-table th { background: #0d0d0d; color: var(--lime); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.08em; padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  .konj-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); color: var(--light); vertical-align: middle; }
+  .konj-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .konj-table input { border: none; border-bottom: 1px solid var(--border); background: transparent; font-family: 'Barlow', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--light); width: 120px; outline: none; padding: 2px 4px; transition: border-color 0.2s; }
+  .konj-table input:focus { border-color: var(--lime); }
+  .konj-table input.correct { border-color: var(--success); background: rgba(74,240,154,.08); border-radius: 2px; }
+  .konj-table input.incorrect { border-color: var(--error); background: rgba(240,96,96,.08); border-radius: 2px; }
+
+  /* CLOZE */
+  .cloze-text { font-size: 0.98rem; line-height: 2.7; color: var(--light); }
+  .cloze-input { border: none; border-bottom: 1px solid var(--border); background: transparent; font-family: 'Barlow', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--light); outline: none; min-width: 90px; text-align: center; padding: 1px 4px; transition: all 0.2s; }
+  .cloze-input:focus { border-color: var(--lime); }
+  .cloze-input.correct { border-color: var(--success); background: rgba(74,240,154,.08); border-radius: 2px; }
+  .cloze-input.incorrect { border-color: var(--error); background: rgba(240,96,96,.08); border-radius: 2px; }
+
+  /* WORD SORT */
+  .word-bank { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; padding: 14px; background: #0d0d0d; border-radius: 2px; border: 1px solid var(--border); min-height: 56px; }
+  .word-chip { background: var(--ink-2); color: var(--light); border: 1px solid var(--border); padding: 6px 14px; border-radius: 2px; font-family: 'Barlow', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; user-select: none; transition: transform 0.15s, border-color 0.15s; }
+  .word-chip:hover { transform: translateY(-2px); border-color: var(--lime); }
+  .word-chip.used { opacity: 0.25; pointer-events: none; }
+  .sort-columns { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 12px; }
+  .sort-columns.two-col { grid-template-columns: 1fr 1fr; }
+  .sort-column { border: 1px dashed var(--border); border-radius: 2px; padding: 10px; min-height: 80px; transition: border-color 0.2s, background 0.2s; cursor: pointer; }
+  .sort-column:hover { border-color: var(--lime); background: rgba(200,240,0,.03); }
+  .sort-column h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 8px; text-transform: uppercase; }
+  .sort-column.praesens-col h4 { color: var(--praesens); }
+  .sort-column.praeteritum-col h4 { color: var(--praeteritum); }
+  .sort-column.perfekt-col h4 { color: var(--perfekt); }
+  .sort-column.plusquam-col h4 { color: var(--plusquam); }
+  .sort-column.futur1-col h4 { color: var(--futur1); }
+  .sort-column.futur2-col h4 { color: var(--futur2); }
+  .sorted-word { display: inline-block; padding: 3px 8px; border-radius: 2px; font-size: 0.82rem; font-weight: 600; margin: 2px; }
+  .sorted-word.correct { background: rgba(74,240,154,.15); color: var(--success); }
+  .sorted-word.incorrect { background: rgba(240,96,96,.15); color: var(--error); }
+
+  /* MC */
+  .mc-options { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
+  .mc-option { display: flex; align-items: center; gap: 10px; background: #0d0d0d; border: 1px solid var(--border); border-radius: 2px; padding: 10px 14px; cursor: pointer; font-size: 0.92rem; transition: border-color 0.2s, background 0.2s; font-family: 'Barlow', sans-serif; font-weight: 600; color: var(--light); text-align: left; width: 100%; }
+  .mc-option:hover { border-color: var(--mid); background: var(--ink-2); }
+  .mc-option.selected { border-color: var(--lime); background: rgba(200,240,0,.05); }
+  .mc-option.correct { border-color: var(--success); background: rgba(74,240,154,.08); color: var(--success); }
+  .mc-option.wrong { border-color: var(--error); background: rgba(240,96,96,.08); color: var(--error); }
+  .mc-letter { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 800; color: var(--lime); min-width: 20px; }
+
+  /* BUTTONS */
+  .check-btn { background: var(--lime); color: var(--ink); border: none; padding: 10px 24px; font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px; cursor: pointer; transition: transform 0.1s, background 0.1s; margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; }
+  .check-btn:hover { transform: translateY(-2px); background: var(--lime-dark); }
+  .check-btn:active { transform: translateY(0); }
+  .check-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .reset-btn { background: transparent; border: 1px solid var(--border); color: var(--mid); padding: 8px 18px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px; cursor: pointer; margin-left: 10px; margin-top: 12px; transition: border-color 0.2s, color 0.2s; }
+  .reset-btn:hover { border-color: var(--error); color: var(--error); }
+
+  /* FEEDBACK */
+  .feedback-area { margin-top: 12px; padding: 12px 16px; border-radius: 2px; font-size: 0.92rem; font-weight: 600; display: none; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  .feedback-area.success { background: rgba(74,240,154,.08); color: var(--success); border-left: 3px solid var(--success); display: block; animation: slideIn 0.3s ease; }
+  .feedback-area.error { background: rgba(240,96,96,.08); color: var(--error); border-left: 3px solid var(--error); display: block; animation: slideIn 0.3s ease; }
+  .feedback-area.partial { background: rgba(240,192,64,.08); color: var(--warning); border-left: 3px solid var(--warning); display: block; animation: slideIn 0.3s ease; }
+
+  /* FEHLER BOX */
+  .fehler-box { background: rgba(240,96,96,.05); border: 1px solid rgba(240,96,96,.2); border-radius: 2px; padding: 18px 20px; margin-top: 12px; display: none; }
+  .fehler-box.visible { display: block; }
+  .fehler-box h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--error); margin-bottom: 10px; }
+  .fehler-exercise { background: rgba(255,255,255,.03); border-radius: 2px; padding: 12px 14px; margin-top: 8px; }
+  .fehler-exercise p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+  .fehler-exercise strong { color: var(--light); font-weight: 600; }
+
+  /* DIFFERENZIERUNG */
+  .diff-section { margin-top: 20px; border-radius: 2px; overflow: hidden; }
+  .diff-toggle { width: 100%; padding: 12px 18px; border: 1px solid var(--border); font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: border-color 0.2s; border-radius: 2px; background: #0d0d0d; color: var(--muted); }
+  .diff-toggle:hover { border-color: var(--mid); color: var(--light); }
+  .diff-toggle .arrow { margin-left: auto; font-size: 1rem; transition: transform 0.3s; }
+  .diff-toggle.open .arrow { transform: rotate(180deg); }
+  .diff-toggle.aufbau { border-color: var(--praesens); color: var(--praesens); }
+  .diff-toggle.weltklasse { border-color: var(--futur1); color: var(--futur1); }
+  .diff-content { display: none; padding: 16px 18px; background: #0d0d0d; border: 1px solid var(--border); border-top: none; border-radius: 0 0 2px 2px; }
+  .diff-content.visible { display: block; }
+  .diff-content p, .diff-content li { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+  .diff-content ul { padding-left: 20px; margin-top: 8px; }
+  .diff-hint { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; }
+  .diff-hint.aufbau { color: var(--praesens); }
+  .diff-hint.weltklasse { color: var(--futur1); }
+
+  /* ABSCHREIBÜBUNG */
+  .abschreib-box { background: rgba(200,240,0,.04); border: 1px solid rgba(200,240,0,.2); border-radius: 2px; padding: 20px 24px; margin: 16px 0; position: relative; }
+  .abschreib-box::before { content: 'INS HEFT'; font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; color: var(--lime); display: block; margin-bottom: 10px; }
+  .abschreib-text { font-size: 0.95rem; line-height: 2; color: var(--light); }
+  .abschreib-text strong { color: var(--lime); font-weight: 600; }
+
+  /* ZEITSTRAHL */
+  .zeitstrahl { display: flex; align-items: center; justify-content: space-between; background: var(--ink-2); border: 1px solid var(--border); border-radius: 4px; padding: 16px 20px; margin-bottom: 20px; position: relative; overflow: hidden; }
+  .zeitstrahl::after { content: ''; position: absolute; left: 10%; right: 10%; top: 50%; height: 1px; background: var(--border); z-index: 0; }
+  .zs-item { text-align: center; z-index: 1; background: var(--ink-2); padding: 0 8px; }
+  .zs-dot { width: 10px; height: 10px; border-radius: 50%; margin: 0 auto 6px; }
+  .zs-item.praesens .zs-dot { background: var(--praesens); }
+  .zs-item.praeteritum .zs-dot { background: var(--praeteritum); }
+  .zs-item.perfekt .zs-dot { background: var(--perfekt); }
+  .zs-item.plusquam .zs-dot { background: var(--plusquam); }
+  .zs-item.futur1 .zs-dot { background: var(--futur1); }
+  .zs-item.futur2 .zs-dot { background: var(--futur2); }
+  .zs-name { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .zs-item.praesens .zs-name { color: var(--praesens); }
+  .zs-item.praeteritum .zs-name { color: var(--praeteritum); }
+  .zs-item.perfekt .zs-name { color: var(--perfekt); }
+  .zs-item.plusquam .zs-name { color: var(--plusquam); }
+  .zs-item.futur1 .zs-name { color: var(--futur1); }
+  .zs-item.futur2 .zs-name { color: var(--futur2); }
+  .zs-sub { font-size: 0.65rem; color: var(--mid); margin-top: 3px; }
+
+  /* CORRECTION AUFGABE */
+  mark.err-word { background: rgba(240,96,96,.15); color: var(--error); border-radius: 2px; padding: 1px 4px; font-weight: 700; text-decoration: underline wavy var(--error); }
+
+  /* RULE TABLE */
+  .rule-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 10px 0; }
+  .rule-table th { background: #0d0d0d; color: var(--lime); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.08em; padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  .rule-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); color: var(--light); }
+  .rule-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  .rule-table td strong { color: var(--lime); font-weight: 600; }
+  .rule-table em { color: var(--muted); }
+
+  /* CLICK WORDS */
+  .click-text { font-size: 1rem; line-height: 2.4; color: var(--light); }
+  .clickable-word { cursor: pointer; padding: 2px 4px; border-radius: 2px; transition: background 0.15s; display: inline-block; }
+  .clickable-word:hover { background: rgba(200,240,0,.15); }
+  .clickable-word.marked { background: rgba(200,240,0,.2); color: var(--lime); font-weight: 700; }
+  .clickable-word.correct-mark { background: rgba(74,240,154,.2); color: var(--success); }
+  .clickable-word.wrong-mark { background: rgba(240,96,96,.2); color: var(--error); }
+  .clickable-word.missed-mark { background: rgba(240,160,80,.2); color: var(--futur1); }
+
+  /* SCOREBOARD */
+  .scoreboard { max-width: 900px; margin: 0 auto 28px; background: var(--ink-2); border: 1px solid var(--lime); border-radius: 4px; padding: 24px 28px; display: none; animation: slideIn 0.5s ease; }
+  .scoreboard.visible { display: block; }
+  .scoreboard h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; color: var(--lime); margin-bottom: 20px; text-align: center; }
+  .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .score-item { background: #0d0d0d; border: 1px solid var(--border); border-radius: 2px; padding: 14px; text-align: center; }
+  .score-item .val { font-family: 'Barlow Condensed', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--lime); line-height: 1; }
+  .score-item .lbl { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+  .trophy-banner { text-align: center; padding: 16px; font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.14em; color: var(--lime); max-width: 900px; margin: 0 auto 20px; background: var(--ink-2); border: 1px solid rgba(200,240,0,.2); border-radius: 4px; }
+
+  /* BACK BUTTON at bottom */
+  .back-btn-wrap { max-width: 900px; margin: 32px auto 0; padding-top: 32px; border-top: 1px solid var(--border); }
+
+  @media (max-width: 600px) {
+    .sort-columns { grid-template-columns: 1fr 1fr !important; }
+    .chapter-header { flex-wrap: wrap; }
+    .chapter-time { margin-left: 0; }
+    .timeline-bar { grid-template-columns: repeat(3,1fr) !important; }
+    .page-inner { padding: 0 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-inner">
+
+<nav class="site-nav">
+  <a class="nav-back" href="../index.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M10 3L5 8l5 5"/>
+    </svg>
+    Trainingsgelände
+  </a>
+  <div class="nav-badge">Deutsch · Klasse 5–7</div>
+</nav>
+
+<!-- HEADER -->
+<div class="playbook-header">
+  <h1>Verbzeiten im Deutschen</h1>
+  <div class="subtitle">Präsens · Präteritum · Perfekt · Plusquamperfekt · Futur I · Futur II</div>
+  <div class="jersey-number">⏱ PLAYBOOK EDITION · Klasse 5–7</div>
+</div>
+
+<!-- ZEITSTRAHL OVERVIEW -->
+<div class="zeitstrahl" style="max-width:900px;margin:0 auto 24px;">
+  <div class="zs-item plusquam">
+    <div class="zs-dot"></div>
+    <div class="zs-name">Plusquam</div>
+    <div class="zs-sub">Vorvergangenheit</div>
+  </div>
+  <div class="zs-item praeteritum">
+    <div class="zs-dot"></div>
+    <div class="zs-name">Präteritum</div>
+    <div class="zs-sub">Erzählvergangenh.</div>
+  </div>
+  <div class="zs-item perfekt">
+    <div class="zs-dot"></div>
+    <div class="zs-name">Perfekt</div>
+    <div class="zs-sub">abgesch. Vergangen.</div>
+  </div>
+  <div class="zs-item praesens" style="border:2px solid var(--praesens);border-radius:8px;padding:6px 8px;">
+    <div class="zs-dot"></div>
+    <div class="zs-name">Präsens</div>
+    <div class="zs-sub">Jetzt / Gegenwart</div>
+  </div>
+  <div class="zs-item futur1">
+    <div class="zs-dot"></div>
+    <div class="zs-name">Futur I</div>
+    <div class="zs-sub">Zukunft / Absicht</div>
+  </div>
+  <div class="zs-item futur2">
+    <div class="zs-dot"></div>
+    <div class="zs-name">Futur II</div>
+    <div class="zs-sub">abgesch. Zukunft</div>
+  </div>
+</div>
+
+<!-- TIMELINE NAVIGATION -->
+<div class="timeline-bar" style="grid-template-columns:repeat(6,1fr);">
+  <div class="tl-item praesens" onclick="document.getElementById('cap1').scrollIntoView({behavior:'smooth'})">
+    <div class="tl-name">Präsens</div>
+    <div class="tl-example">„Er spielt."</div>
+  </div>
+  <div class="tl-item praeteritum" onclick="document.getElementById('cap2').scrollIntoView({behavior:'smooth'})">
+    <div class="tl-name">Präteritum</div>
+    <div class="tl-example">„Er spielte."</div>
+  </div>
+  <div class="tl-item perfekt" onclick="document.getElementById('cap3').scrollIntoView({behavior:'smooth'})">
+    <div class="tl-name">Perfekt</div>
+    <div class="tl-example">„Er hat gespielt."</div>
+  </div>
+  <div class="tl-item plusquam" onclick="document.getElementById('cap5').scrollIntoView({behavior:'smooth'})">
+    <div class="tl-name">Plusquamperf.</div>
+    <div class="tl-example">„Er hatte gespielt."</div>
+  </div>
+  <div class="tl-item futur1" onclick="document.getElementById('cap6').scrollIntoView({behavior:'smooth'})">
+    <div class="tl-name">Futur I</div>
+    <div class="tl-example">„Er wird spielen."</div>
+  </div>
+  <div class="tl-item futur2" onclick="document.getElementById('cap7').scrollIntoView({behavior:'smooth'})">
+    <div class="tl-name">Futur II</div>
+    <div class="tl-example">„Er wird gespielt haben."</div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-bar-wrap">
+  <span class="progress-label">⚡ Spielstand</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-score" id="progressScore">0 / 0 Pkt</span>
+</div>
+
+<!-- NAV DOTS -->
+<div class="nav-dots" id="navDots"></div>
+
+<!-- ═══════════════════════════════════════════
+  KAPITEL 1 – PRÄSENS
+═══════════════════════════════════════════ -->
+<div class="chapter-card praesens" id="cap1">
+  <div class="chapter-header">
+    <div class="chapter-number">01</div>
+    <div class="chapter-title-block">
+      <div class="chapter-tag">⏱ Kick-off · ca. 15 Min.</div>
+      <h2>Präsens – Die Gegenwartsform</h2>
+    </div>
+    <div class="chapter-time">Jetzt!</div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="rule-box praesens">
+      <p>Das <strong>Präsens</strong> beschreibt, was <strong>jetzt gerade passiert</strong> oder <strong>immer gilt</strong>.<br>
+      Bildung: Verbstamm + Endung (<em>-e, -st, -t, -en, -t, -en</em>)<br>
+      Beispiel: <strong>spielen</strong> → ich spiel<strong>e</strong>, du spiel<strong>st</strong>, er/sie/es spiel<strong>t</strong><br>
+      Achtung bei Stammveränderungen: <strong>laufen</strong> → er läuft · <strong>lesen</strong> → er liest · <strong>fahren</strong> → er fährt</p>
+    </div>
+
+    <div class="tip-box">
+      <strong>Wann benutze ich Präsens?</strong> Bei Handlungen, die <em>gerade passieren</em> („Ich esse."), bei <em>allgemeinen Wahrheiten</em> („Die Sonne scheint.") und bei <em>Zukunft mit Zeitangabe</em> („Morgen fahren wir.").
+    </div>
+
+    <!-- AUFGABE 1 – KONJUGATIONSTABELLE -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 1 <span class="points-badge">12 Punkte</span></div>
+      <h3>Konjugiere die Verben im Präsens! Trage die fehlenden Formen ein.</h3>
+      <p class="inline-hint">Achte auf Stammveränderungen bei starken Verben!</p>
+
+      <table class="konj-table" id="konjTable1">
+        <tr>
+          <th>Person</th>
+          <th>spielen (regelmäßig)</th>
+          <th>laufen (Stammwechsel)</th>
+          <th>lesen (Stammwechsel)</th>
+        </tr>
+        <tr>
+          <td>ich</td>
+          <td><input type="text" data-answer="spiele" placeholder="spiel___"></td>
+          <td><input type="text" data-answer="laufe" placeholder="lauf___"></td>
+          <td><input type="text" data-answer="lese" placeholder="les___"></td>
+        </tr>
+        <tr>
+          <td>du</td>
+          <td><input type="text" data-answer="spielst" placeholder="spiel___"></td>
+          <td><input type="text" data-answer="läufst" placeholder="l___fst"></td>
+          <td><input type="text" data-answer="liest" placeholder="l___st"></td>
+        </tr>
+        <tr>
+          <td>er / sie / es</td>
+          <td><input type="text" data-answer="spielt" placeholder="spiel___"></td>
+          <td><input type="text" data-answer="läuft" placeholder="l___ft"></td>
+          <td><input type="text" data-answer="liest" placeholder="l___st"></td>
+        </tr>
+        <tr>
+          <td>wir</td>
+          <td><input type="text" data-answer="spielen" placeholder="spiel___"></td>
+          <td><input type="text" data-answer="laufen" placeholder="lauf___"></td>
+          <td><input type="text" data-answer="lesen" placeholder="les___"></td>
+        </tr>
+        <tr>
+          <td>ihr</td>
+          <td><input type="text" data-answer="spielt" placeholder="spiel___"></td>
+          <td><input type="text" data-answer="lauft" placeholder="lauf___"></td>
+          <td><input type="text" data-answer="lest" placeholder="le___"></td>
+        </tr>
+        <tr>
+          <td>sie / Sie</td>
+          <td><input type="text" data-answer="spielen" placeholder="spiel___"></td>
+          <td><input type="text" data-answer="laufen" placeholder="lauf___"></td>
+          <td><input type="text" data-answer="lesen" placeholder="les___"></td>
+        </tr>
+      </table>
+
+      <button class="check-btn" onclick="checkTable('konjTable1','fb-konj1',12)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetTable('konjTable1','fb-konj1')">↺ Neu</button>
+      <div class="feedback-area" id="fb-konj1"></div>
+      <div class="fehler-box" id="fehler-konj1">
+        <h4>🔴 Fehlertrainer – Präsens-Endungen</h4>
+        <div class="fehler-exercise">
+          <p>Merke: Bei Stammveränderungen (e→ie, a→ä) ändert sich nur die <em>du-</em> und <em>er/sie/es-Form</em>.<br>
+          Schreibe die komplette Tabelle nochmal in dein Heft – nur die Formen, die du falsch hattest.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUFGABE 2 – MC -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 2 <span class="points-badge">6 Punkte</span></div>
+      <h3>Multiple Choice: Welche Präsens-Form ist richtig?</h3>
+
+      <div id="mc-p1">
+        <p style="font-weight:600;margin-bottom:6px;">① Die richtige Präsens-Form von „fahren" für „er" ist:</p>
+        <div class="mc-options">
+          <button class="mc-option" onclick="selectMC('mc-p1',this,'A')"><span class="mc-letter">A</span> er fahrt</button>
+          <button class="mc-option" onclick="selectMC('mc-p1',this,'B')"><span class="mc-letter">B</span> er fährt</button>
+          <button class="mc-option" onclick="selectMC('mc-p1',this,'C')"><span class="mc-letter">C</span> er fahren</button>
+        </div>
+      </div>
+      <div id="mc-p2" style="margin-top:12px;">
+        <p style="font-weight:600;margin-bottom:6px;">② Welcher Satz steht im Präsens?</p>
+        <div class="mc-options">
+          <button class="mc-option" onclick="selectMC('mc-p2',this,'A')"><span class="mc-letter">A</span> „Sie hatte das Buch gelesen."</button>
+          <button class="mc-option" onclick="selectMC('mc-p2',this,'B')"><span class="mc-letter">B</span> „Er spielte Fußball."</button>
+          <button class="mc-option" onclick="selectMC('mc-p2',this,'C')"><span class="mc-letter">C</span> „Wir essen jetzt zu Mittag."</button>
+        </div>
+      </div>
+      <div id="mc-p3" style="margin-top:12px;">
+        <p style="font-weight:600;margin-bottom:6px;">③ Welche Situation beschreibt man am besten mit Präsens?</p>
+        <div class="mc-options">
+          <button class="mc-option" onclick="selectMC('mc-p3',this,'A')"><span class="mc-letter">A</span> Ein Märchen erzählen: „Es war einmal ein König …"</button>
+          <button class="mc-option" onclick="selectMC('mc-p3',this,'B')"><span class="mc-letter">B</span> Heute passiert etwas: „Die Sonne scheint und es ist warm."</button>
+          <button class="mc-option" onclick="selectMC('mc-p3',this,'C')"><span class="mc-letter">C</span> Etwas ist schon fertig: „Ich habe meine Hausaufgaben gemacht."</button>
+        </div>
+      </div>
+
+      <button class="check-btn" onclick="checkMCGroup('mc-p',3,{'mc-p1':'B','mc-p2':'C','mc-p3':'B'},'fb-mc-p',6)">✔ Auswertung</button>
+      <div class="feedback-area" id="fb-mc-p"></div>
+    </div>
+
+    <!-- DIFFERENZIERUNG -->
+    <div class="diff-section">
+      <button class="diff-toggle aufbau" onclick="toggleDiff(this)">
+        🔵 AUFBAUSPIELER – Endungen zum Nachschlagen <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint aufbau">AUFBAUSPIELER</div>
+        <table class="rule-table">
+          <tr><th>Person</th><th>Endung</th><th>Beispiel (spielen)</th></tr>
+          <tr><td>ich</td><td><strong>-e</strong></td><td>spiele</td></tr>
+          <tr><td>du</td><td><strong>-st</strong></td><td>spielst</td></tr>
+          <tr><td>er/sie/es</td><td><strong>-t</strong></td><td>spielt</td></tr>
+          <tr><td>wir</td><td><strong>-en</strong></td><td>spielen</td></tr>
+          <tr><td>ihr</td><td><strong>-t</strong></td><td>spielt</td></tr>
+          <tr><td>sie/Sie</td><td><strong>-en</strong></td><td>spielen</td></tr>
+        </table>
+        <p style="margin-top:8px;">Stammveränderungen nur bei <em>du</em> und <em>er/sie/es</em>: a→ä · e→ie/i</p>
+      </div>
+    </div>
+    <div class="diff-section" style="margin-top:10px;">
+      <button class="diff-toggle weltklasse" onclick="toggleDiff(this)">
+        🏆 WELTKLASSESPIELER – Präsens als Zukunft <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint weltklasse">WELTKLASSESPIELER</div>
+        <p>Das Präsens kann auch Zukunft ausdrücken: <em>„Morgen fahre ich nach Berlin."</em></p>
+        <p style="margin-top:8px;">Erkläre in eigenen Worten: Woran erkennst du, dass ein Präsenssatz Zukunft meint? Schreibe drei eigene Beispiele und erkläre den Unterschied zum echten Präsens.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  KAPITEL 2 – PRÄTERITUM
+═══════════════════════════════════════════ -->
+<div class="chapter-card praeteritum" id="cap2">
+  <div class="chapter-header">
+    <div class="chapter-number">02</div>
+    <div class="chapter-title-block">
+      <div class="chapter-tag">⏱ Hauptrunde 1 · ca. 20 Min.</div>
+      <h2>Präteritum – Die Erzählvergangenheit</h2>
+    </div>
+    <div class="chapter-time">Gestern!</div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="rule-box praeteritum">
+      <p>Das <strong>Präteritum</strong> wird beim <strong>schriftlichen Erzählen</strong> verwendet – in Märchen, Berichten und Romanen.<br>
+      <strong>Regelmäßige Verben (schwach):</strong> Stamm + <em>-te/-test/-te/-ten/-tet/-ten</em><br>
+      &nbsp;&nbsp;→ spielen: ich spiel<strong>te</strong>, du spiel<strong>test</strong>, er spiel<strong>te</strong><br>
+      <strong>Unregelmäßige Verben (stark):</strong> Stammvokal wechselt – muss man <em>lernen</em>!<br>
+      &nbsp;&nbsp;→ laufen: ich <strong>lief</strong> · fahren: ich <strong>fuhr</strong> · lesen: ich <strong>las</strong> · gehen: ich <strong>ging</strong></p>
+    </div>
+
+    <div class="tip-box">
+      <strong>Merksatz:</strong> „Im Märchen nutzt man Präteritum." – <em>Es war einmal … · Die Prinzessin schlief … · Der König ritt …</em><br>
+      Tipp: Wenn das Verb auf <strong>-te</strong> endet, ist es meist regelmäßiges Präteritum!
+    </div>
+
+    <!-- AUFGABE 3 – LÜCKENTEXT PRÄTERITUM -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 3 <span class="points-badge">10 Punkte</span></div>
+      <h3>Setze die Verben im Präteritum ein! (Märchentext)</h3>
+      <p class="inline-hint">In Klammern steht die Grundform. Achte auf regelmäßig/unregelmäßig!</p>
+      <div class="cloze-text" id="cloze-praet"></div>
+      <button class="check-btn" onclick="checkCloze('cloze-praet','fb-praet',10)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetCloze('cloze-praet')">↺ Neu</button>
+      <div class="feedback-area" id="fb-praet"></div>
+      <div class="fehler-box" id="fehler-cloze-praet">
+        <h4>🔴 Fehlertrainer – Präteritum</h4>
+        <div class="fehler-exercise">
+          <p>Regelmäßig → Stamm + <strong>-te</strong>: spielen → spielte · machen → machte<br>
+          Unregelmäßig → Stammvokal merken! Schreibe die falschen Verben 3× in dein Heft:<br>
+          laufen → lief · fahren → fuhr · gehen → ging · sehen → sah · kommen → kam</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUFGABE 4 – SORTIEREN regelmäßig / unregelmäßig -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 4 <span class="points-badge">10 Punkte</span></div>
+      <h3>Sortiere die Präteritum-Formen: regelmäßig oder unregelmäßig?</h3>
+      <p class="inline-hint">Klicke ein Wort an, dann die passende Spalte.</p>
+
+      <div class="word-bank" id="wbSort4">
+        <button class="word-chip" data-word="spielte" data-cat="regel" onclick="pickWord(this,'sort4')">spielte</button>
+        <button class="word-chip" data-word="fuhr" data-cat="unreg" onclick="pickWord(this,'sort4')">fuhr</button>
+        <button class="word-chip" data-word="machte" data-cat="regel" onclick="pickWord(this,'sort4')">machte</button>
+        <button class="word-chip" data-word="lief" data-cat="unreg" onclick="pickWord(this,'sort4')">lief</button>
+        <button class="word-chip" data-word="sagte" data-cat="regel" onclick="pickWord(this,'sort4')">sagte</button>
+        <button class="word-chip" data-word="las" data-cat="unreg" onclick="pickWord(this,'sort4')">las</button>
+        <button class="word-chip" data-word="malte" data-cat="regel" onclick="pickWord(this,'sort4')">malte</button>
+        <button class="word-chip" data-word="ging" data-cat="unreg" onclick="pickWord(this,'sort4')">ging</button>
+        <button class="word-chip" data-word="hörte" data-cat="regel" onclick="pickWord(this,'sort4')">hörte</button>
+        <button class="word-chip" data-word="kam" data-cat="unreg" onclick="pickWord(this,'sort4')">kam</button>
+      </div>
+
+      <div class="sort-columns two-col">
+        <div class="sort-column praesens-col" id="sort4-regel" onclick="dropWord(this,'sort4','regel')">
+          <h4>🔵 Regelmäßig (-te)</h4>
+        </div>
+        <div class="sort-column praeteritum-col" id="sort4-unreg" onclick="dropWord(this,'sort4','unreg')">
+          <h4>🟣 Unregelmäßig (Stammwechsel)</h4>
+        </div>
+      </div>
+
+      <button class="check-btn" onclick="checkSort('sort4',10,'fb-sort4')">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetSort('sort4')">↺ Neu</button>
+      <div class="feedback-area" id="fb-sort4"></div>
+      <div class="fehler-box" id="fehler-sort4">
+        <h4>🔴 Fehlertrainer – Regelmäßig oder unregelmäßig?</h4>
+        <div class="fehler-exercise">
+          <p>Merke: <strong>Regelmäßig → endet auf -te</strong>: spielte, machte, malte, sagte, hörte<br>
+          <strong>Unregelmäßig → kein -te, Stammvokal wechselt</strong>: fuhr, lief, las, ging, kam<br>
+          Schreibe alle unregelmäßigen Verben mit ihrer Grundform ins Heft.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIFFERENZIERUNG KAP 2 -->
+    <div class="diff-section">
+      <button class="diff-toggle aufbau" onclick="toggleDiff(this)">
+        🔵 AUFBAUSPIELER – Regelmäßige Verben Schritt für Schritt <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint aufbau">AUFBAUSPIELER</div>
+        <p>Für regelmäßige Verben geht immer so vor:</p>
+        <ul>
+          <li>1. Grundform: <strong>spielen</strong></li>
+          <li>2. Stamm: <strong>spiel</strong> (Grundform ohne -en)</li>
+          <li>3. Präteritum-Endung anhängen: spiel + <strong>te</strong> = <strong>spielte</strong></li>
+        </ul>
+        <table class="rule-table" style="margin-top:10px;">
+          <tr><th>Grundform</th><th>Stamm</th><th>ich (Präteritum)</th></tr>
+          <tr><td>machen</td><td>mach</td><td><strong>machte</strong></td></tr>
+          <tr><td>spielen</td><td>spiel</td><td><strong>spielte</strong></td></tr>
+          <tr><td>hören</td><td>hör</td><td><strong>hörte</strong></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="diff-section" style="margin-top:10px;">
+      <button class="diff-toggle weltklasse" onclick="toggleDiff(this)">
+        🏆 WELTKLASSESPIELER – Starke Verben systematisch <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint weltklasse">WELTKLASSESPIELER</div>
+        <p>Starke Verben lassen sich in <em>Ablautreihen</em> gruppieren. Zum Beispiel:</p>
+        <ul>
+          <li>ei → ie/i: greifen → griff · schreiben → schrieb · reiten → ritt</li>
+          <li>ie → o: fliegen → flog · biegen → bog · fließen → floss</li>
+          <li>a → u: fahren → fuhr · tragen → trug · waschen → wusch</li>
+        </ul>
+        <p style="margin-top:8px;">Lerne diese 3 Reihen auswendig und erfinde je einen Beispielsatz.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  KAPITEL 3 – PERFEKT
+═══════════════════════════════════════════ -->
+<div class="chapter-card perfekt" id="cap3">
+  <div class="chapter-header">
+    <div class="chapter-number">03</div>
+    <div class="chapter-title-block">
+      <div class="chapter-tag">⏱ Hauptrunde 2 · ca. 20 Min.</div>
+      <h2>Perfekt – Die Gesprächsvergangenheit</h2>
+    </div>
+    <div class="chapter-time">Schon fertig!</div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="rule-box perfekt">
+      <p>Das <strong>Perfekt</strong> benutzt man im <strong>mündlichen Gespräch</strong> für abgeschlossene Handlungen.<br>
+      Bildung: <strong>haben/sein</strong> (Präsens) + <strong>Partizip II</strong><br>
+      Partizip II: <em>ge- + Stamm + -t</em> (regelmäßig): ge<strong>spielt</strong>, ge<strong>macht</strong><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>ge- + Stamm + -en</em> (unregelmäßig): ge<strong>laufen</strong>, ge<strong>fahren</strong>, ge<strong>lesen</strong><br>
+      <strong>haben</strong> oder <strong>sein</strong>? → Bewegung/Zustandsänderung → <strong>sein</strong>: laufen, fahren, fallen<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ sonst → <strong>haben</strong>: spielen, essen, lesen</p>
+    </div>
+
+    <div class="tip-box">
+      <strong>Haben oder sein?</strong> Frage: <em>„Kann ich wohin gehen oder wohin gelangen?"</em><br>
+      Wenn ja → <strong>sein</strong>: „Ich <em>bin</em> gelaufen." · Wenn nein → <strong>haben</strong>: „Ich <em>habe</em> gespielt."
+    </div>
+
+    <!-- AUFGABE 5 – HABEN ODER SEIN -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 5 <span class="points-badge">10 Punkte</span></div>
+      <h3>„haben" oder „sein"? Sortiere die Verben!</h3>
+      <p class="inline-hint">Klicke ein Verb an, dann die richtige Spalte.</p>
+
+      <div class="word-bank" id="wbSort5">
+        <button class="word-chip" data-word="spielen" data-cat="haben" onclick="pickWord(this,'sort5')">spielen</button>
+        <button class="word-chip" data-word="laufen" data-cat="sein" onclick="pickWord(this,'sort5')">laufen</button>
+        <button class="word-chip" data-word="essen" data-cat="haben" onclick="pickWord(this,'sort5')">essen</button>
+        <button class="word-chip" data-word="fahren" data-cat="sein" onclick="pickWord(this,'sort5')">fahren</button>
+        <button class="word-chip" data-word="lesen" data-cat="haben" onclick="pickWord(this,'sort5')">lesen</button>
+        <button class="word-chip" data-word="fallen" data-cat="sein" onclick="pickWord(this,'sort5')">fallen</button>
+        <button class="word-chip" data-word="machen" data-cat="haben" onclick="pickWord(this,'sort5')">machen</button>
+        <button class="word-chip" data-word="gehen" data-cat="sein" onclick="pickWord(this,'sort5')">gehen</button>
+        <button class="word-chip" data-word="schreiben" data-cat="haben" onclick="pickWord(this,'sort5')">schreiben</button>
+        <button class="word-chip" data-word="kommen" data-cat="sein" onclick="pickWord(this,'sort5')">kommen</button>
+      </div>
+
+      <div class="sort-columns two-col">
+        <div class="sort-column praesens-col" id="sort5-haben" onclick="dropWord(this,'sort5','haben')">
+          <h4>🔵 Perfekt mit HABEN</h4>
+        </div>
+        <div class="sort-column perfekt-col" id="sort5-sein" onclick="dropWord(this,'sort5','sein')">
+          <h4>🔴 Perfekt mit SEIN</h4>
+        </div>
+      </div>
+
+      <button class="check-btn" onclick="checkSort('sort5',10,'fb-sort5')">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetSort('sort5')">↺ Neu</button>
+      <div class="feedback-area" id="fb-sort5"></div>
+      <div class="fehler-box" id="fehler-sort5">
+        <h4>🔴 Fehlertrainer – haben oder sein</h4>
+        <div class="fehler-exercise">
+          <p>Faustregel: <strong>Sein</strong> bei Bewegung oder Zustandsänderung: laufen, fahren, fallen, gehen, kommen<br>
+          Ausnahmen lernt man am besten durch Beispielsätze!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUFGABE 6 – PARTIZIP II BILDEN UND PERFEKT EINSETZEN -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 6 <span class="points-badge">12 Punkte</span></div>
+      <h3>Schreibe die Sätze im Perfekt! Trage haben/sein + Partizip II ein.</h3>
+      <p class="inline-hint">Grundform steht in Klammern. Wähle das richtige Hilfsverb!</p>
+      <div class="cloze-text" id="cloze-perf"></div>
+      <button class="check-btn" onclick="checkCloze('cloze-perf','fb-perf',12)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetCloze('cloze-perf')">↺ Neu</button>
+      <div class="feedback-area" id="fb-perf"></div>
+      <div class="fehler-box" id="fehler-cloze-perf">
+        <h4>🔴 Fehlertrainer – Partizip II</h4>
+        <div class="fehler-exercise">
+          <p>Partizip II regelmäßig: <strong>ge- + Stamm + -t</strong> → gespielt, gemacht, gehört<br>
+          Partizip II unregelmäßig: <strong>ge- + Stammwechsel + -en</strong> → gelaufen, gefahren, gelesen<br>
+          Verben auf -ieren: kein ge-! → fotografiert, diskutiert</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIFFERENZIERUNG KAP 3 -->
+    <div class="diff-section">
+      <button class="diff-toggle aufbau" onclick="toggleDiff(this)">
+        🔵 AUFBAUSPIELER – Partizip II Schritt für Schritt <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint aufbau">AUFBAUSPIELER</div>
+        <table class="rule-table">
+          <tr><th>Grundform</th><th>Partizip II</th><th>Hilfsverb</th><th>Perfekt (ich)</th></tr>
+          <tr><td>spielen</td><td>gespielt</td><td>haben</td><td>ich habe gespielt</td></tr>
+          <tr><td>laufen</td><td>gelaufen</td><td>sein</td><td>ich bin gelaufen</td></tr>
+          <tr><td>lesen</td><td>gelesen</td><td>haben</td><td>ich habe gelesen</td></tr>
+          <tr><td>fahren</td><td>gefahren</td><td>sein</td><td>ich bin gefahren</td></tr>
+          <tr><td>machen</td><td>gemacht</td><td>haben</td><td>ich habe gemacht</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="diff-section" style="margin-top:10px;">
+      <button class="diff-toggle weltklasse" onclick="toggleDiff(this)">
+        🏆 WELTKLASSESPIELER – Trennbare Verben im Perfekt <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint weltklasse">WELTKLASSESPIELER</div>
+        <p>Bei trennbaren Verben kommt das <em>ge-</em> zwischen Präfix und Stamm:</p>
+        <ul>
+          <li>aufmachen → auf<strong>ge</strong>macht</li>
+          <li>anrufen → an<strong>ge</strong>rufen</li>
+          <li>einschlafen → ein<strong>ge</strong>schlafen</li>
+        </ul>
+        <p style="margin-top:8px;">Bilde je einen Perfekt-Satz mit: <em>aufräumen · einladen · weglaufen · zuhören</em></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  KAPITEL 4 – ABSCHREIBÜBUNG
+═══════════════════════════════════════════ -->
+<div class="chapter-card" id="cap4">
+  <div class="chapter-header">
+    <div class="chapter-number">04</div>
+    <div class="chapter-title-block">
+      <div class="chapter-tag">✏️ Hefteintrag · ca. 10 Min.</div>
+      <h2>Halbzeitpause – Ins Heft!</h2>
+    </div>
+    <div class="chapter-time">Abschreiben</div>
+  </div>
+  <div class="chapter-body">
+
+    <p style="color:#444;margin-bottom:16px;">Schreibe die folgende Übersicht sorgfältig in dein Heft.</p>
+
+    <div class="abschreib-box">
+      <div class="abschreib-text">
+        <strong>Die Zeitformen – Übersicht</strong><br><br>
+        1. <strong>Präsens</strong> (Gegenwart): Was gerade passiert oder immer gilt.<br>
+        &nbsp;&nbsp;&nbsp;Bildung: Verbstamm + Endung &nbsp;&nbsp; Beispiel: Ich <em>spiele</em>. · Er <em>läuft</em>.<br><br>
+        2. <strong>Präteritum</strong> (Erzählvergangenheit): Schriftliches Erzählen, Märchen, Berichte.<br>
+        &nbsp;&nbsp;&nbsp;Regelmäßig: Stamm + <em>-te</em> &nbsp;&nbsp; Beispiel: Ich <em>spielte</em>. · Sie <em>machte</em>.<br>
+        &nbsp;&nbsp;&nbsp;Unregelmäßig: Stammwechsel &nbsp;&nbsp; Beispiel: Ich <em>lief</em>. · Er <em>fuhr</em>.<br><br>
+        3. <strong>Perfekt</strong> (Gesprächsvergangenheit): Mündlich für abgeschlossene Handlungen.<br>
+        &nbsp;&nbsp;&nbsp;Bildung: <em>haben/sein</em> + Partizip II<br>
+        &nbsp;&nbsp;&nbsp;→ Partizip II regelmäßig: ge- + Stamm + -t &nbsp;&nbsp; Beispiel: ge<em>spielt</em>, ge<em>macht</em><br>
+        &nbsp;&nbsp;&nbsp;→ Partizip II unregelmäßig: ge- + Stamm + -en &nbsp;&nbsp; Beispiel: ge<em>laufen</em>, ge<em>fahren</em><br>
+        &nbsp;&nbsp;&nbsp;→ sein: Bewegung/Zustandsänderung · haben: alles andere<br><br>
+        4. <strong>Plusquamperfekt</strong> (Vorvergangenheit): Was VOR einem vergangenen Ereignis passierte.<br>
+        &nbsp;&nbsp;&nbsp;Bildung: <em>hatte/war</em> (Präteritum) + Partizip II<br>
+        &nbsp;&nbsp;&nbsp;Beispiel: „Ich <em>hatte</em> schon gegessen, als er ankam."<br><br>
+        5. <strong>Futur I</strong> (einfache Zukunft / Absicht / Vermutung): Was in der Zukunft passieren wird.<br>
+        &nbsp;&nbsp;&nbsp;Bildung: <em>werden</em> (Präsens) + Infinitiv<br>
+        &nbsp;&nbsp;&nbsp;Beispiel: „Ich <em>werde</em> morgen <em>spielen</em>." · „Es <em>wird</em> regnen."<br><br>
+        6. <strong>Futur II</strong> (vollendete Zukunft): Was bis zu einem zukünftigen Zeitpunkt abgeschlossen sein wird.<br>
+        &nbsp;&nbsp;&nbsp;Bildung: <em>werden</em> (Präsens) + Partizip II + <em>haben/sein</em><br>
+        &nbsp;&nbsp;&nbsp;Beispiel: „Bis morgen <em>werde</em> ich das Buch gelesen <em>haben</em>."
+      </div>
+    </div>
+
+    <div class="tip-box">
+      Überprüfe nach dem Abschreiben: Hast du alle Beispiele richtig? Hast du die Farben/Unterstreichungen so gemacht, wie dein Lehrer es gesagt hat?
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  KAPITEL 5 – PLUSQUAMPERFEKT + GEMISCHT
+═══════════════════════════════════════════ -->
+<div class="chapter-card plusquam" id="cap5">
+  <div class="chapter-header">
+    <div class="chapter-number">05</div>
+    <div class="chapter-title-block">
+      <div class="chapter-tag">⏱ Endspurt · ca. 25 Min.</div>
+      <h2>Plusquamperfekt &amp; Gemischte Anwendung</h2>
+    </div>
+    <div class="chapter-time">Finale!</div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="rule-box plusquam">
+      <p>Das <strong>Plusquamperfekt</strong> (Vorvergangenheit) beschreibt, was <strong>vor</strong> einem anderen Vergangenheitsereignis passierte.<br>
+      Bildung: <strong>hatte / war</strong> (Präteritum) + <strong>Partizip II</strong><br>
+      Beispiel: „Als sie ankam, <strong>hatte</strong> er schon ge<strong>gessen</strong>."<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;„Nachdem er ge<strong>laufen war</strong>, duschte er sich."<br>
+      Signal-Wörter: <em>als · nachdem · bevor · schon · bereits</em></p>
+    </div>
+
+    <div class="tip-box">
+      <strong>Merkregel:</strong> Plusquamperfekt = Perfekt, aber mit <em>hatte/war</em> statt <em>hat/ist</em>.<br>
+      Der Satz hat oft einen „Als …"- oder „Nachdem …"-Teil.
+    </div>
+
+    <!-- AUFGABE 7 – ZEITFORM ERKENNEN (SORTIEREN) -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 7 <span class="points-badge">12 Punkte</span></div>
+      <h3>Erkenne die Zeitform! Sortiere die Sätze in die richtige Spalte.</h3>
+      <p class="inline-hint">Klicke einen Satz an, dann die passende Zeitform-Spalte.</p>
+
+      <div class="word-bank" id="wbSort7" style="flex-direction:column;align-items:flex-start;">
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Er läuft jeden Tag." data-cat="praes" onclick="pickWord(this,'sort7')">Er läuft jeden Tag.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Sie hatte das Buch bereits gelesen." data-cat="plusq" onclick="pickWord(this,'sort7')">Sie hatte das Buch bereits gelesen.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Wir spielten bis es dunkel wurde." data-cat="praet" onclick="pickWord(this,'sort7')">Wir spielten bis es dunkel wurde.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Ich habe meine Hausaufgaben gemacht." data-cat="perf" onclick="pickWord(this,'sort7')">Ich habe meine Hausaufgaben gemacht.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Nachdem er gegessen hatte, schlief er ein." data-cat="plusq" onclick="pickWord(this,'sort7')">Nachdem er gegessen hatte, schlief er ein.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Das Kind weinte laut." data-cat="praet" onclick="pickWord(this,'sort7')">Das Kind weinte laut.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Bist du schon nach Hause gegangen?" data-cat="perf" onclick="pickWord(this,'sort7')">Bist du schon nach Hause gegangen?</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Die Sonne scheint heute." data-cat="praes" onclick="pickWord(this,'sort7')">Die Sonne scheint heute.</button>
+      </div>
+
+      <div class="sort-columns" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+        <div class="sort-column praesens-col" id="sort7-praes" onclick="dropWord(this,'sort7','praes')">
+          <h4>🔵 Präsens</h4>
+        </div>
+        <div class="sort-column praeteritum-col" id="sort7-praet" onclick="dropWord(this,'sort7','praet')">
+          <h4>🟣 Präteritum</h4>
+        </div>
+        <div class="sort-column perfekt-col" id="sort7-perf" onclick="dropWord(this,'sort7','perf')">
+          <h4>🔴 Perfekt</h4>
+        </div>
+        <div class="sort-column plusquam-col" id="sort7-plusq" onclick="dropWord(this,'sort7','plusq')">
+          <h4>🟢 Plusquamperf.</h4>
+        </div>
+      </div>
+
+      <button class="check-btn" onclick="checkSort('sort7',12,'fb-sort7')">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetSort('sort7')">↺ Neu</button>
+      <div class="feedback-area" id="fb-sort7"></div>
+      <div class="fehler-box" id="fehler-sort7">
+        <h4>🔴 Fehlertrainer – Zeitformen unterscheiden</h4>
+        <div class="fehler-exercise">
+          <p>Schaue auf das Verb:<br>
+          <strong>Präsens:</strong> läuft, scheint, hat → kein Hilfsverb nötig<br>
+          <strong>Präteritum:</strong> spielte, weinte, fuhr → allein stehendes Verb, oft auf -te<br>
+          <strong>Perfekt:</strong> hat gespielt, ist gelaufen → hat/ist + Partizip II<br>
+          <strong>Plusquamperfekt:</strong> hatte gespielt, war gelaufen → hatte/war + Partizip II</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUFGABE 8 – FEHLERKORREKTUR (Tippen) -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 8 <span class="points-badge">14 Punkte</span></div>
+      <h3>Jeder Satz enthält einen Fehler in der Zeitform. Korrigiere das falsche Verb!</h3>
+      <p class="inline-hint">Das fehlerhafte Verb ist rot unterstrichen. Tippe die richtige Form in das Feld.</p>
+      <div id="corr8"></div>
+      <button class="check-btn" onclick="checkCorr8()">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetCorr8()">↺ Neu</button>
+      <div class="feedback-area" id="fb-corr8"></div>
+      <div class="fehler-box" id="fehler-corr8">
+        <h4>🔴 Fehlertrainer – Zeitformen anwenden</h4>
+        <div class="fehler-exercise">
+          <p>Schreibe die korrigierten Sätze in dein Heft und unterstreiche die Verben farbig:<br>
+          🔵 Präsens · 🟣 Präteritum · 🔴 Perfekt · 🟢 Plusquamperfekt</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUFGABE 9 – LÜCKENTEXT PLUSQUAMPERFEKT -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 9 <span class="points-badge">10 Punkte</span></div>
+      <h3>Setze das Plusquamperfekt ein!</h3>
+      <p class="inline-hint">Grundform in Klammern. Bilde: hatte/war + Partizip II.</p>
+      <div class="cloze-text" id="cloze-plusq"></div>
+      <button class="check-btn" onclick="checkCloze('cloze-plusq','fb-plusq',10)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetCloze('cloze-plusq')">↺ Neu</button>
+      <div class="feedback-area" id="fb-plusq"></div>
+      <div class="fehler-box" id="fehler-cloze-plusq">
+        <h4>🔴 Fehlertrainer – Plusquamperfekt</h4>
+        <div class="fehler-exercise">
+          <p>Merke: <strong>hatte/war + Partizip II</strong> – Partizip II bleibt genauso wie im Perfekt!<br>
+          Perfekt: ich <em>habe gespielt</em> → Plusquamperfekt: ich <em>hatte gespielt</em></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIFFERENZIERUNG KAP 5 -->
+    <div class="diff-section">
+      <button class="diff-toggle aufbau" onclick="toggleDiff(this)">
+        🔵 AUFBAUSPIELER – Zeitformen an Signalwörtern erkennen <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint aufbau">AUFBAUSPIELER</div>
+        <p>Signalwörter helfen dir, die Zeitform zu bestimmen:</p>
+        <table class="rule-table">
+          <tr><th>Signalwort</th><th>Zeitform</th></tr>
+          <tr><td>jetzt, gerade, heute, immer</td><td>Präsens</td></tr>
+          <tr><td>damals, früher, Es war einmal …</td><td>Präteritum</td></tr>
+          <tr><td>schon, gerade eben, heute Morgen</td><td>Perfekt</td></tr>
+          <tr><td>als, nachdem, bevor, bereits, schon zuvor</td><td>Plusquamperfekt</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="diff-section" style="margin-top:10px;">
+      <button class="diff-toggle weltklasse" onclick="toggleDiff(this)">
+        🏆 WELTKLASSESPIELER – Zeitenfolge im Text <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint weltklasse">WELTKLASSESPIELER</div>
+        <p>Schreibe eine kurze Geschichte (8–10 Sätze) über einen aufregenden Tag. Benutze dabei <strong>alle vier Zeitformen</strong> sinnvoll:</p>
+        <ul>
+          <li>Präsens für die Einleitung oder den „Jetzt-Zustand"</li>
+          <li>Präteritum für den Hauptteil der Handlung</li>
+          <li>Perfekt für das Gespräch danach</li>
+          <li>Plusquamperfekt für etwas, das noch früher passiert ist</li>
+        </ul>
+        <p style="margin-top:8px;font-style:italic;">Markiere die Zeitformen nach dem Schreiben mit verschiedenen Farben.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  KAPITEL 6 – FUTUR I
+═══════════════════════════════════════════ -->
+<div class="chapter-card futur1" id="cap6">
+  <div class="chapter-header">
+    <div class="chapter-number">06</div>
+    <div class="chapter-title-block">
+      <div class="chapter-tag">⏱ Extrarunde · ca. 15 Min.</div>
+      <h2>Futur I – Zukunft, Absicht &amp; Vermutung</h2>
+    </div>
+    <div class="chapter-time">Morgen!</div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="rule-box futur1">
+      <p>Das <strong>Futur I</strong> drückt aus, was in der Zukunft passieren <strong>wird</strong>, was man <strong>beabsichtigt</strong> oder was man <strong>vermutet</strong>.<br>
+      Bildung: <strong>werden</strong> (konjugiert) + <strong>Infinitiv</strong> (am Satzende)<br>
+      Beispiel: Ich <strong>werde</strong> morgen Fußball <strong>spielen</strong>. · Sie <strong>wird</strong> das Rennen <strong>gewinnen</strong>.<br>
+      <strong>werden</strong> konjugiert: ich werde · du wirst · er/sie/es wird · wir werden · ihr werdet · sie werden</p>
+    </div>
+
+    <div class="tip-box">
+      <strong>3 Verwendungen des Futur I:</strong><br>
+      1. <em>Zukunft:</em> „Morgen werde ich lernen." (Handlung in der Zukunft)<br>
+      2. <em>Absicht/Versprechen:</em> „Ich werde das nie vergessen!" (fester Vorsatz)<br>
+      3. <em>Vermutung:</em> „Sie wird wohl krank sein." (Schätzung über Gegenwart/Zukunft)
+    </div>
+
+    <!-- AUFGABE 10 – KONJUGATION werden -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 10 <span class="points-badge">6 Punkte</span></div>
+      <h3>Konjugiere „werden" im Präsens – das Hilfsverb für Futur I!</h3>
+      <table class="konj-table" id="konjTableFutur1">
+        <tr>
+          <th>Person</th>
+          <th>werden (Futur-Hilfsverb)</th>
+          <th>Futur I: spielen</th>
+        </tr>
+        <tr><td>ich</td>
+          <td><input type="text" data-answer="werde" placeholder="werd___"></td>
+          <td><input type="text" data-answer="werde spielen" placeholder="___ spielen"></td>
+        </tr>
+        <tr><td>du</td>
+          <td><input type="text" data-answer="wirst" placeholder="w___st"></td>
+          <td><input type="text" data-answer="wirst spielen" placeholder="___ spielen"></td>
+        </tr>
+        <tr><td>er / sie / es</td>
+          <td><input type="text" data-answer="wird" placeholder="w___d"></td>
+          <td><input type="text" data-answer="wird spielen" placeholder="___ spielen"></td>
+        </tr>
+        <tr><td>wir</td>
+          <td><input type="text" data-answer="werden" placeholder="werd___"></td>
+          <td><input type="text" data-answer="werden spielen" placeholder="___ spielen"></td>
+        </tr>
+        <tr><td>ihr</td>
+          <td><input type="text" data-answer="werdet" placeholder="werd___"></td>
+          <td><input type="text" data-answer="werdet spielen" placeholder="___ spielen"></td>
+        </tr>
+        <tr><td>sie / Sie</td>
+          <td><input type="text" data-answer="werden" placeholder="werd___"></td>
+          <td><input type="text" data-answer="werden spielen" placeholder="___ spielen"></td>
+        </tr>
+      </table>
+      <button class="check-btn" onclick="checkTable('konjTableFutur1','fb-konjF1',6)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetTable('konjTableFutur1','fb-konjF1')">↺ Neu</button>
+      <div class="feedback-area" id="fb-konjF1"></div>
+      <div class="fehler-box" id="fehler-konjTableFutur1">
+        <h4>🔴 Fehlertrainer – werden konjugieren</h4>
+        <div class="fehler-exercise">
+          <p>Merke: <strong>du wirst</strong> und <strong>er/sie/es wird</strong> – diese zwei Formen sind unregelmäßig!<br>
+          Alle anderen folgen dem Muster: werd- + Endung (-e, -en, -et, -en).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUFGABE 11 – LÜCKENTEXT FUTUR I -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 11 <span class="points-badge">10 Punkte</span></div>
+      <h3>Setze das Futur I ein! (werden + Infinitiv)</h3>
+      <p class="inline-hint">In Klammern steht die Grundform und die Person. Denke daran: Der Infinitiv steht am Satzende!</p>
+      <div class="cloze-text" id="cloze-fut1"></div>
+      <button class="check-btn" onclick="checkCloze('cloze-fut1','fb-fut1',10)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetCloze('cloze-fut1')">↺ Neu</button>
+      <div class="feedback-area" id="fb-fut1"></div>
+      <div class="fehler-box" id="fehler-cloze-fut1">
+        <h4>🔴 Fehlertrainer – Futur I</h4>
+        <div class="fehler-exercise">
+          <p>Futur I = <strong>werden</strong> (richtige Person!) + <strong>Infinitiv</strong> ganz am Satzende.<br>
+          Beispiel: „Wir werden morgen Fußball <em>spielen</em>." – <em>spielen</em> bleibt unveränderter Infinitiv!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUFGABE 12 – MC FUTUR I Verwendung -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 12 <span class="points-badge">6 Punkte</span></div>
+      <h3>Welche Bedeutung hat das Futur I in diesen Sätzen?</h3>
+
+      <div id="mc-f1-q1">
+        <p style="font-weight:600;margin-bottom:6px;">① „Er wird wohl zu Hause sein." – Was drückt dieses Futur I aus?</p>
+        <div class="mc-options">
+          <button class="mc-option" onclick="selectMC('mc-f1-q1',this,'A')"><span class="mc-letter">A</span> Eine sichere Tatsache über die Zukunft</button>
+          <button class="mc-option" onclick="selectMC('mc-f1-q1',this,'B')"><span class="mc-letter">B</span> Eine Vermutung über die Gegenwart</button>
+          <button class="mc-option" onclick="selectMC('mc-f1-q1',this,'C')"><span class="mc-letter">C</span> Einen Befehl</button>
+        </div>
+      </div>
+      <div id="mc-f1-q2" style="margin-top:12px;">
+        <p style="font-weight:600;margin-bottom:6px;">② Welcher Satz verwendet Futur I <em>korrekt</em>?</p>
+        <div class="mc-options">
+          <button class="mc-option" onclick="selectMC('mc-f1-q2',this,'A')"><span class="mc-letter">A</span> „Ich werde haben gegessen."</button>
+          <button class="mc-option" onclick="selectMC('mc-f1-q2',this,'B')"><span class="mc-letter">B</span> „Sie wird morgen kommen."</button>
+          <button class="mc-option" onclick="selectMC('mc-f1-q2',this,'C')"><span class="mc-letter">C</span> „Wir werden gespielt."</button>
+        </div>
+      </div>
+      <div id="mc-f1-q3" style="margin-top:12px;">
+        <p style="font-weight:600;margin-bottom:6px;">③ „Ich werde niemals lügen!" – Welche Funktion hat das Futur I hier?</p>
+        <div class="mc-options">
+          <button class="mc-option" onclick="selectMC('mc-f1-q3',this,'A')"><span class="mc-letter">A</span> Vermutung</button>
+          <button class="mc-option" onclick="selectMC('mc-f1-q3',this,'B')"><span class="mc-letter">B</span> Zukunft in der Vergangenheit</button>
+          <button class="mc-option" onclick="selectMC('mc-f1-q3',this,'C')"><span class="mc-letter">C</span> Absicht / Versprechen</button>
+        </div>
+      </div>
+      <button class="check-btn" onclick="checkMCGroup('mc-f1-q',3,{'mc-f1-q1':'B','mc-f1-q2':'B','mc-f1-q3':'C'},'fb-mc-f1',6)">✔ Auswertung</button>
+      <div class="feedback-area" id="fb-mc-f1"></div>
+    </div>
+
+    <!-- DIFFERENZIERUNG -->
+    <div class="diff-section">
+      <button class="diff-toggle aufbau" onclick="toggleDiff(this)">
+        🔵 AUFBAUSPIELER – Futur I Schritt für Schritt <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint aufbau">AUFBAUSPIELER</div>
+        <table class="rule-table">
+          <tr><th>Person</th><th>werden</th><th>+ Infinitiv</th><th>Futur I-Satz</th></tr>
+          <tr><td>ich</td><td>werde</td><td>spielen</td><td>Ich werde spielen.</td></tr>
+          <tr><td>du</td><td>wirst</td><td>laufen</td><td>Du wirst laufen.</td></tr>
+          <tr><td>er/sie/es</td><td>wird</td><td>kommen</td><td>Er wird kommen.</td></tr>
+          <tr><td>wir</td><td>werden</td><td>lernen</td><td>Wir werden lernen.</td></tr>
+        </table>
+        <p style="margin-top:8px;"><strong>Merke:</strong> Der Infinitiv steht immer am <em>Ende</em> des Satzes!</p>
+      </div>
+    </div>
+    <div class="diff-section" style="margin-top:10px;">
+      <button class="diff-toggle weltklasse" onclick="toggleDiff(this)">
+        🏆 WELTKLASSESPIELER – Futur I vs. Präsens mit Zeitangabe <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint weltklasse">WELTKLASSESPIELER</div>
+        <p>Im Deutschen kann man Zukunft auch durch <strong>Präsens + Zeitangabe</strong> ausdrücken:</p>
+        <ul>
+          <li>„Ich <em>fahre</em> morgen nach Berlin." (Präsens)</li>
+          <li>„Ich <em>werde</em> morgen nach Berlin <em>fahren</em>." (Futur I)</li>
+        </ul>
+        <p style="margin-top:8px;">Erkläre: Wann klingt das Futur I <em>natürlicher</em>? Wann bevorzugen Muttersprachler das Präsens?<br>
+        Schreibe je drei Sätze, einmal mit Futur I, einmal mit Präsens als Zukunftsausdruck.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  KAPITEL 7 – FUTUR II
+═══════════════════════════════════════════ -->
+<div class="chapter-card futur2" id="cap7">
+  <div class="chapter-header">
+    <div class="chapter-number">07</div>
+    <div class="chapter-title-block">
+      <div class="chapter-tag">⏱ Extrarunde · ca. 15 Min.</div>
+      <h2>Futur II – Die vollendete Zukunft</h2>
+    </div>
+    <div class="chapter-time">Bis dann fertig!</div>
+  </div>
+  <div class="chapter-body">
+
+    <div class="rule-box futur2">
+      <p>Das <strong>Futur II</strong> beschreibt eine Handlung, die <strong>bis zu einem Zeitpunkt in der Zukunft abgeschlossen sein wird</strong>, oder eine <strong>Vermutung über Vergangenes</strong>.<br>
+      Bildung: <strong>werden</strong> (Präsens) + <strong>Partizip II</strong> + <strong>haben / sein</strong><br>
+      Beispiel: „Bis morgen <strong>werde</strong> ich das Buch gelesen <strong>haben</strong>."<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;„Sie <strong>wird</strong> schon nach Hause gegangen <strong>sein</strong>."<br>
+      Signal-Wörter: <em>bis · bis dahin · bis morgen · wohl schon · sicher bereits</em></p>
+    </div>
+
+    <div class="tip-box">
+      <strong>Merkhilfe:</strong> Futur II = Futur I + Partizip II<br>
+      Perfekt: „Ich habe gespielt." → Futur II: „Ich werde gespielt <em>haben</em>."<br>
+      Perfekt mit sein: „Ich bin gelaufen." → Futur II: „Ich werde gelaufen <em>sein</em>."
+    </div>
+
+    <!-- AUFGABE 13 – LÜCKENTEXT FUTUR II -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 13 <span class="points-badge">10 Punkte</span></div>
+      <h3>Setze das Futur II ein! (werden + Partizip II + haben/sein)</h3>
+      <p class="inline-hint">In Klammern: Grundform und Person. Achtung: haben oder sein?</p>
+      <div class="cloze-text" id="cloze-fut2"></div>
+      <button class="check-btn" onclick="checkCloze('cloze-fut2','fb-fut2',10)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetCloze('cloze-fut2')">↺ Neu</button>
+      <div class="feedback-area" id="fb-fut2"></div>
+      <div class="fehler-box" id="fehler-cloze-fut2">
+        <h4>🔴 Fehlertrainer – Futur II</h4>
+        <div class="fehler-exercise">
+          <p>Futur II = <strong>werden + Partizip II + haben/sein</strong><br>
+          Die Wahl zwischen haben/sein folgt denselben Regeln wie beim Perfekt:<br>
+          Bewegung/Zustandsänderung → <strong>sein</strong> · sonst → <strong>haben</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUFGABE 14 – GROSSE SORTIERUNG: alle 6 Zeitformen -->
+    <div class="task-block">
+      <div class="task-label">Aufgabe 14 <span class="points-badge">12 Punkte</span></div>
+      <h3>Finale Sortierung: Welche Zeitform ist das? Sortiere alle Sätze!</h3>
+      <p class="inline-hint">Klicke einen Satz an, dann die richtige Zeitform-Spalte.</p>
+
+      <div class="word-bank" id="wbSort14" style="flex-direction:column;align-items:flex-start;">
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Bis Freitag werde ich den Aufsatz geschrieben haben." data-cat="fut2" onclick="pickWord(this,'sort14')">Bis Freitag werde ich den Aufsatz geschrieben haben.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Er spielte im Garten." data-cat="praet" onclick="pickWord(this,'sort14')">Er spielte im Garten.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Sie wird morgen kommen." data-cat="fut1" onclick="pickWord(this,'sort14')">Sie wird morgen kommen.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Wir haben das Spiel gewonnen." data-cat="perf" onclick="pickWord(this,'sort14')">Wir haben das Spiel gewonnen.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Sie liest jeden Tag." data-cat="praes" onclick="pickWord(this,'sort14')">Sie liest jeden Tag.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Nachdem er gegessen hatte, schlief er ein." data-cat="plusq" onclick="pickWord(this,'sort14')">Nachdem er gegessen hatte, schlief er ein.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Er wird wohl schon angekommen sein." data-cat="fut2" onclick="pickWord(this,'sort14')">Er wird wohl schon angekommen sein.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Ich werde niemals aufgeben!" data-cat="fut1" onclick="pickWord(this,'sort14')">Ich werde niemals aufgeben!</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Der König ritt durch den Wald." data-cat="praet" onclick="pickWord(this,'sort14')">Der König ritt durch den Wald.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Ich bin gestern gelaufen." data-cat="perf" onclick="pickWord(this,'sort14')">Ich bin gestern gelaufen.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Die Sonne scheint." data-cat="praes" onclick="pickWord(this,'sort14')">Die Sonne scheint.</button>
+        <button class="word-chip" style="width:100%;text-align:left;" data-word="Sie hatte das Lied schon gekannt." data-cat="plusq" onclick="pickWord(this,'sort14')">Sie hatte das Lied schon gekannt.</button>
+      </div>
+
+      <div class="sort-columns" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="sort-column praesens-col" id="sort14-praes" onclick="dropWord(this,'sort14','praes')">
+          <h4>🔵 Präsens</h4>
+        </div>
+        <div class="sort-column praeteritum-col" id="sort14-praet" onclick="dropWord(this,'sort14','praet')">
+          <h4>🟣 Präteritum</h4>
+        </div>
+        <div class="sort-column perfekt-col" id="sort14-perf" onclick="dropWord(this,'sort14','perf')">
+          <h4>🔴 Perfekt</h4>
+        </div>
+      </div>
+      <div class="sort-columns" style="grid-template-columns:1fr 1fr 1fr;margin-top:10px;">
+        <div class="sort-column plusquam-col" id="sort14-plusq" onclick="dropWord(this,'sort14','plusq')">
+          <h4>🟢 Plusquamperf.</h4>
+        </div>
+        <div class="sort-column futur1-col" id="sort14-fut1" onclick="dropWord(this,'sort14','fut1')">
+          <h4>🟠 Futur I</h4>
+        </div>
+        <div class="sort-column futur2-col" id="sort14-fut2" onclick="dropWord(this,'sort14','fut2')">
+          <h4>🟡 Futur II</h4>
+        </div>
+      </div>
+
+      <button class="check-btn" onclick="checkSort('sort14',12,'fb-sort14')">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetSort('sort14')">↺ Neu</button>
+      <div class="feedback-area" id="fb-sort14"></div>
+      <div class="fehler-box" id="fehler-sort14">
+        <h4>🔴 Fehlertrainer – Alle 6 Zeitformen</h4>
+        <div class="fehler-exercise">
+          <p>Schau auf das Verb und erkenne die Struktur:<br>
+          <strong>Präsens:</strong> Verb allein, Gegenwart · <strong>Präteritum:</strong> Verb allein, -te oder Stammwechsel<br>
+          <strong>Perfekt:</strong> hat/ist + Partizip II · <strong>Plusquamperfekt:</strong> hatte/war + Partizip II<br>
+          <strong>Futur I:</strong> wird + Infinitiv · <strong>Futur II:</strong> wird + Partizip II + haben/sein</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIFFERENZIERUNG -->
+    <div class="diff-section">
+      <button class="diff-toggle aufbau" onclick="toggleDiff(this)">
+        🔵 AUFBAUSPIELER – Futur II Schritt für Schritt <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint aufbau">AUFBAUSPIELER</div>
+        <table class="rule-table">
+          <tr><th>Grundform</th><th>Partizip II</th><th>haben/sein</th><th>Futur II (ich)</th></tr>
+          <tr><td>spielen</td><td>gespielt</td><td>haben</td><td>ich werde gespielt <strong>haben</strong></td></tr>
+          <tr><td>laufen</td><td>gelaufen</td><td>sein</td><td>ich werde gelaufen <strong>sein</strong></td></tr>
+          <tr><td>essen</td><td>gegessen</td><td>haben</td><td>ich werde gegessen <strong>haben</strong></td></tr>
+          <tr><td>fahren</td><td>gefahren</td><td>sein</td><td>ich werde gefahren <strong>sein</strong></td></tr>
+        </table>
+        <p style="margin-top:8px;"><strong>Merke:</strong> haben/sein steht immer ganz am Satzende, nach dem Partizip II!</p>
+      </div>
+    </div>
+    <div class="diff-section" style="margin-top:10px;">
+      <button class="diff-toggle weltklasse" onclick="toggleDiff(this)">
+        🏆 WELTKLASSESPIELER – Alle 6 Zeitformen in einem Text <span class="arrow">▼</span>
+      </button>
+      <div class="diff-content">
+        <div class="diff-hint weltklasse">WELTKLASSESPIELER</div>
+        <p>Schreibe eine kurze Geschichte (10–12 Sätze) – einen Sportbericht über ein fiktives Turnier. Verwende dabei <strong>alle sechs Zeitformen</strong> sinnvoll:</p>
+        <ul>
+          <li>Plusquamperfekt: Was vor dem Turnier schon passiert war</li>
+          <li>Präteritum: Der Spielverlauf</li>
+          <li>Perfekt: Was du einer Freundin im Gespräch danach erzählst</li>
+          <li>Präsens: Aktuelle Gedanken / Zustand jetzt</li>
+          <li>Futur I: Was das Team nächste Woche vorhaben wird</li>
+          <li>Futur II: Was bis zum nächsten Monat erreicht sein wird</li>
+        </ul>
+        <p style="margin-top:8px;font-style:italic;">Markiere jede Zeitform mit einer anderen Farbe und erstelle eine Legende.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SCOREBOARD -->
+<div class="scoreboard" id="finalScore">
+  <h2>🏆 ENDSTAND</h2>
+  <div class="score-grid">
+    <div class="score-item"><div class="val" id="s-total">0</div><div class="lbl">Punkte gesamt</div></div>
+    <div class="score-item"><div class="val" id="s-max">140</div><div class="lbl">Mögl. Punkte</div></div>
+    <div class="score-item"><div class="val" id="s-pct">0%</div><div class="lbl">Erfolgsquote</div></div>
+    <div class="score-item"><div class="val" id="s-rating">–</div><div class="lbl">Bewertung</div></div>
+  </div>
+</div>
+<div class="trophy-banner" id="trophyBanner" style="display:none"></div>
+
+<!-- ================================================================
+     JAVASCRIPT
+================================================================ -->
+<script>
+const MAX_SCORE = 140;
+let totalScore = 0;
+
+function addScore(pts) {
+  totalScore += pts;
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = Math.round((totalScore / MAX_SCORE) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressScore').textContent = totalScore + ' / ' + MAX_SCORE + ' Pkt';
+  document.getElementById('s-total').textContent = totalScore;
+  document.getElementById('s-pct').textContent = pct + '%';
+  const rating = pct >= 90 ? '⭐⭐⭐' : pct >= 70 ? '⭐⭐' : pct >= 50 ? '⭐' : '🔄';
+  document.getElementById('s-rating').textContent = rating;
+  if (totalScore > 0) document.getElementById('finalScore').classList.add('visible');
+  const tb = document.getElementById('trophyBanner');
+  if (pct >= 80) {
+    tb.style.display = 'block';
+    tb.textContent = pct >= 90 ? '🏆 MEISTERSCHAFT! Alle Zeitformen im Griff!' : '🥇 STARKE LEISTUNG! Du kennst deine Zeiten!';
+  }
+}
+
+// ── FEEDBACK ──
+function showFeedback(elOrId, type, msg) {
+  const el = typeof elOrId === 'string' ? document.getElementById(elOrId) : elOrId;
+  if (!el) return;
+  el.className = 'feedback-area ' + type;
+  el.textContent = msg;
+}
+function hideFeedback(id) {
+  const el = document.getElementById(id);
+  if (el) el.className = 'feedback-area';
+}
+function toggleDiff(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('visible');
+}
+
+// ── KONJUGATION TABLE ──
+function checkTable(tableId, fbId, maxPts) {
+  const table = document.getElementById(tableId);
+  const inputs = table.querySelectorAll('input');
+  let correct = 0;
+  inputs.forEach(inp => {
+    inp.classList.remove('correct','incorrect');
+    if (inp.value.trim().toLowerCase() === inp.dataset.answer.toLowerCase()) {
+      inp.classList.add('correct'); correct++; inp.disabled = true;
+    } else {
+      inp.classList.add('incorrect');
+    }
+  });
+  const pts = Math.round((correct / inputs.length) * maxPts);
+  addScore(pts);
+  const pct = correct / inputs.length;
+  if (pct === 1) showFeedback(fbId, 'success', '⚽ Perfekt! Alle ' + inputs.length + ' Formen richtig! +' + pts + ' Punkte!');
+  else if (pct >= 0.6) showFeedback(fbId, 'partial', '🟡 ' + correct + '/' + inputs.length + ' richtig. +' + pts + ' Punkte. Rote Felder nochmal prüfen!');
+  else {
+    showFeedback(fbId, 'error', '🔴 ' + correct + '/' + inputs.length + ' richtig. +' + pts + ' Punkte.');
+    document.getElementById('fehler-' + tableId)?.classList.add('visible');
+  }
+  document.querySelector(`[onclick="checkTable('${tableId}','${fbId}',${maxPts})"]`).disabled = true;
+}
+function resetTable(tableId, fbId) {
+  document.getElementById(tableId).querySelectorAll('input').forEach(i => {
+    i.value = ''; i.className = ''; i.disabled = false;
+  });
+  hideFeedback(fbId);
+  document.getElementById('fehler-' + tableId)?.classList.remove('visible');
+  // re-enable the matching check button regardless of point value
+  const btn = document.querySelector(`[onclick^="checkTable('${tableId}'"]`);
+  if (btn) btn.disabled = false;
+}
+
+// ── MULTIPLE CHOICE ──
+const mcState = {};
+function selectMC(qId, btn, letter) {
+  document.querySelectorAll('#' + qId + ' .mc-option').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  mcState[qId] = letter;
+}
+function checkMCGroup(prefix, count, answers, fbId, maxPts) {
+  let correct = 0;
+  for (let i = 1; i <= count; i++) {
+    const qId = prefix + i;
+    const chosen = mcState[qId];
+    const right = answers[qId];
+    document.querySelectorAll('#' + qId + ' .mc-option').forEach((btn, idx) => {
+      const letters = ['A','B','C'];
+      if (letters[idx] === right) btn.classList.add('correct');
+      else if (letters[idx] === chosen && chosen !== right) btn.classList.add('wrong');
+      btn.disabled = true;
+    });
+    if (chosen === right) correct++;
+  }
+  const pts = Math.round((correct / count) * maxPts);
+  addScore(pts);
+  if (correct === count) showFeedback(fbId, 'success', '⚽ Alle ' + count + ' Fragen richtig! +' + pts + ' Punkte!');
+  else showFeedback(fbId, correct >= count * 0.6 ? 'partial' : 'error', correct + '/' + count + ' richtig. +' + pts + ' Punkte.');
+  const btnEl = document.querySelector(`[onclick*="${fbId}"]`);
+  if (btnEl) btnEl.disabled = true;
+}
+
+// ── SORT / DROP ──
+let sortPicked = null, sortPickedId = null;
+function pickWord(btn, sortId) {
+  if (btn.classList.contains('used')) return;
+  if (sortPicked) sortPicked.style.outline = '';
+  sortPicked = btn; sortPickedId = sortId;
+  btn.style.outline = '3px solid #f5c518';
+}
+function dropWord(col, sortId, cat) {
+  if (!sortPicked || sortPickedId !== sortId) return;
+  const word = sortPicked.dataset.word;
+  const chip = document.createElement('span');
+  chip.className = 'sorted-word';
+  chip.textContent = word;
+  chip.dataset.cat = sortPicked.dataset.cat;
+  chip.dataset.placed = cat;
+  col.appendChild(chip);
+  sortPicked.classList.add('used');
+  sortPicked.style.outline = '';
+  sortPicked = null; sortPickedId = null;
+}
+
+function checkSort(sortId, maxPts, fbId) {
+  // find all columns for this sort
+  const cols = document.querySelectorAll(`[id^="sort${sortId.replace('sort','')}"]`);
+  let correct = 0, total = 0;
+  cols.forEach(col => {
+    col.querySelectorAll('.sorted-word').forEach(el => {
+      total++;
+      if (el.dataset.cat === el.dataset.placed) { el.classList.add('correct'); correct++; }
+      else el.classList.add('incorrect');
+    });
+  });
+  const pts = total > 0 ? Math.round((correct/total)*maxPts) : 0;
+  addScore(pts);
+  const fb = document.getElementById(fbId);
+  if (correct === total && total > 0) showFeedback(fb, 'success', '⚽ Perfekt! Alle ' + total + ' richtig! +' + pts + ' Punkte!');
+  else if (total > 0 && correct >= total*0.5) showFeedback(fb, 'partial', '🟡 ' + correct + '/' + total + ' richtig. +' + pts + ' Punkte.');
+  else showFeedback(fb, 'error', '🔴 ' + correct + '/' + total + ' richtig. +' + pts + ' Punkte.');
+  if (correct < total) document.getElementById('fehler-' + sortId)?.classList.add('visible');
+  document.querySelector(`[onclick*="${fbId}"]`).disabled = true;
+}
+
+function resetSort(sortId) {
+  // re-enable word bank chips
+  const numMap = { 'sort4':'wbSort4','sort5':'wbSort5','sort7':'wbSort7','sort14':'wbSort14' };
+  const bankId = numMap[sortId] || ('wb' + sortId.charAt(0).toUpperCase() + sortId.slice(1));
+  const bank = document.getElementById(bankId);
+  if (bank) bank.querySelectorAll('.word-chip').forEach(c => { c.classList.remove('used'); c.style.outline = ''; });
+  // clear sorted columns
+  document.querySelectorAll('[id^="' + sortId + '-"]').forEach(col => {
+    col.querySelectorAll('.sorted-word').forEach(el => el.remove());
+  });
+  // hide feedback
+  const fbMap = { sort4:'fb-sort4', sort5:'fb-sort5', sort7:'fb-sort7', sort14:'fb-sort14' };
+  const fbId = fbMap[sortId];
+  if (fbId) hideFeedback(fbId);
+  document.getElementById('fehler-' + sortId)?.classList.remove('visible');
+  document.querySelector(`[onclick*="${fbId}"]`).disabled = false;
+}
+
+// ── CLOZE ──
+const clozeData = {
+  'cloze-praet': [
+    { before: 'Es war einmal ein König, der jeden Tag durch den Wald ', blank: 'ritt', after: '.', hint: '(reiten – unregelmäßig!)' },
+    { before: 'Seine Tochter ', blank: 'schlief', after: ' in einem hohen Turm.', hint: '(schlafen – unregelmäßig!)' },
+    { before: 'Ein Zauberer ', blank: 'kochte', after: ' jeden Abend einen Zaubertrank.', hint: '(kochen – regelmäßig!)' },
+    { before: 'Die Prinzessin ', blank: 'sang', after: ' ein Lied und die Vögel ', hint: '(singen – unregelmäßig!)' },
+    { before: '', blank: 'hörten', after: ' ihr zu.', hint: '(hören – regelmäßig!)' },
+    { before: 'Am nächsten Morgen ', blank: 'ritt', after: ' ein Ritter vorbei.', hint: '(reiten – unregelmäßig!)' },
+    { before: 'Er ', blank: 'sah', after: ' das Schloss und ', hint: '(sehen – unregelmäßig!)' },
+    { before: '', blank: 'staunte', after: '.', hint: '(staunen – regelmäßig!)' },
+  ],
+  'cloze-perf': [
+    { before: 'Ich ', blank: 'habe', after: ' heute Fußball ge', hint: '(Hilfsverb: haben oder sein?)' },
+    { before: '', blank: 'spielt', after: '.', hint: '(Partizip II von spielen)' },
+    { before: 'Wir ', blank: 'sind', after: ' zur Schule ge', hint: '(Hilfsverb: haben oder sein? Tipp: Bewegung!)' },
+    { before: '', blank: 'laufen', after: '.', hint: '(Partizip II von laufen → gelaufen, aber hier ohne ge!)' },
+    { before: 'Er ', blank: 'hat', after: ' das Buch ge', hint: '(Hilfsverb)' },
+    { before: '', blank: 'lesen', after: '.', hint: '(Partizip II von lesen → gelesen, hier ohne ge!)' },
+    { before: 'Sie ', blank: 'ist', after: ' mit dem Rad ge', hint: '(Hilfsverb: fahren = Bewegung!)' },
+    { before: '', blank: 'fahren', after: '.', hint: '(Partizip II von fahren → gefahren, hier ohne ge!)' },
+  ],
+  'cloze-plusq': [
+    { before: 'Als ich ankam, ', blank: 'hatte', after: ' sie schon ge', hint: '(Plusquamperfekt: hatte oder war?)' },
+    { before: '', blank: 'gegessen', after: '.', hint: '(Partizip II von essen)' },
+    { before: 'Nachdem er nach Hause ge', blank: 'kommen', after: ' ', hint: '(Partizip II von kommen)' },
+    { before: '', blank: 'war', after: ', rief er an.', hint: '(Hilfsverb: kommen = Bewegung!)' },
+    { before: 'Sie ', blank: 'hatte', after: ' das Lied schon ge', hint: '(Plusquamperfekt Hilfsverb)' },
+    { before: '', blank: 'lernt', after: ', bevor die Stunde begann.', hint: '(Partizip II von lernen = ge+lern+t)' },
+    { before: 'Bevor der Zug fuhr, ', blank: 'waren', after: ' wir schon am Bahnhof ge', hint: '(Hilfsverb: sein = Bewegung/Zustand)' },
+    { before: '', blank: 'wesen', after: '.', hint: '(Partizip II von sein = gewesen, hier ohne ge!)' },
+  ],
+  'cloze-fut1': [
+    { before: 'Morgen ', blank: 'werde', after: ' ich Fußball spielen.', hint: '(werden, 1. Person Singular)' },
+    { before: 'Du ', blank: 'wirst', after: ' das sicher schaffen!', hint: '(werden, 2. Person Singular)' },
+    { before: 'Er ', blank: 'wird', after: ' wohl müde sein.', hint: '(werden, 3. Person Singular – Vermutung!)' },
+    { before: 'Wir ', blank: 'werden', after: ' nächste Woche lernen.', hint: '(werden, 1. Person Plural)' },
+    { before: 'Ihr ', blank: 'werdet', after: ' das Spiel gewinnen!', hint: '(werden, 2. Person Plural)' },
+    { before: 'Sie ', blank: 'werden', after: ' später nach Hause fahren.', hint: '(werden, 3. Person Plural)' },
+    { before: 'Ich werde den Brief noch heute ', blank: 'schreiben', after: '.', hint: '(Infinitiv am Satzende!)' },
+    { before: 'Sie wird morgen früh ', blank: 'aufstehen', after: '.', hint: '(Infinitiv – trennbares Verb bleibt zusammen!)' },
+  ],
+  'cloze-fut2': [
+    { before: 'Bis morgen ', blank: 'werde', after: ' ich das Buch gelesen ', hint: '(werden, 1. Pers. Sing.)' },
+    { before: '', blank: 'haben', after: '.', hint: '(haben oder sein? lesen = kein Bewegungsverb!)' },
+    { before: 'Sie ', blank: 'wird', after: ' wohl schon nach Hause gegangen ', hint: '(werden, 3. Pers. Sing.)' },
+    { before: '', blank: 'sein', after: '.', hint: '(haben oder sein? gehen = Bewegung!)' },
+    { before: 'Bis zum Abend werden wir das Spiel gewonnen ', blank: 'haben', after: '.', hint: '(haben oder sein? gewinnen = kein Bewegungsverb!)' },
+    { before: 'Er wird bis dahin ', blank: 'gelaufen', after: ' sein.', hint: '(Partizip II von laufen)' },
+    { before: 'Wir ', blank: 'werden', after: ' bis Freitag alles erledigt haben.', hint: '(werden, 1. Pers. Plural)' },
+    { before: 'Du wirst das ', blank: 'vergessen', after: ' haben, oder?', hint: '(Partizip II von vergessen – kein ge-! Warum?)' },
+  ]
+};
+
+function buildCloze(clozeId) {
+  const container = document.getElementById(clozeId);
+  if (!container) return;
+  container.innerHTML = '';
+  clozeData[clozeId].forEach((item, i) => {
+    const span = document.createElement('span');
+    span.appendChild(document.createTextNode(item.before));
+    const inp = document.createElement('input');
+    inp.type = 'text'; inp.className = 'cloze-input';
+    inp.placeholder = item.hint; inp.dataset.answer = item.blank;
+    inp.style.width = Math.max(80, item.blank.length * 13 + 20) + 'px';
+    span.appendChild(inp);
+    span.appendChild(document.createTextNode(item.after + ' '));
+    container.appendChild(span);
+  });
+}
+
+function checkCloze(clozeId, fbId, maxPts) {
+  const container = document.getElementById(clozeId);
+  const inputs = container.querySelectorAll('.cloze-input');
+  let correct = 0;
+  inputs.forEach(inp => {
+    inp.classList.remove('correct','incorrect');
+    if (inp.value.trim().toLowerCase() === inp.dataset.answer.toLowerCase()) {
+      inp.classList.add('correct'); correct++; inp.disabled = true;
+    } else { inp.classList.add('incorrect'); }
+  });
+  const pts = Math.round((correct / inputs.length) * maxPts);
+  addScore(pts);
+  const fb = document.getElementById(fbId);
+  if (correct === inputs.length) showFeedback(fb, 'success', '⚽ Alle Lücken richtig! +' + pts + ' Punkte!');
+  else if (correct >= inputs.length * 0.6) showFeedback(fb, 'partial', '🟡 ' + correct + '/' + inputs.length + ' richtig. +' + pts + ' Punkte.');
+  else showFeedback(fb, 'error', '🔴 ' + correct + '/' + inputs.length + ' richtig. +' + pts + ' Punkte.');
+  if (correct < inputs.length) document.getElementById('fehler-' + clozeId)?.classList.add('visible');
+  document.querySelector(`[onclick*="${fbId}"]`).disabled = true;
+}
+
+function resetCloze(clozeId) {
+  buildCloze(clozeId);
+  const fbMap = {
+    'cloze-praet': 'fb-praet', 'cloze-perf': 'fb-perf', 'cloze-plusq': 'fb-plusq',
+    'cloze-fut1': 'fb-fut1', 'cloze-fut2': 'fb-fut2'
+  };
+  const fbId = fbMap[clozeId];
+  if (fbId) { hideFeedback(fbId); document.querySelector(`[onclick*="${fbId}"]`).disabled = false; }
+  document.getElementById('fehler-' + clozeId)?.classList.remove('visible');
+}
+
+// ── CORRECTION EXERCISE (Aufgabe 8) ──
+const corr8Data = [
+  {
+    sentence: 'Ich <mark class="err-word">spielte</mark> jetzt gerade Fußball.',
+    wrong: 'spielte', correct: 'spiele',
+    hint: 'Jetzt gerade → Präsens: ich spiele'
+  },
+  {
+    sentence: 'Sie <mark class="err-word">hat geschlafen</mark> in dem alten Schloss. (Märchentext)',
+    wrong: 'hat geschlafen', correct: 'schlief',
+    hint: 'Märchen = Präteritum: sie schlief'
+  },
+  {
+    sentence: 'Er <mark class="err-word">ist gegangen</mark> gestern in die Stadt. – „Hast du ihn gesehen?"',
+    wrong: 'ist gegangen', correct: 'ist gegangen',
+    hint: 'Achtung – das ist tatsächlich richtig! Perfekt mit sein bei gehen.'
+  },
+  {
+    sentence: 'Nachdem er <mark class="err-word">hat gegessen</mark>, legte er sich hin.',
+    wrong: 'hat gegessen', correct: 'hatte gegessen',
+    hint: 'Vor einem Präteritum-Ereignis → Plusquamperfekt: hatte gegessen'
+  },
+  {
+    sentence: 'Als wir ankamen, <mark class="err-word">ist sie schon gefahren</mark>.',
+    wrong: 'ist sie schon gefahren', correct: 'war sie schon gefahren',
+    hint: 'Vor einem vergangenen Ereignis → Plusquamperfekt: war gefahren'
+  },
+  {
+    sentence: 'Früher <mark class="err-word">läuft</mark> er jeden Morgen durch den Wald.',
+    wrong: 'läuft', correct: 'lief',
+    hint: 'Früher = Vergangenheit → Präteritum: lief'
+  },
+  {
+    sentence: 'Ich <mark class="err-word">bin gemacht</mark> meine Hausaufgaben.',
+    wrong: 'bin gemacht', correct: 'habe gemacht',
+    hint: 'machen = keine Bewegung → Perfekt mit haben: habe gemacht'
+  }
+];
+
+function buildCorr8() {
+  const container = document.getElementById('corr8');
+  container.innerHTML = '';
+  corr8Data.forEach((item, idx) => {
+    const block = document.createElement('div');
+    block.dataset.idx = idx;
+    block.style.cssText = 'background:white;border:2px solid #ddd;border-radius:8px;padding:14px 16px;margin-bottom:14px;';
+
+    const sentDiv = document.createElement('p');
+    sentDiv.style.cssText = 'font-size:1rem;font-weight:600;color:#2a2a2a;margin-bottom:10px;line-height:1.8;';
+    sentDiv.innerHTML = item.sentence;
+    block.appendChild(sentDiv);
+
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:10px;';
+
+    const lbl = document.createElement('label');
+    lbl.style.cssText = 'font-size:0.85rem;color:#555;display:flex;align-items:center;gap:8px;';
+    lbl.innerHTML = `<span style="background:#fde;padding:2px 8px;border-radius:4px;font-weight:700;color:#c0392b;">${item.wrong}</span> → `;
+
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.placeholder = 'Korrektur …';
+    inp.dataset.correct = item.correct;
+    inp.dataset.hint = item.hint;
+    inp.style.cssText = 'border:2px solid #ccc;border-radius:6px;padding:5px 10px;font-family:Barlow,sans-serif;font-size:0.95rem;font-weight:700;outline:none;min-width:160px;transition:border-color 0.2s;';
+    inp.addEventListener('focus', function(){ this.style.borderColor = '#f5c518'; });
+    inp.addEventListener('blur', function(){ this.style.borderColor = '#ccc'; });
+    lbl.appendChild(inp);
+    row.appendChild(lbl);
+    block.appendChild(row);
+
+    const hintDiv = document.createElement('div');
+    hintDiv.style.cssText = 'margin-top:8px;font-size:0.8rem;color:#666;font-style:italic;display:none;';
+    block.appendChild(hintDiv);
+
+    container.appendChild(block);
+  });
+}
+
+function checkCorr8() {
+  const container = document.getElementById('corr8');
+  let correct = 0, total = 0;
+  container.querySelectorAll('div[data-idx]').forEach(block => {
+    const inp = block.querySelector('input');
+    const hintDiv = block.querySelector('div[style*="font-style"]');
+    if (!inp) return;
+    total++;
+    inp.disabled = true;
+    const userVal = inp.value.trim().toLowerCase();
+    const expected = inp.dataset.correct.toLowerCase();
+    if (userVal === expected) {
+      inp.style.borderColor = '#28a745'; inp.style.background = '#d4edda'; correct++;
+    } else {
+      inp.style.borderColor = '#e74c3c'; inp.style.background = '#f8d7da';
+      if (hintDiv) { hintDiv.style.display = 'block'; hintDiv.textContent = '💡 ' + inp.dataset.hint; }
+    }
+  });
+  const pts = Math.round((correct / total) * 14);
+  addScore(pts);
+  if (correct === total) showFeedback('fb-corr8', 'success', '⚽ Perfekt! +' + pts + ' Punkte!');
+  else if (correct >= total * 0.6) showFeedback('fb-corr8', 'partial', '🟡 ' + correct + '/' + total + ' richtig. +' + pts + ' Punkte.');
+  else { showFeedback('fb-corr8', 'error', '🔴 ' + correct + '/' + total + ' richtig. +' + pts + ' Punkte.'); document.getElementById('fehler-corr8').classList.add('visible'); }
+  document.querySelector('[onclick="checkCorr8()"]').disabled = true;
+}
+
+function resetCorr8() {
+  buildCorr8();
+  hideFeedback('fb-corr8');
+  document.getElementById('fehler-corr8').classList.remove('visible');
+  document.querySelector('[onclick="checkCorr8()"]').disabled = false;
+}
+
+// ── NAV DOTS ──
+function buildNavDots() {
+  const dots = document.getElementById('navDots');
+  const chapters = ['cap1','cap2','cap3','cap4','cap5','cap6','cap7'];
+  const labels = ['Präsens','Präteritum','Perfekt','Heft','Plusquamperf.','Futur I','Futur II'];
+  chapters.forEach((id, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.title = labels[i];
+    dot.addEventListener('click', () => document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    dots.appendChild(dot);
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = chapters.indexOf(entry.target.id);
+        document.querySelectorAll('.nav-dot').forEach((d,i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { threshold: 0.3 });
+  chapters.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  buildCloze('cloze-praet');
+  buildCloze('cloze-perf');
+  buildCloze('cloze-plusq');
+  buildCloze('cloze-fut1');
+  buildCloze('cloze-fut2');
+  buildCorr8();
+  buildNavDots();
+  updateProgress();
+});
+</script>
+<div class="back-btn-wrap">
+  <a href="../index.html" style="text-decoration:none;">
+    <button class="check-btn" style="background:transparent;color:var(--muted);border:1px solid var(--border);">
+      ← Zurück zur Startseite
+    </button>
+  </a>
+</div>
+
+</div><!-- end page-inner -->
+</body>
+</html>
