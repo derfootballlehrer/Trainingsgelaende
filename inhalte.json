@@ -24,6 +24,14 @@
     "status": "verfügbar"
   },
   {
+    "fach": "Deutsch 4: Groß- und Kleinschreibung",
+    "titel": "Groß- und Kleinschreibung",
+    "beschreibung": "Nomen erkennen, Nominalisierungen entdecken und Fehler gezielt korrigieren – mit adaptivem Fehlertrainer und Differenzierung.",
+    "datei": "deutsch/gross-kleinschreibung_neu.html",
+    "themen": ["Nomen", "Nominalisierung", "Satzanfang", "Fehlerkorrektur"],
+    "status": "verfügbar"
+  },
+  {
     "fach": "Informatik",
     "titel": "Escape Game",
     "beschreibung": "Escape Games, Logikaufgaben und digitale Lernangebote – in Kürze live.",
