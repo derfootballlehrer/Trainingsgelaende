@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trainingsgelände – Groß- und Kleinschreibung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lime:     #c8f000;
+    --lime-dark:#a0c500;
+    --ink:      #0d0d0d;
+    --ink-2:    #111418;
+    --border:   #222;
+    --mid:      #555;
+    --light:    #f5f5f0;
+    --muted:    #8a9090;
+    --good:     #4af09a;
+    --good-bg:  rgba(74,240,154,.08);
+    --bad:      #f06060;
+    --bad-bg:   rgba(240,96,96,.08);
+    --warn:     #f5c518;
+    --warn-bg:  rgba(245,197,24,.08);
+    --info-bg:  rgba(200,240,0,.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--ink);
+    color: var(--light);
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,13,13,0.94); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 28px;
+  }
+  .nav-back {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--muted); text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--lime); }
+  .nav-back svg { stroke: currentColor; }
+  .nav-badge {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem;
+    font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--lime); border: 1px solid rgba(200,240,0,.25);
+    padding: 4px 12px; border-radius: 2px;
+  }
+
+  /* WRAPPER */
+  .page-wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 0; position: relative; z-index: 1; }
+
+  /* HERO */
+  .hero { margin-bottom: 48px; }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--lime); margin-bottom: 14px;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 2px; height: 16px;
+    background: var(--lime); border-radius: 1px;
+  }
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: clamp(2.6rem, 6vw, 4rem); text-transform: uppercase;
+    letter-spacing: 2px; line-height: 1; color: var(--light); margin-bottom: 14px;
+  }
+  .hero h1 span { color: var(--lime); }
+  .hero-sub { color: var(--muted); font-size: 0.95rem; line-height: 1.6; max-width: 560px; }
+
+  /* HUD */
+  .hud {
+    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 20px;
+    background: var(--ink-2); border: 1px solid var(--border); border-radius: 2px;
+    padding: 16px 20px; margin-bottom: 40px;
+  }
+  .hud-left { display: flex; flex-direction: column; gap: 8px; }
+  .hud-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .hud-track { height: 6px; background: var(--border); border-radius: 1px; overflow: hidden; }
+  .hud-fill { height: 100%; background: var(--lime); border-radius: 1px; width: 0%; transition: width 0.6s ease; }
+  .hud-score { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.8rem; color: var(--lime); text-align: right; line-height: 1; }
+  .hud-score span { font-size: 0.9rem; color: var(--muted); font-weight: 700; }
+
+  /* NAV DOTS */
+  .nav-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 40px; }
+  .nav-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--border);
+    cursor: pointer; transition: background 0.2s, transform 0.2s; border: none;
+  }
+  .nav-dot.active { background: var(--lime); transform: scale(1.5); }
+
+  /* DIVIDER */
+  .section-divider { height: 1px; background: var(--border); margin: 48px 0; }
+
+  /* CHAPTER */
+  .chapter { margin-bottom: 48px; }
+  .chapter-head {
+    display: flex; align-items: flex-start; gap: 16px;
+    margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+  }
+  .chapter-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 3rem; color: var(--lime); line-height: 1; min-width: 48px; opacity: 0.25; }
+  .chapter-meta { flex: 1; }
+  .chapter-eyebrow { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--lime); margin-bottom: 6px; }
+  .chapter-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--light); line-height: 1.1; }
+  .chapter-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); background: var(--lime); padding: 4px 10px; border-radius: 2px; white-space: nowrap; align-self: flex-start; }
+
+  /* REGEL-BOX */
+  .rule-box {
+    background: var(--info-bg); border: 1px solid rgba(200,240,0,.12);
+    border-left: 3px solid var(--lime); border-radius: 2px;
+    padding: 18px 20px; margin-bottom: 24px;
+    color: #b0c060; font-size: 0.92rem; line-height: 1.7;
+  }
+  .rule-box::before {
+    content: '📋 REGEL'; display: block;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem;
+    letter-spacing: 0.2em; font-weight: 700; color: var(--lime); margin-bottom: 8px;
+  }
+  .rule-box strong { color: var(--lime); }
+
+  /* TIPP-BOX */
+  .tip-box {
+    background: var(--warn-bg); border: 1px solid rgba(245,197,24,.15);
+    border-left: 3px solid var(--warn); border-radius: 2px;
+    padding: 14px 18px; margin-bottom: 24px;
+    color: #c8a840; font-size: 0.88rem; line-height: 1.65;
+  }
+  .tip-box::before {
+    content: '💡 TIPP'; display: block;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem;
+    letter-spacing: 0.2em; font-weight: 700; color: var(--warn); margin-bottom: 6px;
+  }
+
+  /* TASK BLOCK */
+  .task-block {
+    background: var(--ink-2); border: 1px solid var(--border);
+    border-radius: 2px; padding: 24px; margin-bottom: 20px;
+  }
+  .task-label {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem;
+    font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px;
+  }
+  .points-badge {
+    background: rgba(200,240,0,.12); color: var(--lime); font-size: 0.65rem;
+    padding: 2px 8px; border-radius: 1px; letter-spacing: 0.1em;
+    border: 1px solid rgba(200,240,0,.2);
+  }
+  .task-block h3 {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.1rem;
+    text-transform: uppercase; letter-spacing: 0.05em; color: var(--light);
+    margin-bottom: 10px; line-height: 1.3;
+  }
+  .task-block p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; margin-bottom: 10px; }
+  .inline-hint { font-size: 0.8rem; color: var(--mid); font-style: italic; margin-bottom: 12px; }
+
+  /* WORD SORT */
+  .word-bank {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+    padding: 14px; background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border); border-radius: 2px; min-height: 52px;
+  }
+  .word-chip {
+    background: rgba(200,240,0,.1); color: var(--lime);
+    border: 1px solid rgba(200,240,0,.25); padding: 5px 14px; border-radius: 1px;
+    font-family: 'Barlow', sans-serif; font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; user-select: none; transition: background 0.15s, transform 0.1s;
+  }
+  .word-chip:hover { background: rgba(200,240,0,.2); transform: translateY(-1px); }
+  .word-chip.selected-chip { outline: 2px solid var(--lime); outline-offset: 2px; }
+  .word-chip.used { opacity: 0.25; pointer-events: none; }
+  .sort-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .sort-column {
+    border: 1px dashed var(--mid); border-radius: 2px; padding: 12px;
+    min-height: 90px; cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  }
+  .sort-column:hover { border-color: var(--lime); background: rgba(200,240,0,.04); }
+  .sort-column h4 {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem;
+    font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .sort-column.nomen-col h4 { color: var(--lime); }
+  .sort-column.kein-nomen-col h4 { color: var(--bad); }
+  .sorted-word {
+    display: inline-block; padding: 3px 9px; border-radius: 1px;
+    font-size: 0.82rem; font-weight: 600; margin: 2px;
+  }
+  .sorted-word.correct  { background: var(--good-bg); color: var(--good); border: 1px solid rgba(74,240,154,.2); }
+  .sorted-word.incorrect{ background: var(--bad-bg);  color: var(--bad);  border: 1px solid rgba(240,96,96,.2); }
+
+  /* CLICK-TO-MARK */
+  .click-text { font-size: 1rem; line-height: 2.6; color: var(--light); }
+  .clickable-word {
+    cursor: pointer; padding: 2px 5px; border-radius: 2px;
+    display: inline-block; transition: background 0.12s; border: 1px solid transparent;
+  }
+  .clickable-word:hover { background: rgba(200,240,0,.12); border-color: rgba(200,240,0,.2); }
+  .clickable-word.marked { background: rgba(200,240,0,.18); color: var(--lime); font-weight: 700; border-color: rgba(200,240,0,.4); }
+  .clickable-word.correct-mark { background: var(--good-bg); color: var(--good); border-color: rgba(74,240,154,.3); }
+  .clickable-word.wrong-mark   { background: var(--bad-bg);  color: var(--bad);  border-color: rgba(240,96,96,.3); }
+  .clickable-word.missed-mark  { background: rgba(245,197,24,.1); color: var(--warn); border-color: rgba(245,197,24,.3); }
+
+  /* CLOZE */
+  .cloze-text { font-size: 0.95rem; line-height: 2.8; color: var(--light); }
+  .cloze-input {
+    border: none; border-bottom: 2px solid var(--mid); background: transparent;
+    font-family: 'Barlow', sans-serif; font-size: 0.95rem; font-weight: 600;
+    color: var(--lime); outline: none; min-width: 90px; text-align: center;
+    padding: 1px 4px; transition: border-color 0.2s;
+  }
+  .cloze-input:focus { border-color: var(--lime); }
+  .cloze-input.correct  { border-color: var(--good); background: var(--good-bg); border-radius: 2px; color: var(--good); }
+  .cloze-input.incorrect{ border-color: var(--bad);  background: var(--bad-bg);  border-radius: 2px; color: var(--bad); }
+
+  /* MC */
+  .mc-options { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+  .mc-option {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    border-radius: 2px; padding: 11px 16px; cursor: pointer;
+    font-size: 0.9rem; font-family: 'Barlow', sans-serif; font-weight: 500;
+    color: var(--light); text-align: left; width: 100%;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .mc-option:hover    { border-color: var(--lime); background: rgba(200,240,0,.05); }
+  .mc-option.selected { border-color: var(--lime); background: rgba(200,240,0,.08); }
+  .mc-option.correct  { border-color: var(--good); background: var(--good-bg); color: var(--good); }
+  .mc-option.wrong    { border-color: var(--bad);  background: var(--bad-bg);  color: var(--bad); }
+  .mc-letter { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1rem; color: var(--lime); min-width: 18px; opacity: 0.7; }
+  .mc-option.selected .mc-letter, .mc-option.correct .mc-letter { opacity: 1; }
+
+  /* BUTTONS */
+  .check-btn {
+    background: var(--lime); color: var(--ink); border: none;
+    padding: 10px 24px; font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase;
+    border-radius: 2px; cursor: pointer; transition: background 0.15s, transform 0.1s;
+    margin-top: 14px; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .check-btn:hover { background: var(--lime-dark); transform: translateY(-1px); }
+  .check-btn:active { transform: translateY(0); }
+  .check-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .reset-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    padding: 9px 18px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem;
+    font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    border-radius: 2px; cursor: pointer; margin-left: 10px; margin-top: 14px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .reset-btn:hover { border-color: var(--bad); color: var(--bad); }
+
+  /* FEEDBACK */
+  .feedback-area {
+    margin-top: 14px; padding: 12px 16px; border-radius: 2px;
+    font-size: 0.88rem; font-weight: 600; display: none; animation: fadeUp 0.25s ease;
+  }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+  .feedback-area.success { background: var(--good-bg); color: var(--good); border: 1px solid rgba(74,240,154,.2);  display: block; }
+  .feedback-area.error   { background: var(--bad-bg);  color: var(--bad);  border: 1px solid rgba(240,96,96,.2);   display: block; }
+  .feedback-area.partial { background: var(--warn-bg); color: var(--warn); border: 1px solid rgba(245,197,24,.2);  display: block; }
+
+  /* FEHLER-BOX */
+  .fehler-box {
+    background: rgba(240,96,96,.05); border: 1px solid rgba(240,96,96,.18);
+    border-left: 3px solid var(--bad); border-radius: 2px;
+    padding: 16px 18px; margin-top: 12px; display: none;
+  }
+  .fehler-box.visible { display: block; }
+  .fehler-box h4 {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 0.88rem;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--bad); margin-bottom: 8px;
+  }
+  .fehler-box p { font-size: 0.88rem; color: #c08080; line-height: 1.65; }
+  .fehler-box strong { color: var(--bad); }
+
+  /* DIFFERENZIERUNG */
+  .diff-section { margin-top: 20px; border-radius: 2px; overflow: hidden; }
+  .diff-toggle {
+    width: 100%; padding: 12px 18px; border: none;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem;
+    font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: pointer; display: flex; align-items: center; gap: 10px;
+    transition: filter 0.15s; border-radius: 2px;
+  }
+  .diff-toggle:hover { filter: brightness(1.1); }
+  .diff-toggle .arrow { margin-left: auto; font-size: 1rem; transition: transform 0.25s; }
+  .diff-toggle.open .arrow { transform: rotate(180deg); }
+  .diff-toggle.aufbau    { background: rgba(58,123,213,.15); color: #7eb8f0; border: 1px solid rgba(58,123,213,.25); }
+  .diff-toggle.weltklasse{ background: rgba(200,240,0,.08);  color: var(--lime); border: 1px solid rgba(200,240,0,.2); }
+  .diff-content {
+    display: none; padding: 16px 18px;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    border-top: none; border-radius: 0 0 2px 2px;
+  }
+  .diff-content.visible { display: block; }
+  .diff-content p, .diff-content li { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+  .diff-content ul { padding-left: 18px; margin-top: 8px; }
+  .diff-hint { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 10px; }
+  .diff-hint.aufbau    { color: #7eb8f0; }
+  .diff-hint.weltklasse{ color: var(--lime); }
+
+  /* RULE TABLE */
+  .rule-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin: 10px 0; }
+  .rule-table th { background: rgba(200,240,0,.08); color: var(--lime); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 0.1em; padding: 8px 12px; text-align: left; border-bottom: 1px solid rgba(200,240,0,.15); }
+  .rule-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); color: var(--muted); }
+  .rule-table tr:last-child td { border-bottom: none; }
+  .rule-table td strong { color: var(--light); }
+
+  /* ABSCHREIBÜBUNG */
+  .abschreib-box {
+    background: rgba(200,240,0,.04); border: 1px solid rgba(200,240,0,.15);
+    border-left: 3px solid var(--lime); border-radius: 2px; padding: 20px 22px; margin: 16px 0;
+  }
+  .abschreib-box::before {
+    content: '✏️ INS HEFT'; display: block;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem;
+    letter-spacing: 0.2em; font-weight: 700; color: var(--lime); margin-bottom: 12px;
+  }
+  .abschreib-text { font-size: 0.92rem; line-height: 2.1; color: #b0c060; font-style: italic; }
+  .abschreib-text strong { font-style: normal; color: var(--lime); font-weight: 700; }
+
+  /* KORREKTUR */
+  mark.err-word { background: var(--bad-bg); color: var(--bad); border-radius: 2px; padding: 1px 4px; font-weight: 700; text-decoration: underline wavy rgba(240,96,96,.5); font-style: normal; }
+  .corr-block { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 2px; padding: 14px 16px; margin-bottom: 12px; }
+  .corr-sent { font-size: 0.95rem; font-weight: 600; color: var(--light); margin-bottom: 10px; line-height: 1.8; }
+  .corr-inputs { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .corr-wrong-tag { background: var(--bad-bg); color: var(--bad); border: 1px solid rgba(240,96,96,.25); padding: 2px 8px; border-radius: 2px; font-size: 0.82rem; font-weight: 700; }
+  .corr-arrow { color: var(--mid); font-size: 0.9rem; }
+  .corr-input {
+    border: 1px solid var(--mid); background: rgba(255,255,255,0.04);
+    border-radius: 2px; padding: 5px 10px;
+    font-family: 'Barlow', sans-serif; font-size: 0.92rem; font-weight: 600;
+    color: var(--light); outline: none; min-width: 140px; transition: border-color 0.15s;
+  }
+  .corr-input:focus { border-color: var(--lime); }
+  .corr-hint-text { margin-top: 8px; font-size: 0.8rem; color: var(--mid); font-style: italic; display: none; }
+
+  /* SCOREBOARD */
+  .scoreboard {
+    background: var(--ink-2); border: 1px solid var(--border);
+    border-top: 3px solid var(--lime); border-radius: 2px;
+    padding: 28px; margin-bottom: 32px; display: none; animation: fadeUp 0.4s ease;
+  }
+  .scoreboard.visible { display: block; }
+  .scoreboard-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 1.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--lime); margin-bottom: 20px; text-align: center; }
+  .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+  .score-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 2px; padding: 14px; text-align: center; }
+  .score-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 2.2rem; color: var(--lime); line-height: 1; }
+  .score-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+
+  .trophy-banner {
+    text-align: center; padding: 16px;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 1.2rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--lime); background: rgba(200,240,0,.06);
+    border: 1px solid rgba(200,240,0,.15); border-radius: 2px;
+    margin-bottom: 24px; display: none;
+  }
+
+  @media (max-width: 600px) {
+    .page-wrap { padding: 24px 16px 0; }
+    nav { padding: 12px 16px; }
+    .sort-columns { grid-template-columns: 1fr; }
+    .chapter-head { flex-wrap: wrap; }
+    .hud { grid-template-columns: 1fr; }
+    .hud-score { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../index.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3L5 8l5 5"/></svg>
+    Trainingsgelände
+  </a>
+  <div class="nav-badge">Deutsch · Klasse 7</div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="hero">
+    <div class="hero-eyebrow">Deutsch · Rechtschreibung</div>
+    <h1>Groß- &amp; Klein<span>schreibung</span></h1>
+    <p class="hero-sub">Nomen erkennen, Nominalisierungen entdecken und Fehler gezielt korrigieren – mit adaptivem Fehlertrainer und Differenzierung für 90 Minuten.</p>
+  </div>
+
+  <div class="hud">
+    <div class="hud-left">
+      <div class="hud-label">⚡ Spielstand</div>
+      <div class="hud-track"><div class="hud-fill" id="hudFill"></div></div>
+    </div>
+    <div class="hud-score" id="hudScore">0 <span>/ 84 Pkt</span></div>
+  </div>
+
+  <div class="nav-dots" id="navDots"></div>
+
+  <!-- ══════════════════ KAP 1 ══════════════════ -->
+  <div class="chapter" id="cap1">
+    <div class="chapter-head">
+      <div class="chapter-num">01</div>
+      <div class="chapter-meta">
+        <div class="chapter-eyebrow">⚽ Kick-off · ca. 15 Min.</div>
+        <div class="chapter-title">Was ist ein Nomen?</div>
+      </div>
+      <div class="chapter-badge">Aufwärmen</div>
+    </div>
+
+    <div class="rule-box">
+      Nomen (Substantive) sind Wörter, die <strong>Dinge, Lebewesen, Orte oder Gefühle</strong> bezeichnen.<br>
+      Nomen schreibt man im Deutschen immer <strong>groß</strong> – egal, wo sie im Satz stehen.<br>
+      Erkennungstest: Kannst du <em>„ein / eine / das"</em> davor setzen? → Dann ist es ein Nomen!
+    </div>
+    <div class="tip-box">
+      Benutze den <strong>Artikel-Test</strong>: „ein Hund" ✓ → Nomen! &nbsp;·&nbsp; „ein rennen" ✗ → kein Nomen.<br>
+      Oder den <strong>Lupe-Test</strong>: Kann man es anfassen oder sich vorstellen? Oft ist es dann ein Nomen.
+    </div>
+
+    <div class="task-block">
+      <div class="task-label">Aufgabe 1 <span class="points-badge">10 Punkte</span></div>
+      <h3>Sortiere die Wörter in die richtige Spalte!</h3>
+      <p class="inline-hint">Klicke ein Wort an, dann die Spalte, in die es gehört.</p>
+      <div class="word-bank" id="wordBank1">
+        <button class="word-chip" data-word="Hund"    data-cat="nomen" onclick="pickWord(this,'sort1')">Hund</button>
+        <button class="word-chip" data-word="laufen"  data-cat="kein"  onclick="pickWord(this,'sort1')">laufen</button>
+        <button class="word-chip" data-word="Freude"  data-cat="nomen" onclick="pickWord(this,'sort1')">Freude</button>
+        <button class="word-chip" data-word="schön"   data-cat="kein"  onclick="pickWord(this,'sort1')">schön</button>
+        <button class="word-chip" data-word="Schule"  data-cat="nomen" onclick="pickWord(this,'sort1')">Schule</button>
+        <button class="word-chip" data-word="spielen" data-cat="kein"  onclick="pickWord(this,'sort1')">spielen</button>
+        <button class="word-chip" data-word="Mut"     data-cat="nomen" onclick="pickWord(this,'sort1')">Mut</button>
+        <button class="word-chip" data-word="schnell" data-cat="kein"  onclick="pickWord(this,'sort1')">schnell</button>
+        <button class="word-chip" data-word="Tisch"   data-cat="nomen" onclick="pickWord(this,'sort1')">Tisch</button>
+        <button class="word-chip" data-word="tanzen"  data-cat="kein"  onclick="pickWord(this,'sort1')">tanzen</button>
+      </div>
+      <div class="sort-columns">
+        <div class="sort-column nomen-col" id="sort1-nomen" onclick="dropWord(this,'sort1','nomen')"><h4>✅ Nomen (Artikel möglich)</h4></div>
+        <div class="sort-column kein-nomen-col" id="sort1-kein" onclick="dropWord(this,'sort1','kein')"><h4>✗ Kein Nomen</h4></div>
+      </div>
+      <button class="check-btn" onclick="checkSort('sort1',10)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetSort('sort1')">↺ Neu</button>
+      <div class="feedback-area" id="fb-sort1"></div>
+      <div class="fehler-box" id="fehler-sort1">
+        <h4>🔴 Fehlertrainer – Artikel-Test</h4>
+        <p>Schreibe für jedes Nomen: <em>„ein ___ / eine ___ / das ___"</em><br>
+        Versuche: <strong>Freude · Mut · Hund · Schule · Tisch</strong></p>
+      </div>
+    </div>
+
+    <div class="task-block">
+      <div class="task-label">Aufgabe 2 <span class="points-badge">6 Punkte</span></div>
+      <h3>Multiple Choice: Welche Aussage ist richtig?</h3>
+      <div id="mc1-q1">
+        <p style="font-weight:600;margin-bottom:6px;color:var(--light);">① „das Schwimmen" – was stimmt?</p>
+        <div class="mc-options">
+          <button class="mc-option" onclick="selectMC('mc1-q1',this,'A')"><span class="mc-letter">A</span> „schwimmen" ist ein Verb und wird immer klein geschrieben.</button>
+          <button class="mc-option" onclick="selectMC('mc1-q1',this,'B')"><span class="mc-letter">B</span> Wenn man „das" davorsetzen kann, wird es großgeschrieben.</button>
+          <button class="mc-option" onclick="selectMC('mc1-q1',this,'C')"><span class="mc-letter">C</span> Verben werden nur am Satzanfang großgeschrieben.</button>
+        </div>
+      </div>
+      <div id="mc1-q2" style="margin-top:16px;">
+        <p style="font-weight:600;margin-bottom:6px;color:var(--light);">② In welchem Satz steckt ein Fehler?</p>
+        <div class="mc-options">
+          <button class="mc-option" onclick="selectMC('mc1-q2',this,'A')"><span class="mc-letter">A</span> „Der Hund bellt laut."</button>
+          <button class="mc-option" onclick="selectMC('mc1-q2',this,'B')"><span class="mc-letter">B</span> „Das Lachen macht Spaß."</button>
+          <button class="mc-option" onclick="selectMC('mc1-q2',this,'C')"><span class="mc-letter">C</span> „Ich mag meine freunde sehr."</button>
+        </div>
+        <p class="inline-hint" style="margin-top:6px;">Tipp: Prüfe jeden Satz genau – auch kleine Wörter können falsch sein!</p>
+      </div>
+      <div id="mc1-q3" style="margin-top:16px;">
+        <p style="font-weight:600;margin-bottom:6px;color:var(--light);">③ In welchem Satz steht ein Nomen <em>mitten</em> im Satz (nicht am Anfang)?</p>
+        <div class="mc-options">
+          <button class="mc-option" onclick="selectMC('mc1-q3',this,'A')"><span class="mc-letter">A</span> „Sie läuft schnell nach Hause."</button>
+          <button class="mc-option" onclick="selectMC('mc1-q3',this,'B')"><span class="mc-letter">B</span> „Ich kaufe Blumen für meine Frau."</button>
+          <button class="mc-option" onclick="selectMC('mc1-q3',this,'C')"><span class="mc-letter">C</span> „Morgen scheint die Sonne."</button>
+        </div>
+        <p class="inline-hint" style="margin-top:6px;">Tipp: Satzanfänge zählen nicht – suche Nomen, die NICHT das erste Wort sind.</p>
+      </div>
+      <button class="check-btn" onclick="checkMC1()">✔ Auswertung</button>
+      <div class="feedback-area" id="fb-mc1"></div>
+    </div>
+
+    <div class="diff-section">
+      <button class="diff-toggle aufbau" onclick="toggleDiff(this)">🔵 Aufbauspieler – Hilfe &amp; Einstieg <span class="arrow">▼</span></button>
+      <div class="diff-content">
+        <div class="diff-hint aufbau">Aufbauspieler</div>
+        <p>Unterstreiche zuerst alle Wörter, vor die du „ein" setzen kannst.</p>
+        <table class="rule-table" style="margin-top:10px;">
+          <tr><th>Wort</th><th>Test: „ein ___"?</th><th>Ergebnis</th></tr>
+          <tr><td>Hund</td><td>ein Hund ✓</td><td><strong>Nomen → GROSS</strong></td></tr>
+          <tr><td>laufen</td><td>ein laufen ✗</td><td>Verb → klein</td></tr>
+          <tr><td>Freude</td><td>eine Freude ✓</td><td><strong>Nomen → GROSS</strong></td></tr>
+          <tr><td>schön</td><td>ein schön ✗</td><td>Adjektiv → klein</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="diff-section" style="margin-top:8px;">
+      <button class="diff-toggle weltklasse" onclick="toggleDiff(this)">🏆 Weltklassespieler – Extrachallenge <span class="arrow">▼</span></button>
+      <div class="diff-content">
+        <div class="diff-hint weltklasse">Weltklassespieler</div>
+        <p>Erkläre: <em>Warum gibt es im Deutschen die Großschreibung von Nomen? Welchen Vorteil hat das beim Lesen?</em></p>
+        <p style="margin-top:8px;">Vergleiche „Der Hund schläft." mit „The dog is sleeping." – Was fällt dir auf?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════ KAP 2 ══════════════════ -->
+  <div class="chapter" id="cap2">
+    <div class="chapter-head">
+      <div class="chapter-num">02</div>
+      <div class="chapter-meta">
+        <div class="chapter-eyebrow">⚽ Hauptrunde 1 · ca. 20 Min.</div>
+        <div class="chapter-title">Nomen im Satz erkennen &amp; korrigieren</div>
+      </div>
+      <div class="chapter-badge">1. Halbzeit</div>
+    </div>
+
+    <div class="rule-box">
+      Nomen werden im Satz <strong>immer großgeschrieben</strong> – auch wenn sie <em>nicht</em> am Satzanfang stehen.<br>
+      Das gilt für: Personen (<strong>Lehrerin, Jonas</strong>), Tiere (<strong>Katze</strong>), Dinge (<strong>Buch, Tisch</strong>), Orte (<strong>Saarland, Berlin</strong>), Begriffe (<strong>Freundschaft, Angst</strong>).
+    </div>
+
+    <div class="task-block">
+      <div class="task-label">Aufgabe 3 <span class="points-badge">12 Punkte</span></div>
+      <h3>Klicke alle Wörter an, die großgeschrieben werden müssen!</h3>
+      <p class="inline-hint">Alle Wörter stehen hier absichtlich klein. Markiere alles, was groß sein muss – Nomen <strong>und</strong> Satzanfänge!</p>
+      <div class="click-text" id="clickText2"></div>
+      <button class="check-btn" onclick="checkClickMark('clickText2','cm2',12)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetClickMark('clickText2','cm2')">↺ Neu</button>
+      <div class="feedback-area" id="fb-cm2"></div>
+      <div class="fehler-box" id="fehler-cm2">
+        <h4>🔴 Fehlertrainer – Nomen im Satz</h4>
+        <p>Setze den Artikel-Test ein. Vergiss nicht: <strong>Gefühle und abstrakte Begriffe</strong> (Freundschaft, Mut, Angst) sind auch Nomen!</p>
+      </div>
+    </div>
+
+    <div class="task-block">
+      <div class="task-label">Aufgabe 4 <span class="points-badge">10 Punkte</span></div>
+      <h3>Groß oder klein? Setze das Wort richtig ein!</h3>
+      <p class="inline-hint">Achtung: Nicht alle Wörter müssen groß! Verben und Adjektive bleiben im Satz klein. Der Hinweis in der Klammer hilft dir.</p>
+      <div class="cloze-text" id="cloze4"></div>
+      <button class="check-btn" onclick="checkCloze('cloze4','fb-cloze4',10)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetCloze('cloze4')">↺ Neu</button>
+      <div class="feedback-area" id="fb-cloze4"></div>
+      <div class="fehler-box" id="fehler-cloze4">
+        <h4>🔴 Fehlertrainer – Schreibweise prüfen</h4>
+        <p>Ist es ein Nomen? Mache den Artikel-Test! Ist es ein Verb oder Adjektiv? Dann bleibt es klein (außer am Satzanfang).</p>
+      </div>
+    </div>
+
+    <div class="diff-section">
+      <button class="diff-toggle aufbau" onclick="toggleDiff(this)">🔵 Aufbauspieler – Satzanfänge beachten <span class="arrow">▼</span></button>
+      <div class="diff-content">
+        <div class="diff-hint aufbau">Aufbauspieler</div>
+        <p>Das <em>erste Wort</em> eines Satzes wird <strong>immer</strong> großgeschrieben – egal ob Nomen, Verb oder Adjektiv. Suche in Aufgabe 4 alle Satzanfänge zuerst.</p>
+      </div>
+    </div>
+    <div class="diff-section" style="margin-top:8px;">
+      <button class="diff-toggle weltklasse" onclick="toggleDiff(this)">🏆 Weltklassespieler – Eigennamen <span class="arrow">▼</span></button>
+      <div class="diff-content">
+        <div class="diff-hint weltklasse">Weltklassespieler</div>
+        <p>Eigennamen (Personen, Städte, Länder, Flüsse …) sind eine besondere Art von Nomen. Welche Eigennamen stehen in Aufgabe 3? Erfinde drei eigene Sätze, in denen Eigennamen <em>nicht</em> am Satzanfang stehen.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════ KAP 3 ══════════════════ -->
+  <div class="chapter" id="cap3">
+    <div class="chapter-head">
+      <div class="chapter-num">03</div>
+      <div class="chapter-meta">
+        <div class="chapter-eyebrow">⚽ Hauptrunde 2 · ca. 20 Min.</div>
+        <div class="chapter-title">Nominalisierungen entdecken</div>
+      </div>
+      <div class="chapter-badge">Taktik</div>
+    </div>
+
+    <div class="rule-box">
+      Verben und Adjektive können zu Nomen werden – man nennt das <strong>Nominalisierung</strong>.<br>
+      Erkennungszeichen: Ein Artikel (<em>das, ein, beim</em>) oder Begleiter (<em>kein, dieses</em>) steht davor.<br>
+      Beispiele: <strong>das Laufen</strong> (← laufen) &nbsp;·&nbsp; <strong>das Schöne</strong> (← schön) &nbsp;·&nbsp; <strong>das Spielen</strong> (← spielen)
+    </div>
+    <div class="tip-box">
+      <strong>Trick:</strong> Suche im Satz nach Artikeln (der, die, das, ein, eine, beim, vom, im …). Was danach kommt, ist oft nominalisiert und muss groß!
+    </div>
+
+    <div class="task-block">
+      <div class="task-label">Aufgabe 5 <span class="points-badge">12 Punkte</span></div>
+      <h3>Klicke alle nominalisierten Wörter an!</h3>
+      <p class="inline-hint">Diesmal nur Nominalisierungen – also umgewandelte Verben oder Adjektive.</p>
+      <div class="click-text" id="clickText3"></div>
+      <button class="check-btn" onclick="checkClickMark('clickText3','cm3',12)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetClickMark('clickText3','cm3')">↺ Neu</button>
+      <div class="feedback-area" id="fb-cm3"></div>
+      <div class="fehler-box" id="fehler-cm3">
+        <h4>🔴 Fehlertrainer – Nominalisierungen</h4>
+        <p>Suche nach Artikeln: <em>das, beim, im, vom, ein</em> … Was steht dahinter? Schreibe die nominalisierten Wörter auf.</p>
+      </div>
+    </div>
+
+    <div class="task-block">
+      <div class="task-label">Aufgabe 6 <span class="points-badge">8 Punkte</span></div>
+      <h3>Wandle die Wörter in Nomen um und setze sie ein!</h3>
+      <div class="cloze-text" id="cloze6"></div>
+      <button class="check-btn" onclick="checkCloze('cloze6','fb-cloze6',8)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetCloze('cloze6')">↺ Neu</button>
+      <div class="feedback-area" id="fb-cloze6"></div>
+      <div class="fehler-box" id="fehler-cloze6">
+        <h4>🔴 Fehlertrainer – Verb → Nomen</h4>
+        <p>Nimm den Infinitiv und schreibe ihn groß. Beispiel: <em>schwimmen → das Schwimmen</em></p>
+      </div>
+    </div>
+
+    <div class="diff-section">
+      <button class="diff-toggle aufbau" onclick="toggleDiff(this)">🔵 Aufbauspieler – Artikel-Trick üben <span class="arrow">▼</span></button>
+      <div class="diff-content">
+        <div class="diff-hint aufbau">Aufbauspieler</div>
+        <p>Unterstreiche zuerst alle Artikel. Dann schau, was dahinter steht.</p>
+        <table class="rule-table" style="margin-top:10px;">
+          <tr><th>Verb</th><th>Nominalisierung</th><th>Beispielsatz</th></tr>
+          <tr><td>rennen</td><td><strong>das Rennen</strong></td><td>Das Rennen macht Spaß.</td></tr>
+          <tr><td>lesen</td><td><strong>das Lesen</strong></td><td>Beim Lesen lerne ich viel.</td></tr>
+          <tr><td>kochen</td><td><strong>das Kochen</strong></td><td>Ich mag das Kochen.</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="diff-section" style="margin-top:8px;">
+      <button class="diff-toggle weltklasse" onclick="toggleDiff(this)">🏆 Weltklassespieler – Adjektive nominalisieren <span class="arrow">▼</span></button>
+      <div class="diff-content">
+        <div class="diff-hint weltklasse">Weltklassespieler</div>
+        <p>Nominalisiere: <strong>interessant · lustig · wichtig · spannend · dunkel</strong><br>
+        Baue je einen Satz. Woran erkennst du, ob das nominalisierte Adjektiv groß geschrieben werden muss?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════ KAP 4 – HEFT ══════════════════ -->
+  <div class="chapter" id="cap4">
+    <div class="chapter-head">
+      <div class="chapter-num">04</div>
+      <div class="chapter-meta">
+        <div class="chapter-eyebrow">✏️ Hefteintrag · ca. 10 Min.</div>
+        <div class="chapter-title">Halbzeitpause – Ins Heft!</div>
+      </div>
+      <div class="chapter-badge">Abschreiben</div>
+    </div>
+
+    <p style="color:var(--muted);margin-bottom:16px;font-size:0.92rem;">Schreibe den folgenden Text sorgfältig in dein Heft. Er fasst die wichtigsten Regeln zusammen.</p>
+
+    <div class="abschreib-box">
+      <div class="abschreib-text">
+        <strong>Groß- und Kleinschreibung – Die wichtigsten Regeln</strong><br><br>
+        1. <strong>Nomen</strong> (Substantive) schreibt man immer groß.<br>
+        &nbsp;&nbsp;&nbsp;Erkennungstest: Kann ich <em>„ein / eine / das"</em> davor setzen? → <strong>Nomen → GROSS!</strong><br>
+        &nbsp;&nbsp;&nbsp;Beispiele: der <strong>Hund</strong>, eine <strong>Freude</strong>, das <strong>Buch</strong><br><br>
+        2. Das <strong>erste Wort</strong> eines Satzes wird immer großgeschrieben.<br><br>
+        3. <strong>Nominalisierungen</strong>: Wenn Verben oder Adjektive zu Nomen werden, schreibt man sie groß.<br>
+        &nbsp;&nbsp;&nbsp;Erkennungszeichen: Ein Artikel steht davor.<br>
+        &nbsp;&nbsp;&nbsp;Beispiele: das <strong>Laufen</strong>, beim <strong>Spielen</strong>, das <strong>Schöne</strong><br><br>
+        4. Verben und Adjektive schreibt man im Satz <strong>klein</strong>.<br>
+        &nbsp;&nbsp;&nbsp;Beispiele: „Sie <em>läuft</em> schnell." – „Das Essen ist <em>lecker</em>."
+      </div>
+    </div>
+    <div class="tip-box">
+      Überprüfe nach dem Abschreiben: Hast du alle <strong>Nomen</strong> großgeschrieben? Hast du nach jedem Punkt groß weitergeschrieben?
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════ KAP 5 – ENDSPURT ══════════════════ -->
+  <div class="chapter" id="cap5">
+    <div class="chapter-head">
+      <div class="chapter-num">05</div>
+      <div class="chapter-meta">
+        <div class="chapter-eyebrow">⚽ Endspurt · ca. 20 Min.</div>
+        <div class="chapter-title">Gemischte Anwendung &amp; Fehlertrainer</div>
+      </div>
+      <div class="chapter-badge">Finale</div>
+    </div>
+
+    <div class="rule-box">
+      Jetzt kommt alles zusammen! Finde und korrigiere <strong>absichtliche Fehler</strong> in den Sätzen.<br>
+      Nutze alle Regeln: Nomen großschreiben, Satzanfang beachten, Nominalisierungen erkennen, Adjektive/Verben klein lassen.
+    </div>
+
+    <div class="task-block">
+      <div class="task-label">Aufgabe 7 <span class="points-badge">14 Punkte</span></div>
+      <h3>Jeder Satz enthält mindestens einen Fehler. Finde und korrigiere ihn!</h3>
+      <p class="inline-hint">Das falsch geschriebene Wort ist rot markiert. Tippe die richtige Form in das Feld.</p>
+      <div id="corr7"></div>
+      <button class="check-btn" onclick="checkCorr7()">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetCorr7()">↺ Neu</button>
+      <div class="feedback-area" id="fb-corr7"></div>
+      <div class="fehler-box" id="fehler-corr7">
+        <h4>🔴 Fehlertrainer – Korrektur</h4>
+        <p>Schreibe die korrigierten Sätze ins Heft. Unterstreiche Nomen <span style="color:var(--bad)">rot</span> und Verben <span style="color:#7eb8f0">blau</span>.</p>
+      </div>
+    </div>
+
+    <div class="task-block">
+      <div class="task-label">Aufgabe 8 <span class="points-badge">12 Punkte</span></div>
+      <h3>Ergänze den Text mit den richtigen Formen!</h3>
+      <p class="inline-hint">In Klammern steht die Grundform. Schreibe das Wort richtig groß oder klein.</p>
+      <div class="cloze-text" id="cloze8"></div>
+      <button class="check-btn" onclick="checkCloze('cloze8','fb-cloze8',12)">✔ Auswertung</button>
+      <button class="reset-btn" onclick="resetCloze('cloze8')">↺ Neu</button>
+      <div class="feedback-area" id="fb-cloze8"></div>
+      <div class="fehler-box" id="fehler-cloze8">
+        <h4>🔴 Fehlertrainer – Großschreibung im Text</h4>
+        <p>Lies den fertigen Text laut vor. Schreibe den vollständigen Text als Abschrift in dein Heft.</p>
+      </div>
+    </div>
+
+    <div class="diff-section">
+      <button class="diff-toggle aufbau" onclick="toggleDiff(this)">🔵 Aufbauspieler – Schritt für Schritt <span class="arrow">▼</span></button>
+      <div class="diff-content">
+        <div class="diff-hint aufbau">Aufbauspieler</div>
+        <ul>
+          <li>1. Markiere alle Artikel (der, die, das, ein, eine, beim, vom…)</li>
+          <li>2. Was steht nach dem Artikel? → Groß!</li>
+          <li>3. Ist das erste Wort des Satzes großgeschrieben?</li>
+        </ul>
+      </div>
+    </div>
+    <div class="diff-section" style="margin-top:8px;">
+      <button class="diff-toggle weltklasse" onclick="toggleDiff(this)">🏆 Weltklassespieler – Eigener Text <span class="arrow">▼</span></button>
+      <div class="diff-content">
+        <div class="diff-hint weltklasse">Weltklassespieler</div>
+        <p>Schreibe einen kurzen Text (6–8 Sätze) über ein Sportereignis oder einen Schulausflug. Baue dabei ein:</p>
+        <ul>
+          <li>→ Abstraktes Nomen (z.B. Freundschaft, Aufregung, Stolz)</li>
+          <li>→ Nominalisiertes Verb (z.B. das Rennen, das Lachen)</li>
+          <li>→ Einen Eigennamen</li>
+        </ul>
+        <p style="margin-top:8px;font-style:italic;">Tausche deinen Text mit einem Mitschüler aus und korrigiert euch gegenseitig.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="scoreboard" id="finalScore">
+    <div class="scoreboard-title">🏆 Endstand</div>
+    <div class="score-grid">
+      <div class="score-item"><div class="score-val" id="s-total">0</div><div class="score-lbl">Punkte gesamt</div></div>
+      <div class="score-item"><div class="score-val">84</div><div class="score-lbl">Mögl. Punkte</div></div>
+      <div class="score-item"><div class="score-val" id="s-pct">0%</div><div class="score-lbl">Erfolgsquote</div></div>
+      <div class="score-item"><div class="score-val" id="s-rating">–</div><div class="score-lbl">Bewertung</div></div>
+    </div>
+  </div>
+  <div class="trophy-banner" id="trophyBanner"></div>
+
+  <div style="text-align:center;padding:32px 0 16px;">
+    <a href="../index.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;border:1px solid var(--border);padding:10px 22px;border-radius:2px;transition:color 0.2s,border-color 0.2s;">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3L5 8l5 5"/></svg>
+      Zurück zum Trainingsgelände
+    </a>
+  </div>
+
+</div>
+
+<script>
+const state = { score:0, maxScore:84, mcAnswers:{} };
+
+function addScore(pts){ state.score+=pts; updateHUD(); }
+function updateHUD(){
+  const pct = Math.round((state.score/state.maxScore)*100);
+  document.getElementById('hudFill').style.width = pct+'%';
+  document.getElementById('hudScore').innerHTML = state.score+' <span>/ '+state.maxScore+' Pkt</span>';
+  document.getElementById('s-total').textContent = state.score;
+  document.getElementById('s-pct').textContent = pct+'%';
+  document.getElementById('s-rating').textContent = pct>=90?'⭐⭐⭐':pct>=70?'⭐⭐':pct>=50?'⭐':'🔄';
+  if(state.score>0) document.getElementById('finalScore').classList.add('visible');
+  const tb=document.getElementById('trophyBanner');
+  if(pct>=80){ tb.style.display='block'; tb.textContent=pct>=90?'🏆 Meisterschaft! Hervorragende Leistung!':'🥇 Starke Leistung! Weiter so!'; }
+}
+function showFeedback(elOrId,type,msg){
+  const el=typeof elOrId==='string'?document.getElementById(elOrId):elOrId;
+  if(!el)return; el.className='feedback-area '+type; el.textContent=msg;
+}
+function hideFeedback(id){ const el=document.getElementById(id); if(el) el.className='feedback-area'; }
+function toggleDiff(btn){ btn.classList.toggle('open'); btn.nextElementSibling.classList.toggle('visible'); }
+
+// SORT
+let sortPicked=null, sortPickedId=null;
+function pickWord(btn,sortId){
+  if(btn.classList.contains('used'))return;
+  if(sortPicked) sortPicked.classList.remove('selected-chip');
+  sortPicked=btn; sortPickedId=sortId; btn.classList.add('selected-chip');
+}
+function dropWord(col,sortId,cat){
+  if(!sortPicked||sortPickedId!==sortId)return;
+  const chip=document.createElement('span'); chip.className='sorted-word';
+  chip.textContent=sortPicked.dataset.word;
+  chip.dataset.cat=sortPicked.dataset.cat; chip.dataset.placed=cat;
+  col.appendChild(chip);
+  sortPicked.classList.add('used'); sortPicked.classList.remove('selected-chip');
+  sortPicked=null; sortPickedId=null;
+}
+function checkSort(sortId,maxPts){
+  const cols={nomen:document.getElementById(sortId+'-nomen'),kein:document.getElementById(sortId+'-kein')};
+  let correct=0,total=0;
+  ['nomen','kein'].forEach(cat=>{
+    cols[cat].querySelectorAll('.sorted-word').forEach(el=>{
+      total++;
+      if(el.dataset.cat===el.dataset.placed){el.classList.add('correct');correct++;}
+      else el.classList.add('incorrect');
+    });
+  });
+  const pct=total>0?correct/total:0, pts=Math.round(pct*maxPts);
+  addScore(pts);
+  const fb=document.getElementById('fb-'+sortId);
+  if(pct===1) showFeedback(fb,'success','✅ Perfekt! Alle '+correct+' Wörter richtig! +'+pts+' Punkte!');
+  else if(pct>=0.5){showFeedback(fb,'partial','🟡 '+correct+'/'+total+' richtig. +'+pts+' Punkte.');document.getElementById('fehler-'+sortId).classList.add('visible');}
+  else{showFeedback(fb,'error','🔴 '+correct+'/'+total+' richtig. +'+pts+' Punkte.');document.getElementById('fehler-'+sortId).classList.add('visible');}
+  document.querySelector(`[onclick="checkSort('${sortId}',${maxPts})"]`).disabled=true;
+}
+function resetSort(sortId){
+  document.getElementById('wordBank1').querySelectorAll('.word-chip').forEach(c=>{c.classList.remove('used','selected-chip');});
+  ['nomen','kein'].forEach(cat=>{ document.getElementById(sortId+'-'+cat).querySelectorAll('.sorted-word').forEach(el=>el.remove()); });
+  hideFeedback('fb-'+sortId);
+  document.getElementById('fehler-'+sortId)?.classList.remove('visible');
+  document.querySelector(`[onclick="checkSort('${sortId}',10)"]`).disabled=false;
+}
+
+// MC
+function selectMC(qId,btn,letter){
+  document.querySelectorAll('#'+qId+' .mc-option').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected'); state.mcAnswers[qId]=letter;
+}
+const mc1Answers={'mc1-q1':'B','mc1-q2':'C','mc1-q3':'B'};
+function checkMC1(){
+  let correct=0;
+  Object.keys(mc1Answers).forEach(qId=>{
+    const ans=state.mcAnswers[qId], right=mc1Answers[qId];
+    document.querySelectorAll('#'+qId+' .mc-option').forEach((btn,i)=>{
+      const letters=['A','B','C'];
+      if(letters[i]===right) btn.classList.add('correct');
+      else if(letters[i]===ans&&ans!==right) btn.classList.add('wrong');
+      btn.disabled=true;
+    });
+    if(ans===right) correct++;
+  });
+  const pts=correct*2;
+  addScore(pts);
+  showFeedback('fb-mc1',correct===3?'success':correct>=2?'partial':'error',
+    correct===3?'✅ Alle 3 Fragen richtig! +'+pts+' Punkte!':correct+'/3 richtig. +'+pts+' Punkte.');
+  document.querySelector('[onclick="checkMC1()"]').disabled=true;
+}
+
+// CLICK-TO-MARK
+const clickData={
+  cm2:{sentences:[
+    {words:['der','lehrer','erklärt','die','aufgabe.'],nomen:[0,1,4]},
+    {words:['das','mädchen','liest','ein','buch','mit','freude.'],nomen:[0,1,4,6]},
+    {words:['im','saarland','gibt','es','viele','wälder.'],nomen:[0,1,5]},
+    {words:['mut','und','ausdauer','helfen','beim','lernen.'],nomen:[0,2]}
+  ]},
+  cm3:{sentences:[
+    {words:['Das','Schwimmen','macht','mir','Spaß.'],nomen:[1]},
+    {words:['Beim','Kochen','hörte','er','Musik.'],nomen:[1]},
+    {words:['Sie','liebt','das','Tanzen','sehr.'],nomen:[3]},
+    {words:['Das','Gute','an','der','Schule','ist','das','Spielen.'],nomen:[1,7]}
+  ]}
+};
+function buildClickText(containerId,cmId){
+  const container=document.getElementById(containerId); container.innerHTML='';
+  clickData[cmId].sentences.forEach((s)=>{
+    const p=document.createElement('p'); p.style.marginBottom='4px';
+    s.words.forEach((w,wi)=>{
+      const span=document.createElement('span'); span.className='clickable-word';
+      span.textContent=(cmId==='cm2'?w.toLowerCase():w)+' ';
+      span.dataset.isNomen=s.nomen.includes(wi)?'1':'0';
+      span.addEventListener('click',function(){this.classList.toggle('marked');});
+      p.appendChild(span);
+    });
+    container.appendChild(p);
+  });
+}
+function checkClickMark(containerId,cmId,maxPts){
+  const container=document.getElementById(containerId);
+  let correct=0,total=0;
+  clickData[cmId].sentences.forEach(s=>{ s.nomen.forEach(()=>total++); });
+  container.querySelectorAll('.clickable-word').forEach(span=>{
+    const isNomen=span.dataset.isNomen==='1', marked=span.classList.contains('marked');
+    span.classList.remove('marked','correct-mark','wrong-mark','missed-mark');
+    if(isNomen&&marked){span.classList.add('correct-mark');correct++;}
+    else if(!isNomen&&marked) span.classList.add('wrong-mark');
+    else if(isNomen&&!marked) span.classList.add('missed-mark');
+  });
+  const pct=correct/total, pts=Math.round(pct*maxPts); addScore(pts);
+  const fb=document.getElementById('fb-'+cmId);
+  if(pct===1) showFeedback(fb,'success','✅ Perfekt! Alle Nomen gefunden! +'+pts+' Punkte!');
+  else if(pct>=0.6) showFeedback(fb,'partial','🟡 '+correct+'/'+total+' gefunden. +'+pts+' Punkte. Orange = verpasst, Rot = falsch.');
+  else showFeedback(fb,'error','🔴 '+correct+'/'+total+' gefunden. +'+pts+' Punkte.');
+  if(pct<0.8) document.getElementById('fehler-'+cmId)?.classList.add('visible');
+  document.querySelector(`[onclick="checkClickMark('${containerId}','${cmId}',${maxPts})"]`).disabled=true;
+}
+function resetClickMark(containerId,cmId){
+  buildClickText(containerId,cmId); hideFeedback('fb-'+cmId);
+  document.getElementById('fehler-'+cmId)?.classList.remove('visible');
+  const btn=document.querySelector(`[onclick="checkClickMark('${containerId}','${cmId}',12)"]`);
+  if(btn) btn.disabled=false;
+}
+
+// CLOZE
+const clozeData={
+  cloze4:[
+    {before:'Der ',blank:'Hund',after:' bellt laut.',hint:'(hund)'},
+    {before:'Meine ',blank:'Freundin',after:' heißt Lena.',hint:'(freundin)'},
+    {before:'Im ',blank:'Garten',after:' spielen die Kinder.',hint:'(garten)'},
+    {before:'Die Kinder ',blank:'spielen',after:' draußen.',hint:'(spielen – Verb!)'},
+    {before:'Er ',blank:'liest',after:' ein gutes ',hint:'(lesen – Verb!)'},
+    {before:'',blank:'Buch',after:'.',hint:'(buch)'},
+    {before:'Das Essen schmeckt ',blank:'lecker',after:'.',hint:'(lecker – Adjektiv!)'},
+    {before:'Sie hat viel ',blank:'Mut',after:' gezeigt.',hint:'(mut)'},
+    {before:'Wir ',blank:'rennen',after:' zur Schule.',hint:'(rennen – Verb!)'},
+    {before:'Die ',blank:'Lehrerin',after:' erklärt die Aufgabe.',hint:'(lehrerin)'},
+  ],
+  cloze6:[
+    {before:'Das ',blank:'Laufen',after:' stärkt die Muskeln.',hint:'(laufen → Nomen!)'},
+    {before:'Beim ',blank:'Singen',after:' macht sie die Augen zu.',hint:'(singen → Nomen!)'},
+    {before:'Er lernte das schnelle ',blank:'Lesen',after:'.',hint:'(lesen → Nomen!)'},
+    {before:'Im ',blank:'Schlafen',after:' träumte er vom Urlaub.',hint:'(schlafen → Nomen!)'},
+  ],
+  cloze8:[
+    {before:'Das ',blank:'Turnen',after:' in der ',hint:'(turnen)'},
+    {before:'',blank:'Sporthalle',after:' macht uns Spaß.',hint:'(sporthalle)'},
+    {before:'Wir ',blank:'üben',after:' jeden Dienstag.',hint:'(üben – Verb!)'},
+    {before:'Beim ',blank:'Klettern',after:' braucht man viel ',hint:'(klettern)'},
+    {before:'',blank:'Mut',after:'.',hint:'(mut)'},
+    {before:'Das ',blank:'Schwierige',after:' ist die Balance.',hint:'(schwierige – nominalisiertes Adjektiv!)'},
+    {before:'Unser ',blank:'Lehrer',after:' lobt uns oft.',hint:'(lehrer)'},
+  ]
+};
+function buildCloze(clozeId){
+  const container=document.getElementById(clozeId); if(!container)return;
+  container.innerHTML='';
+  clozeData[clozeId].forEach((item)=>{
+    const span=document.createElement('span');
+    span.appendChild(document.createTextNode(item.before));
+    const inp=document.createElement('input');
+    inp.type='text'; inp.className='cloze-input'; inp.placeholder=item.hint; inp.dataset.answer=item.blank;
+    inp.style.width=Math.max(80,item.blank.length*12+20)+'px';
+    span.appendChild(inp); span.appendChild(document.createTextNode(item.after+' '));
+    container.appendChild(span);
+  });
+}
+function checkCloze(clozeId,fbId,maxPts){
+  const inputs=document.getElementById(clozeId).querySelectorAll('.cloze-input');
+  let correct=0;
+  inputs.forEach(inp=>{
+    inp.classList.remove('correct','incorrect');
+    if(inp.value.trim()===inp.dataset.answer){inp.classList.add('correct');correct++;inp.disabled=true;}
+    else inp.classList.add('incorrect');
+  });
+  const pts=Math.round((correct/inputs.length)*maxPts); addScore(pts);
+  const fb=document.getElementById(fbId);
+  if(correct===inputs.length) showFeedback(fb,'success','✅ Alle Lücken richtig! +'+pts+' Punkte!');
+  else if(correct>=inputs.length*0.6) showFeedback(fb,'partial','🟡 '+correct+'/'+inputs.length+' richtig. +'+pts+' Punkte.');
+  else showFeedback(fb,'error','🔴 '+correct+'/'+inputs.length+' richtig. +'+pts+' Punkte.');
+  if(correct<inputs.length) document.getElementById('fehler-'+clozeId)?.classList.add('visible');
+  document.querySelector(`[onclick*="${fbId}"]`).disabled=true;
+}
+function resetCloze(clozeId){
+  buildCloze(clozeId);
+  const fbMap={cloze4:'fb-cloze4',cloze6:'fb-cloze6',cloze8:'fb-cloze8'};
+  const fbId=fbMap[clozeId]; hideFeedback(fbId);
+  document.getElementById('fehler-'+clozeId)?.classList.remove('visible');
+  const btn=document.querySelector(`[onclick*="${fbId}"]`); if(btn) btn.disabled=false;
+}
+
+// KORREKTUR
+const corr7Data=[
+  {sentence:'Das <mark class="err-word">mädchen</mark> geht in die <mark class="err-word">schule</mark>.',wrongs:['mädchen','schule'],corrects:['Mädchen','Schule'],hints:['Nomen → Großschreibung','Nomen → Großschreibung']},
+  {sentence:'Sie liebt das <mark class="err-word">schwimmen</mark> im Sommer.',wrongs:['schwimmen'],corrects:['Schwimmen'],hints:['Nominalisierung → Großschreibung']},
+  {sentence:'<mark class="err-word">beim</mark> Kochen singt sie <mark class="err-word">Laut</mark>.',wrongs:['beim','Laut'],corrects:['Beim','laut'],hints:['Satzanfang → Großschreibung','Adjektiv → Kleinschreibung']},
+  {sentence:'Der Hund bellt <mark class="err-word">Laut</mark> und <mark class="err-word">Wütend</mark>.',wrongs:['Laut','Wütend'],corrects:['laut','wütend'],hints:['Adjektiv → Kleinschreibung','Adjektiv → Kleinschreibung']},
+  {sentence:'Ich mag meine <mark class="err-word">freunde</mark> sehr.',wrongs:['freunde'],corrects:['Freunde'],hints:['Nomen → Großschreibung']},
+  {sentence:'Wir <mark class="err-word">Spielen</mark> jeden Tag im <mark class="err-word">garten</mark>.',wrongs:['Spielen','garten'],corrects:['spielen','Garten'],hints:['Verb → Kleinschreibung','Nomen → Großschreibung']},
+  {sentence:'Das <mark class="err-word">Schöne</mark> an der <mark class="err-word">reise</mark> war die <mark class="err-word">freundschaft</mark>.',wrongs:['reise','freundschaft'],corrects:['Reise','Freundschaft'],hints:['Nomen → Großschreibung','abstraktes Nomen → Großschreibung']}
+];
+function buildCorr7(){
+  const container=document.getElementById('corr7'); container.innerHTML='';
+  corr7Data.forEach((item,idx)=>{
+    const block=document.createElement('div'); block.className='corr-block'; block.dataset.idx=idx;
+    const sentDiv=document.createElement('p'); sentDiv.className='corr-sent'; sentDiv.innerHTML=item.sentence;
+    block.appendChild(sentDiv);
+    const row=document.createElement('div'); row.className='corr-inputs';
+    item.wrongs.forEach((wrong,wi)=>{
+      const tag=document.createElement('span'); tag.className='corr-wrong-tag'; tag.textContent=wrong;
+      const arrow=document.createElement('span'); arrow.className='corr-arrow'; arrow.textContent='→';
+      const inp=document.createElement('input'); inp.type='text'; inp.className='corr-input';
+      inp.placeholder='Korrektur …'; inp.dataset.correct=item.corrects[wi]; inp.dataset.hint=item.hints[wi];
+      inp.addEventListener('focus',function(){this.style.borderColor='var(--lime)';});
+      inp.addEventListener('blur',function(){this.style.borderColor='';});
+      row.appendChild(tag); row.appendChild(arrow); row.appendChild(inp);
+    });
+    block.appendChild(row);
+    const hintDiv=document.createElement('div'); hintDiv.className='corr-hint-text';
+    block.appendChild(hintDiv);
+    container.appendChild(block);
+  });
+}
+function checkCorr7(){
+  const container=document.getElementById('corr7');
+  let correct=0,total=0;
+  container.querySelectorAll('.corr-block').forEach(block=>{
+    const hintDiv=block.querySelector('.corr-hint-text'), hints=[];
+    block.querySelectorAll('.corr-input').forEach(inp=>{
+      total++; inp.disabled=true;
+      if(inp.value.trim()===inp.dataset.correct){
+        inp.style.borderColor='var(--good)'; inp.style.background='var(--good-bg)'; inp.style.color='var(--good)'; correct++;
+      } else {
+        inp.style.borderColor='var(--bad)'; inp.style.background='var(--bad-bg)'; inp.style.color='var(--bad)';
+        hints.push('„'+inp.dataset.correct+'" – '+inp.dataset.hint);
+      }
+    });
+    if(hints.length>0){hintDiv.style.display='block'; hintDiv.innerHTML='💡 '+hints.join(' · ');}
+  });
+  const pts=Math.round((correct/total)*14); addScore(pts);
+  showFeedback('fb-corr7',correct===total?'success':correct>=total*0.6?'partial':'error',
+    correct===total?'✅ Perfekt! Alle '+total+' Korrekturen richtig! +'+pts+' Punkte!':
+    '🟡 '+correct+'/'+total+' richtig. +'+pts+' Punkte.');
+  if(correct<total*0.6) document.getElementById('fehler-corr7').classList.add('visible');
+  document.querySelector('[onclick="checkCorr7()"]').disabled=true;
+}
+function resetCorr7(){
+  buildCorr7(); hideFeedback('fb-corr7');
+  document.getElementById('fehler-corr7').classList.remove('visible');
+  document.querySelector('[onclick="checkCorr7()"]').disabled=false;
+}
+
+// NAV DOTS
+function buildNavDots(){
+  const dots=document.getElementById('navDots');
+  const chapters=['cap1','cap2','cap3','cap4','cap5'];
+  const labels=['Kick-off','Halbzeit 1','Halbzeit 2','Heft','Finale'];
+  chapters.forEach((id,i)=>{
+    const dot=document.createElement('button');
+    dot.className='nav-dot'+(i===0?' active':''); dot.title=labels[i];
+    dot.addEventListener('click',()=>document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'}));
+    dots.appendChild(dot);
+  });
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const idx=chapters.indexOf(e.target.id);
+        document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+      }
+    });
+  },{threshold:0.4});
+  chapters.forEach(id=>{const el=document.getElementById(id);if(el)observer.observe(el);});
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  buildClickText('clickText2','cm2');
+  buildClickText('clickText3','cm3');
+  buildCloze('cloze4');
+  buildCloze('cloze6');
+  buildCloze('cloze8');
+  buildCorr7();
+  buildNavDots();
+  updateHUD();
+});
+</script>
+</body>
+</html>
